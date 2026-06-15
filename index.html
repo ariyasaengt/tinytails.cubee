@@ -123,6 +123,42 @@
         .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+        /* 📱 ปรับขนาดสำหรับหน้าจอมือถือ (Mobile Responsive) */
+        @media (max-width: 768px) {
+            /* ย่อแถบเมนูด้านบน */
+            .navbar { padding: 10px; gap: 8px; }
+            .nav-btn { padding: 8px 12px; font-size: 0.85rem; }
+            .theme-btn { font-size: 1.2rem; }
+            
+            /* ย่อช่องค้นหา */
+            .search-container { padding: 0 10px; margin-top: 15px; }
+            .search-box { padding: 10px 15px; font-size: 0.9rem; }
+            
+            /* จัดเรียงหัวข้อและป้ายราคาใหม่ให้ไม่ซ้อนทับกัน */
+            .category-header { flex-direction: column; align-items: flex-start; gap: 10px; margin-top: 20px; }
+            .category-title h2 { font-size: 1.4rem; }
+            .price-tag { font-size: 0.85rem; padding: 4px 12px; }
+            
+            /* ขยายปุ่มเพิ่มข้อมูลให้เต็มจอเพื่อให้กดง่ายบนมือถือ */
+            .btn-add { font-size: 0.9rem; padding: 10px; width: 100%; text-align: center; }
+            
+            /* ย่อขนาดการ์ดและรูปภาพ (จะแสดง 2 ใบต่อ 1 แถวบนมือถือ) */
+            .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+            .card { padding: 12px; border-radius: 16px; }
+            .img-box { height: 90px; padding: 10px; margin-bottom: 10px; border-radius: 12px; }
+            .img-box img { max-width: 70px; max-height: 70px; }
+            .card-title { font-size: 1.05rem; margin-top: 5px; }
+            .card-desc { font-size: 0.75rem; margin-bottom: 10px; }
+            .btn-view, .btn-edit { padding: 6px; font-size: 0.75rem; border-radius: 8px; }
+            
+            /* ย่อขนาดป๊อปอัพ */
+            .modal-content { padding: 20px; margin: 15px auto; width: 95%; }
+            .modal-title { font-size: 1.3rem; }
+            .modal-img-card img { width: 60px; height: 60px; }
+            .stats-list li { font-size: 0.85rem; flex-direction: column; align-items: flex-start; gap: 5px; }
+            .stats-value, .stats-highlight { align-self: flex-start; font-size: 0.9rem; }
+        }
     </style>
 </head>
 <body>
@@ -136,7 +172,6 @@
         <button class="theme-btn" id="themeToggle" onclick="toggleTheme()" title="เปลี่ยนโหมดมืด/สว่าง">🌙</button>
     </nav>
 
-    <!-- ช่องค้นหา (Search Bar) -->
     <div class="search-container">
         <input type="text" id="searchInput" class="search-box" placeholder="🔍 ค้นหาชื่อ Cubee หรือผลผลิตที่ต้องการ..." oninput="handleSearch()">
     </div>
@@ -179,7 +214,6 @@
         </div>
     </div>
 
-    <!-- ป๊อปอัพดูข้อมูล -->
     <div id="infoModal" class="modal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('infoModal')">&times;</button>
@@ -206,7 +240,6 @@
         </div>
     </div>
 
-    <!-- ป๊อปอัพฟอร์มแก้ไข -->
     <div id="editModal" class="modal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('editModal')">&times;</button>
@@ -264,7 +297,6 @@
 
     <div id="toast" class="toast">บันทึกข้อมูลเรียบร้อยแล้ว! ✨</div>
 
-    <!-- ส่วนของ Firebase และ Script -->
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
 
@@ -278,7 +310,7 @@
         const firebaseConfig = {
             apiKey: "AIzaSyDmmi0VA4FoGPAKXIY4vVX9lRWk2O_-87s", 
             authDomain: "tinytails-db.firebaseapp.com", 
-            databaseURL: "https://tinytails-db-default-rtdb.asia-southeast1.firebasedatabase.app", // อัปเดตแก้ลิงก์ให้ตรงกับ Database
+            databaseURL: "https://tinytails-db-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "tinytails-db",
             storageBucket: "tinytails-db.firebasestorage.app", 
             messagingSenderId: "943214555111", 
@@ -291,6 +323,7 @@
         let cubeeDb = [];
         let searchText = ''; // ตัวแปรเก็บคำค้นหา
 
+        // ดึงข้อมูล Realtime
         db.ref('tinytails_db').on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
