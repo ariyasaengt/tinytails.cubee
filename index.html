@@ -111,8 +111,8 @@
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 
         /* กล่องอัปโหลด/วางรูป */
-        .paste-zone { background: var(--box-bg); border: 2px dashed var(--border-color); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: 0.2s; outline: none; position: relative; }
-        .paste-zone:hover { border-color: var(--primary-blue); }
+        .paste-zone { background: var(--box-bg); border: 2px dashed var(--border-color); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: 0.2s; position: relative; }
+        .paste-zone:hover, .paste-zone.hovering { border-color: var(--primary-blue); background: rgba(59, 130, 246, 0.05); }
         .paste-zone img { max-width: 80px; max-height: 80px; object-fit: contain; display: none; margin: 10px auto 0 auto; border-radius: 8px; background: var(--card-bg); padding: 5px; border: 1px solid var(--border-color); }
         .paste-zone p { margin: 0; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; pointer-events: none;}
         .paste-zone span { display: block; font-size: 0.75rem; color: #94a3b8; margin-top: 5px; pointer-events: none;}
@@ -266,16 +266,16 @@
 
             <label style="display: block; font-size: 0.9rem; font-weight: 600; color: var(--text-main); margin-bottom: 5px;">รูปภาพ</label>
             <div class="form-row" style="margin-bottom: 15px;">
-                <div class="paste-zone" id="zone-pet" tabindex="0">
+                <div class="paste-zone" id="zone-pet">
                     <p>📸 รูปตัว Cubee</p>
-                    <span>คลิกเพื่อเลือกไฟล์<br>หรือกด Ctrl+V เพื่อวาง</span>
+                    <span>คลิกเพื่อแนบไฟล์<br>หรือ "ชี้เมาส์" แล้ว Ctrl+V ได้เลย</span>
                     <input type="file" id="file-pet" accept="image/*" style="display:none;">
                     <img id="preview-pet" src="">
                     <input type="hidden" id="e-petImg">
                 </div>
-                <div class="paste-zone" id="zone-item" tabindex="0">
+                <div class="paste-zone" id="zone-item">
                     <p>📸 รูปผลผลิต</p>
-                    <span>คลิกเพื่อเลือกไฟล์<br>หรือกด Ctrl+V เพื่อวาง</span>
+                    <span>คลิกเพื่อแนบไฟล์<br>หรือ "ชี้เมาส์" แล้ว Ctrl+V ได้เลย</span>
                     <input type="file" id="file-item" accept="image/*" style="display:none;">
                     <img id="preview-item" src="">
                     <input type="hidden" id="e-itemImg">
@@ -295,7 +295,7 @@
                 <div class="form-group"><label>ใช้เวลา (วินาที/รอบ)</label><input type="text" id="e-time" placeholder="เช่น 60"></div>
                 
                 <div class="form-group"><label>ความจุสูงสุด</label><input type="text" id="e-max" placeholder="เช่น 120"></div>
-                <div class="form-group"><label>ราคาขาย (คอยน์)</label><input type="text" id="e-price" placeholder="เช่น 20"></div>
+                <div class="form-group"><label>ราคาขาย (คอยน์/ชิ้น)</label><input type="text" id="e-price" placeholder="เช่น 25"></div>
                 
                 <div class="form-group"><label>ผลิตได้ (1 ชม.)</label><input type="text" id="e-hrQty" placeholder="เช่น 120"></div>
                 <div class="form-group"><label>รายได้ (1 ชม.)</label><input type="text" id="e-hrCoin" placeholder="เช่น 2400"></div>
@@ -409,11 +409,10 @@
             }
         }
 
-        // 🌟 ฟังก์ชันเติมหน่วยอัตโนมัติ 
         function appendUnit(val, unit) {
             if (!val || val === '-') return '-';
-            // ลบคำว่าหน่วยที่อาจจะซ้ำซ้อนออกก่อน (กรณีผู้ใช้เผลอพิมพ์มาด้วย) แล้วค่อยต่อท้ายให้สวยๆ
-            let cleanVal = String(val).replace('ชิ้น/รอบ', '').replace('คอยน์', '').replace('วินาที/รอบ', '').trim();
+            // ป้องกันการเติมหน่วยซ้ำ หากผู้ใช้เผลอพิมพ์ "คอยน์/ชิ้น" มาด้วย
+            let cleanVal = String(val).replace('ชิ้น/รอบ', '').replace('คอยน์/ชิ้น', '').replace('คอยน์', '').replace('วินาที/รอบ', '').trim();
             return `${cleanVal} ${unit}`;
         }
 
@@ -425,13 +424,12 @@
             document.getElementById('v-itemImg').src = data.itemImg;
             document.getElementById('v-itemName').innerText = data.itemName;
             
-            // ใช้ฟังก์ชันเติมหน่วยให้อัตโนมัติเวลาแสดงผล
             document.getElementById('v-food').innerText = data.food || '-';
             document.getElementById('v-eat').innerText = appendUnit(data.eat, 'ชิ้น/รอบ');
             document.getElementById('v-prod').innerText = appendUnit(data.prod, 'ชิ้น/รอบ');
             document.getElementById('v-time').innerText = appendUnit(data.time, 'วินาที/รอบ');
             document.getElementById('v-max').innerText = data.max || '-';
-            document.getElementById('v-price').innerText = appendUnit(data.price, 'คอยน์');
+            document.getElementById('v-price').innerText = appendUnit(data.price, 'คอยน์/ชิ้น'); // อัปเดตหน่วยราคาขาย
             
             document.getElementById('v-hrQty').innerText = data.hrQty || '-';
             document.getElementById('v-hrCoin').innerText = data.hrCoin || '-';
@@ -452,7 +450,6 @@
                 document.getElementById('e-itemImg').value = data.itemImg;
                 document.getElementById('e-itemName').value = data.itemName;
                 
-                // ดึงข้อมูลเดิมมาใส่ฟอร์ม
                 document.getElementById('e-food').value = data.food || '';
                 document.getElementById('e-eat').value = data.eat || '';
                 document.getElementById('e-prod').value = data.prod || '';
@@ -471,7 +468,6 @@
                 document.getElementById('e-id').value = '';
                 document.getElementById('e-category').value = category;
                 
-                // ล้างค่าฟอร์มทั้งหมดรวมถึงช่องใหม่ที่เพิ่มมา
                 ['e-name','e-desc','e-petImg','e-itemImg','e-itemName','e-food','e-eat','e-prod','e-time','e-max','e-price','e-hrQty','e-hrCoin','e-refill1','e-refill2'].forEach(field => document.getElementById(field).value = '');
                 
                 showPreviewImage('preview-pet', '');
@@ -499,6 +495,17 @@
             }
         }
 
+        document.getElementById('zone-pet').addEventListener('click', (e) => {
+            if(e.target.tagName.toLowerCase() !== 'input') {
+                document.getElementById('file-pet').click();
+            }
+        });
+        document.getElementById('zone-item').addEventListener('click', (e) => {
+            if(e.target.tagName.toLowerCase() !== 'input') {
+                document.getElementById('file-item').click();
+            }
+        });
+
         function processImageFile(file, previewId, hiddenInputId) {
             if (!file || !file.type.startsWith('image/')) return;
             const reader = new FileReader();
@@ -522,31 +529,38 @@
             reader.readAsDataURL(file);
         }
 
-        document.getElementById('zone-pet').addEventListener('click', () => document.getElementById('file-pet').click());
-        document.getElementById('zone-item').addEventListener('click', () => document.getElementById('file-item').click());
         document.getElementById('file-pet').addEventListener('change', function(e) { processImageFile(e.target.files[0], 'preview-pet', 'e-petImg'); });
         document.getElementById('file-item').addEventListener('change', function(e) { processImageFile(e.target.files[0], 'preview-item', 'e-itemImg'); });
 
-        function setupPaste(zoneId, previewId, hiddenId) {
-            document.getElementById(zoneId).addEventListener('paste', function(e) {
-                e.preventDefault();
-                const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-                for (let i = 0; i < items.length; i++) {
-                    if (items[i].kind === 'file' && items[i].type.startsWith('image/')) {
-                        processImageFile(items[i].getAsFile(), previewId, hiddenId);
-                        break;
+        let hoveredZone = null;
+
+        document.getElementById('zone-pet').addEventListener('mouseenter', () => { hoveredZone = 'pet'; document.getElementById('zone-pet').classList.add('hovering'); });
+        document.getElementById('zone-pet').addEventListener('mouseleave', () => { hoveredZone = null; document.getElementById('zone-pet').classList.remove('hovering'); });
+        
+        document.getElementById('zone-item').addEventListener('mouseenter', () => { hoveredZone = 'item'; document.getElementById('zone-item').classList.add('hovering'); });
+        document.getElementById('zone-item').addEventListener('mouseleave', () => { hoveredZone = null; document.getElementById('zone-item').classList.remove('hovering'); });
+
+        document.addEventListener('paste', function(e) {
+            if (!hoveredZone) return; 
+
+            e.preventDefault();
+            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].kind === 'file' && items[i].type.startsWith('image/')) {
+                    if (hoveredZone === 'pet') {
+                        processImageFile(items[i].getAsFile(), 'preview-pet', 'e-petImg');
+                    } else if (hoveredZone === 'item') {
+                        processImageFile(items[i].getAsFile(), 'preview-item', 'e-itemImg');
                     }
+                    break;
                 }
-            });
-        }
-        setupPaste('zone-pet', 'preview-pet', 'e-petImg');
-        setupPaste('zone-item', 'preview-item', 'e-itemImg');
+            }
+        });
 
         function saveData() {
             let id = document.getElementById('e-id').value;
             let finalId = id ? parseInt(id) : Date.now();
 
-            // บันทึกข้อมูลรวมถึงฟิลด์ใหม่ (eat และ time)
             let newData = {
                 id: finalId,
                 category: document.getElementById('e-category').value,
