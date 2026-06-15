@@ -135,29 +135,50 @@
             .search-container { padding: 0 10px; margin-top: 15px; }
             .search-box { padding: 10px 15px; font-size: 0.9rem; }
             
-            /* จัดเรียงหัวข้อและป้ายราคาใหม่ให้ไม่ซ้อนทับกัน */
+            /* จัดเรียงหัวข้อและป้ายราคา */
             .category-header { flex-direction: column; align-items: flex-start; gap: 10px; margin-top: 20px; }
             .category-title h2 { font-size: 1.4rem; }
             .price-tag { font-size: 0.85rem; padding: 4px 12px; }
             
-            /* ขยายปุ่มเพิ่มข้อมูลให้เต็มจอเพื่อให้กดง่ายบนมือถือ */
+            /* ขยายปุ่มเพิ่มข้อมูลให้เต็มจอ */
             .btn-add { font-size: 0.9rem; padding: 10px; width: 100%; text-align: center; }
             
-            /* ย่อขนาดการ์ดและรูปภาพ (จะแสดง 2 ใบต่อ 1 แถวบนมือถือ) */
-            .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+            /* ย่อขนาดการ์ด */
+            .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
             .card { padding: 12px; border-radius: 16px; }
-            .img-box { height: 90px; padding: 10px; margin-bottom: 10px; border-radius: 12px; }
-            .img-box img { max-width: 70px; max-height: 70px; }
-            .card-title { font-size: 1.05rem; margin-top: 5px; }
+            .img-box { height: 80px; padding: 5px; margin-bottom: 10px; border-radius: 12px; }
+            .img-box img { max-width: 65px; max-height: 65px; }
+            .card-title { font-size: 1rem; margin-top: 5px; }
             .card-desc { font-size: 0.75rem; margin-bottom: 10px; }
             .btn-view, .btn-edit { padding: 6px; font-size: 0.75rem; border-radius: 8px; }
             
-            /* ย่อขนาดป๊อปอัพ */
-            .modal-content { padding: 20px; margin: 15px auto; width: 80%; }
-            .modal-title { font-size: 1.3rem; }
-            .modal-img-card img { width: 60px; height: 60px; }
-            .stats-list li { font-size: 0.85rem; flex-direction: column; align-items: flex-start; gap: 5px; }
-            .stats-value, .stats-highlight { align-self: flex-start; font-size: 0.9rem; }
+            /* 🛠️ แก้ไขป๊อปอัพให้เลื่อนได้และพอดีจอ (แก้ปัญหาขอบบนหาย) */
+            .modal { align-items: flex-start; padding: 10px; } 
+            .modal-content { padding: 20px 15px; margin: 10px auto 40px auto; width: 100%; box-sizing: border-box; }
+            .close-btn { top: 10px; right: 10px; width: 30px; height: 30px; font-size: 1rem; }
+            
+            /* ปรับรูปใน Modal ให้กะทัดรัดขึ้น */
+            .modal-title { font-size: 1.2rem; margin-bottom: 15px; }
+            .modal-images { gap: 10px; padding: 10px; margin-bottom: 15px; }
+            .modal-img-card img { width: 55px; height: 55px; }
+            
+            /* ปรับรายการข้อมูล (หน้าดูข้อมูล) ให้อ่านง่ายขึ้น */
+            .stats-list li { font-size: 0.8rem; padding: 8px 0; flex-direction: row; align-items: center; }
+            .stats-value, .stats-highlight { font-size: 0.85rem; }
+            
+            /* ปรับฟอร์มกรอกข้อมูล (หน้าแก้ไข) ให้ไม่เบียดกัน */
+            .form-group { margin-bottom: 10px; }
+            .form-group label { font-size: 0.8rem; }
+            .form-group input { padding: 10px; font-size: 0.85rem; }
+            .form-row { gap: 10px; } 
+            
+            /* ปรับกล่องอัปโหลดรูปให้พอดี */
+            .paste-zone { padding: 10px; }
+            .paste-zone p { font-size: 0.75rem; }
+            .paste-zone span { font-size: 0.65rem; }
+            .paste-zone img { max-width: 50px; max-height: 50px; }
+            
+            .btn-save, .btn-delete { padding: 12px; font-size: 1rem; margin-top: 10px; }
         }
     </style>
 </head>
