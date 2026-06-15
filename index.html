@@ -17,24 +17,47 @@
             --coin-color: #10b981; 
             --thb-color: #ef4444; 
             --primary-blue: #3b82f6;
+            --nav-bg: rgba(255, 255, 255, 0.8);
+            --modal-bg: rgba(15, 23, 42, 0.6);
+            --box-bg: #f8fafc;
         }
 
-        body { font-family: 'Kanit', sans-serif; background-color: var(--bg-light); color: var(--text-main); margin: 0; padding: 0; min-height: 100vh; }
+        /* 🌙 โหมดมืด (Dark Mode Variables) */
+        body.dark-mode {
+            --bg-light: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --nav-bg: rgba(30, 41, 59, 0.9);
+            --box-bg: #0f172a;
+        }
 
-        /* Navbar */
-        .navbar { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; padding: 20px; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
-        .nav-btn { background-color: #f1f5f9; color: #475569; border: none; padding: 10px 25px; border-radius: 50px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: 0.2s; font-family: inherit;}
-        .nav-btn:hover { background-color: #e2e8f0; color: #0f172a; }
-        .nav-btn.active { background-color: #232732; color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        body { font-family: 'Kanit', sans-serif; background-color: var(--bg-light); color: var(--text-main); margin: 0; padding: 0; min-height: 100vh; transition: background-color 0.3s, color 0.3s; }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px 20px 80px 20px; }
+        /* Navbar & Theme Toggle */
+        .navbar { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 15px; padding: 20px; background: var(--nav-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; transition: 0.3s; }
+        .nav-btn { background-color: var(--box-bg); color: var(--text-muted); border: 1px solid var(--border-color); padding: 10px 25px; border-radius: 50px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: 0.2s; font-family: inherit;}
+        .nav-btn:hover { background-color: var(--border-color); color: var(--text-main); }
+        .nav-btn.active { background-color: var(--primary-blue); color: white; border-color: var(--primary-blue); box-shadow: 0 4px 12px rgba(59,130,246,0.2); }
+        
+        .theme-btn { background: transparent; border: none; font-size: 1.5rem; cursor: pointer; padding: 5px 10px; transition: transform 0.2s; }
+        .theme-btn:hover { transform: scale(1.1); }
+
+        /* 🔍 ช่องค้นหา */
+        .search-container { max-width: 600px; margin: 30px auto 10px auto; padding: 0 20px; }
+        .search-box { width: 100%; padding: 14px 20px; border-radius: 30px; border: 2px solid var(--border-color); background: var(--card-bg); color: var(--text-main); font-size: 1.05rem; font-family: inherit; outline: none; transition: 0.3s; box-sizing: border-box; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .search-box:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); }
+        body.dark-mode .search-box::placeholder { color: #64748b; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 10px 20px 80px 20px; }
         .page-section { display: none; animation: fadeIn 0.4s ease; }
         .page-section.show { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .category-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; margin-top: 30px; margin-bottom: 25px; }
-        .category-title h2 { font-size: 1.8rem; font-weight: 800; margin: 0; color: #0f172a; }
-        .price-tag { font-size: 1.1rem; font-weight: 600; background: #ffffff; padding: 6px 16px; border-radius: 30px; border: 1px solid var(--border-color); }
+        .category-title h2 { font-size: 1.8rem; font-weight: 800; margin: 0; color: var(--text-main); }
+        .price-tag { font-size: 1.1rem; font-weight: 600; background: var(--card-bg); padding: 6px 16px; border-radius: 30px; border: 1px solid var(--border-color); }
         .price-coin { color: var(--coin-color); border-left: 4px solid var(--coin-color); }
         .price-thb { color: var(--thb-color); border-left: 4px solid var(--thb-color); }
 
@@ -43,49 +66,50 @@
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
         .card { background: var(--card-bg); border-radius: 20px; border: 1px solid var(--border-color); padding: 24px; text-align: center; transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        .card:hover { transform: translateY(-8px); border-color: #cbd5e1; }
+        .card:hover { transform: translateY(-8px); border-color: var(--primary-blue); }
         
-        .img-box { background: #f8fafc; border-radius: 16px; padding: 25px; margin-bottom: 15px; height: 130px; display: flex; align-items: center; justify-content: center; border: 1px solid #f1f5f9; }
+        .img-box { background: var(--box-bg); border-radius: 16px; padding: 25px; margin-bottom: 15px; height: 130px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color); }
         .img-box img { max-width: 110px; max-height: 110px; object-fit: contain; }
-        .card-title { font-size: 1.35rem; font-weight: 800; margin: 10px 0 5px 0; color: #0f172a; }
+        .card-title { font-size: 1.35rem; font-weight: 800; margin: 10px 0 5px 0; color: var(--text-main); }
         .card-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; }
         
         .btn-group { display: flex; gap: 10px; margin-top: auto; }
-        .btn-view { flex: 1; background: #ffffff; color: #0f172a; border: 2px solid #0f172a; padding: 10px; border-radius: 10px; font-weight: 600; font-family: inherit; cursor: pointer; transition: 0.2s; }
-        .btn-view:hover { background: #0f172a; color: #ffffff; }
-        .btn-edit { background: #f1f5f9; color: #475569; border: 2px solid transparent; padding: 10px; border-radius: 10px; font-weight: 600; font-family: inherit; cursor: pointer; transition: 0.2s; }
-        .btn-edit:hover { background: #e2e8f0; color: #0f172a;}
+        .btn-view { flex: 1; background: var(--card-bg); color: var(--text-main); border: 2px solid var(--text-main); padding: 10px; border-radius: 10px; font-weight: 600; font-family: inherit; cursor: pointer; transition: 0.2s; }
+        .btn-view:hover { background: var(--text-main); color: var(--card-bg); }
+        .btn-edit { background: var(--box-bg); color: var(--text-muted); border: 2px solid transparent; padding: 10px; border-radius: 10px; font-weight: 600; font-family: inherit; cursor: pointer; transition: 0.2s; }
+        .btn-edit:hover { background: var(--border-color); color: var(--text-main);}
 
         /* Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(5px); z-index: 200; justify-content: center; align-items: center; overflow-y: auto; }
-        .modal-content { background: #ffffff; border-radius: 24px; width: 90%; max-width: 500px; padding: 30px; position: relative; margin: 40px auto; animation: slideUp 0.3s ease; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-bg); backdrop-filter: blur(5px); z-index: 200; justify-content: center; align-items: center; overflow-y: auto; }
+        .modal-content { background: var(--card-bg); border-radius: 24px; width: 90%; max-width: 500px; padding: 30px; position: relative; margin: 40px auto; animation: slideUp 0.3s ease; border: 1px solid var(--border-color); }
         @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .close-btn { position: absolute; top: 20px; right: 20px; background: #f1f5f9; border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; color: var(--text-muted); }
-        .close-btn:hover { background: #e2e8f0; color: #000; }
+        .close-btn { position: absolute; top: 20px; right: 20px; background: var(--box-bg); border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; color: var(--text-muted); }
+        .close-btn:hover { background: var(--thb-color); color: #fff; }
         
-        .modal-title { font-size: 1.6rem; font-weight: 800; color: #0f172a; text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-top: 0; margin-bottom: 20px; }
-        .modal-images { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; background: #f8fafc; padding: 15px; border-radius: 16px; }
+        .modal-title { font-size: 1.6rem; font-weight: 800; color: var(--text-main); text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-top: 0; margin-bottom: 20px; }
+        .modal-images { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; background: var(--box-bg); padding: 15px; border-radius: 16px; border: 1px solid var(--border-color); }
         .modal-img-card { text-align: center; font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
-        .modal-img-card img { width: 75px; height: 75px; object-fit: contain; background: #fff; border-radius: 10px; padding: 5px; border: 1px solid var(--border-color); display: block; margin-bottom: 5px; }
+        .modal-img-card img { width: 75px; height: 75px; object-fit: contain; background: var(--card-bg); border-radius: 10px; padding: 5px; border: 1px solid var(--border-color); display: block; margin-bottom: 5px; }
         
         .stats-list { list-style: none; padding: 0; margin: 0; }
         .stats-list li { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--border-color); font-size: 0.95rem; }
         .stats-list li:last-child { border-bottom: none; }
         .stats-label { color: var(--text-muted); }
-        .stats-value { font-weight: 600; color: #0f172a; }
+        .stats-value { font-weight: 600; color: var(--text-main); }
         .stats-highlight { color: var(--coin-color); font-weight: bold; }
+        .refill-val { color: var(--text-main); }
 
         /* Form */
         .form-group { margin-bottom: 15px; text-align: left; }
         .form-group label { display: block; font-size: 0.9rem; font-weight: 600; color: var(--text-main); margin-bottom: 5px; }
-        .form-group input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-family: inherit; box-sizing: border-box; outline: none; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-family: inherit; box-sizing: border-box; outline: none; background: var(--card-bg); color: var(--text-main); }
         .form-group input:focus { border-color: var(--primary-blue); }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 
         /* กล่องอัปโหลด/วางรูป */
-        .paste-zone { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: 0.2s; outline: none; position: relative; }
-        .paste-zone:hover { border-color: var(--primary-blue); background: #eff6ff; }
-        .paste-zone img { max-width: 80px; max-height: 80px; object-fit: contain; display: none; margin: 10px auto 0 auto; border-radius: 8px; background: #fff; padding: 5px; border: 1px solid #e2e8f0; }
+        .paste-zone { background: var(--box-bg); border: 2px dashed var(--border-color); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: 0.2s; outline: none; position: relative; }
+        .paste-zone:hover { border-color: var(--primary-blue); }
+        .paste-zone img { max-width: 80px; max-height: 80px; object-fit: contain; display: none; margin: 10px auto 0 auto; border-radius: 8px; background: var(--card-bg); padding: 5px; border: 1px solid var(--border-color); }
         .paste-zone p { margin: 0; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; pointer-events: none;}
         .paste-zone span { display: block; font-size: 0.75rem; color: #94a3b8; margin-top: 5px; pointer-events: none;}
         
@@ -95,7 +119,7 @@
         .btn-delete:hover { background: var(--thb-color); color: white; }
 
         /* Toast */
-        .toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 10px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); font-weight: 600; }
+        .toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 10px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
         .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
@@ -107,9 +131,15 @@
         <button class="nav-btn active" onclick="showPage('all', this)">หน้าแรก</button>
         <button class="nav-btn" onclick="showPage('tier1', this)">Tier 1</button>
         <button class="nav-btn" onclick="showPage('tier2', this)">Tier 2</button>
-        <button class="nav-btn" onclick="showPage('sweet', this)">SWEET CUBEE</button>
-        <button class="nav-btn" onclick="showPage('huge', this)">HUGE CUBEE</button>
+        <button class="nav-btn" onclick="showPage('sweet', this)">SWEET</button>
+        <button class="nav-btn" onclick="showPage('huge', this)">HUGE</button>
+        <button class="theme-btn" id="themeToggle" onclick="toggleTheme()" title="เปลี่ยนโหมดมืด/สว่าง">🌙</button>
     </nav>
+
+    <!-- ช่องค้นหา (Search Bar) -->
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-box" placeholder="🔍 ค้นหาชื่อ Cubee หรือผลผลิตที่ต้องการ..." oninput="handleSearch()">
+    </div>
 
     <div class="container">
         <div id="tier1" class="page-section show">
@@ -149,7 +179,7 @@
         </div>
     </div>
 
-    <!-- 1. ป๊อปอัพดูข้อมูล -->
+    <!-- ป๊อปอัพดูข้อมูล -->
     <div id="infoModal" class="modal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('infoModal')">&times;</button>
@@ -168,15 +198,15 @@
                 <li>
                     <span class="stats-label">🔄 รอบเติมอาหาร:</span> 
                     <span style="text-align: right; font-size: 0.9em; line-height: 1.4;">
-                        เติมทีละ 1 ช่อง: <b id="v-refill1" style="color:#0f172a;"></b><br>
-                        เติมทีละ 2 ช่อง: <b id="v-refill2" style="color:#0f172a;"></b>
+                        เติมทีละ 1 ช่อง: <b id="v-refill1" class="refill-val"></b><br>
+                        เติมทีละ 2 ช่อง: <b id="v-refill2" class="refill-val"></b>
                     </span>
                 </li>
             </ul>
         </div>
     </div>
 
-    <!-- 2. ป๊อปอัพฟอร์มแก้ไข -->
+    <!-- ป๊อปอัพฟอร์มแก้ไข -->
     <div id="editModal" class="modal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('editModal')">&times;</button>
@@ -193,10 +223,8 @@
                 <input type="text" id="e-desc" placeholder="เช่น ข้อมูลสัตว์เลี้ยงประเภท Cubee">
             </div>
 
-            <!-- ระบบกล่องรับการวางรูป/คลิกอัปโหลด -->
             <label style="display: block; font-size: 0.9rem; font-weight: 600; color: var(--text-main); margin-bottom: 5px;">รูปภาพ</label>
             <div class="form-row" style="margin-bottom: 15px;">
-                <!-- กล่องรูป Cubee -->
                 <div class="paste-zone" id="zone-pet" tabindex="0">
                     <p>📸 รูปตัว Cubee</p>
                     <span>คลิกเพื่อเลือกไฟล์<br>หรือกด Ctrl+V เพื่อวาง</span>
@@ -204,7 +232,6 @@
                     <img id="preview-pet" src="">
                     <input type="hidden" id="e-petImg">
                 </div>
-                <!-- กล่องรูป ผลผลิต -->
                 <div class="paste-zone" id="zone-item" tabindex="0">
                     <p>📸 รูปผลผลิต</p>
                     <span>คลิกเพื่อเลือกไฟล์<br>หรือกด Ctrl+V เพื่อวาง</span>
@@ -237,54 +264,63 @@
 
     <div id="toast" class="toast">บันทึกข้อมูลเรียบร้อยแล้ว! ✨</div>
 
-<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <!-- ส่วนของ Firebase และ Script -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
 
     <script>
-        // 1. นำ firebaseConfig ที่ได้จากเว็บ Firebase มาวางทับตรงนี้ทั้งหมด
+        // 1. ตรวจสอบโหมดมืดทันทีที่โหลดหน้าเว็บ (เพื่อไม่ให้หน้าจอกระพริบ)
+        if(localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('themeToggle').innerText = '☀️';
+        }
+
         const firebaseConfig = {
             apiKey: "AIzaSyDmmi0VA4FoGPAKXIY4vVX9lRWk2O_-87s", 
             authDomain: "tinytails-db.firebaseapp.com", 
-            databaseURL: "tinytails-db", 
-            projectId: "tinytails-db.firebasestorage.app",
-            storageBucket: "943214555111", 
-            messagingSenderId: "1:943214555111:web:47b39cf1ed806cbdcd5742", 
-            appId: "G-T8WB70WXZ7" 
+            databaseURL: "https://tinytails-db-default-rtdb.asia-southeast1.firebasedatabase.app", // อัปเดตแก้ลิงก์ให้ตรงกับ Database
+            projectId: "tinytails-db",
+            storageBucket: "tinytails-db.firebasestorage.app", 
+            messagingSenderId: "943214555111", 
+            appId: "1:943214555111:web:47b39cf1ed806cbdcd5742" 
         };
 
-        // 2. เริ่มต้นเชื่อมต่อฐานข้อมูล
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        const defaultData = [
-            { id: 1, category: 'tier1', name: 'Marshmellow Cubee', desc: 'ข้อมูลสัตว์เลี้ยงประเภท Cubee', petImg: 'https://via.placeholder.com/110/cbd5e1/ffffff?text=Marshmellow', itemImg: 'https://via.placeholder.com/110/cbd5e1/0f172a?text=Item', itemName: 'ผลผลิต', food: '600 ชิ้น', prod: '2 ชิ้น / รอบ', max: '120 ชิ้น', price: 'X', hrQty: 'X ชิ้น', hrCoin: 'X คอยน์', refill1: '10 รอบ', refill2: '5 รอบ' },
-            { id: 2, category: 'sweet', name: 'Gummy Bear Cubee', desc: 'ผลผลิต: เยลลี่หมีเด้งดึ๋ง', petImg: 'https://via.placeholder.com/110/f59e0b/ffffff?text=Gummy', itemImg: 'https://via.placeholder.com/110/f59e0b/0f172a?text=Jelly', itemName: 'เยลลี่หมีเด้งดึ๋ง', food: '750', prod: 'X', max: '150', price: '20', hrQty: 'X', hrCoin: 'X', refill1: '12 รอบ', refill2: '6 รอบ' }
-        ];
-
         let cubeeDb = [];
+        let searchText = ''; // ตัวแปรเก็บคำค้นหา
 
-        // 3. ระบบดึงข้อมูลแบบ Realtime (แทนที่ localStorage)
-        // ทุกครั้งที่มีการแก้ข้อมูล โค้ดส่วนนี้จะทำงานอัตโนมัติ ทำให้หน้าเว็บทุกคนอัปเดตพร้อมกัน
         db.ref('tinytails_db').on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                cubeeDb = Object.values(data); // แปลงข้อมูลจากก้อน Object เป็น Array
+                cubeeDb = Object.values(data);
             } else {
-                cubeeDb = defaultData; // ถ้าฐานข้อมูลว่างเปล่า ให้ใช้ข้อมูลตัวอย่าง
+                cubeeDb = []; 
             }
             renderUI();
         });
 
-        // ==========================================
-        // ฟังก์ชัน UI และการจัดการหน้าเว็บเหมือนเดิมทั้งหมด
-        // ==========================================
+        // ฟังก์ชันเมื่อมีการพิมพ์ค้นหา
+        function handleSearch() {
+            searchText = document.getElementById('searchInput').value.toLowerCase();
+            renderUI();
+        }
+
         function renderUI() {
             ['tier1', 'tier2', 'sweet', 'huge'].forEach(cat => {
                 const grid = document.getElementById(`grid-${cat}`);
                 if(grid) grid.innerHTML = ''; 
             });
 
-            cubeeDb.forEach(item => {
+            // ทำการกรอง (Filter) ข้อมูลตามคำค้นหาที่พิมพ์ไว้
+            let filteredDb = cubeeDb.filter(item => {
+                let matchName = item.name.toLowerCase().includes(searchText);
+                let matchItem = item.itemName.toLowerCase().includes(searchText);
+                return matchName || matchItem; // ค้นหาเจอจากชื่อ Cubee หรือ ชื่อผลผลิต ก็จะแสดง
+            });
+
+            filteredDb.forEach(item => {
                 let html = `
                     <div class="card">
                         <div>
@@ -302,6 +338,21 @@
                     document.getElementById(`grid-${item.category}`).insertAdjacentHTML('beforeend', html);
                 }
             });
+        }
+
+        // ฟังก์ชันสลับโหมดมืด/สว่าง
+        function toggleTheme() {
+            let body = document.body;
+            let btn = document.getElementById('themeToggle');
+            body.classList.toggle('dark-mode');
+            
+            if(body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                btn.innerText = '☀️';
+            } else {
+                localStorage.setItem('theme', 'light');
+                btn.innerText = '🌙';
+            }
         }
 
         function showPage(pageId, clickedBtn) {
@@ -429,10 +480,9 @@
         setupPaste('zone-pet', 'preview-pet', 'e-petImg');
         setupPaste('zone-item', 'preview-item', 'e-itemImg');
 
-        // 4. แก้ไขระบบ Save ให้วิ่งไปหา Firebase แทน
         function saveData() {
             let id = document.getElementById('e-id').value;
-            let finalId = id ? parseInt(id) : Date.now(); // สร้างไอดีใหม่ถ้าไม่มี
+            let finalId = id ? parseInt(id) : Date.now();
 
             let newData = {
                 id: finalId,
@@ -452,7 +502,6 @@
                 refill2: document.getElementById('e-refill2').value || '-'
             };
 
-            // โยนข้อมูลอัปเดตขึ้น Firebase
             db.ref('tinytails_db/' + finalId).set(newData).then(() => {
                 closeModal('editModal');
                 let toast = document.getElementById("toast");
@@ -463,11 +512,9 @@
             });
         }
 
-        // 5. แก้ไขระบบ Delete ให้ลบใน Firebase
         function deleteData() {
             if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้ทิ้งถาวร?')) {
                 let id = parseInt(document.getElementById('e-id').value);
-                
                 db.ref('tinytails_db/' + id).remove().then(() => {
                     closeModal('editModal');
                 }).catch((error) => {
