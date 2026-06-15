@@ -1,250 +1,44 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TINYTAILS CUBEE</title>
-    
-    <link rel="icon" href="https://i.postimg.cc/xxxxxx/logo21700f4bb9b95926.png" type="image/png">
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-light: #f5f7fb;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --coin-color: #10b981; 
-            --thb-color: #ef4444; 
-            --primary-blue: #3b82f6;
-        }
-
-        body { font-family: 'Kanit', sans-serif; background-color: var(--bg-light); color: var(--text-main); margin: 0; padding: 0; min-height: 100vh; }
-
-        /* Navbar */
-        .navbar { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; padding: 20px; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
-        .nav-btn { background-color: #f1f5f9; color: #475569; border: none; padding: 10px 25px; border-radius: 50px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: 0.2s; font-family: inherit;}
-        .nav-btn:hover { background-color: #e2e8f0; color: #0f172a; }
-        .nav-btn.active { background-color: #232732; color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px 20px 80px 20px; }
-        .page-section { display: none; animation: fadeIn 0.4s ease; }
-        .page-section.show { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .category-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; margin-top: 30px; margin-bottom: 25px; }
-        .category-title h2 { font-size: 1.8rem; font-weight: 800; margin: 0; color: #0f172a; }
-        .price-tag { font-size: 1.1rem; font-weight: 600; background: #ffffff; padding: 6px 16px; border-radius: 30px; border: 1px solid var(--border-color); }
-        .price-coin { color: var(--coin-color); border-left: 4px solid var(--coin-color); }
-        .price-thb { color: var(--thb-color); border-left: 4px solid var(--thb-color); }
-
-        .btn-add { background: var(--primary-blue); color: white; border: none; padding: 10px 20px; border-radius: 12px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: 0.2s; margin-bottom: 20px; font-family: inherit; }
-        .btn-add:hover { background: #2563eb; transform: translateY(-2px); }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
-        .card { background: var(--card-bg); border-radius: 20px; border: 1px solid var(--border-color); padding: 24px; text-align: center; transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        .card:hover { transform: translateY(-8px); border-color: #cbd5e1; }
-        
-        .img-box { background: #f8fafc; border-radius: 16px; padding: 25px; margin-bottom: 15px; height: 130px; display: flex; align-items: center; justify-content: center; border: 1px solid #f1f5f9; }
-        .img-box img { max-width: 110px; max-height: 110px; object-fit: contain; }
-        .card-title { font-size: 1.35rem; font-weight: 800; margin: 10px 0 5px 0; color: #0f172a; }
-        .card-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; }
-        
-        .btn-group { display: flex; gap: 10px; margin-top: auto; }
-        .btn-view { flex: 1; background: #ffffff; color: #0f172a; border: 2px solid #0f172a; padding: 10px; border-radius: 10px; font-weight: 600; font-family: inherit; cursor: pointer; transition: 0.2s; }
-        .btn-view:hover { background: #0f172a; color: #ffffff; }
-        .btn-edit { background: #f1f5f9; color: #475569; border: 2px solid transparent; padding: 10px; border-radius: 10px; font-weight: 600; font-family: inherit; cursor: pointer; transition: 0.2s; }
-        .btn-edit:hover { background: #e2e8f0; color: #0f172a;}
-
-        /* Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(5px); z-index: 200; justify-content: center; align-items: center; overflow-y: auto; }
-        .modal-content { background: #ffffff; border-radius: 24px; width: 90%; max-width: 500px; padding: 30px; position: relative; margin: 40px auto; animation: slideUp 0.3s ease; }
-        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .close-btn { position: absolute; top: 20px; right: 20px; background: #f1f5f9; border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; color: var(--text-muted); }
-        .close-btn:hover { background: #e2e8f0; color: #000; }
-        
-        .modal-title { font-size: 1.6rem; font-weight: 800; color: #0f172a; text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-top: 0; margin-bottom: 20px; }
-        .modal-images { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; background: #f8fafc; padding: 15px; border-radius: 16px; }
-        .modal-img-card { text-align: center; font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
-        .modal-img-card img { width: 75px; height: 75px; object-fit: contain; background: #fff; border-radius: 10px; padding: 5px; border: 1px solid var(--border-color); display: block; margin-bottom: 5px; }
-        
-        .stats-list { list-style: none; padding: 0; margin: 0; }
-        .stats-list li { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--border-color); font-size: 0.95rem; }
-        .stats-list li:last-child { border-bottom: none; }
-        .stats-label { color: var(--text-muted); }
-        .stats-value { font-weight: 600; color: #0f172a; }
-        .stats-highlight { color: var(--coin-color); font-weight: bold; }
-
-        /* Form */
-        .form-group { margin-bottom: 15px; text-align: left; }
-        .form-group label { display: block; font-size: 0.9rem; font-weight: 600; color: var(--text-main); margin-bottom: 5px; }
-        .form-group input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-family: inherit; box-sizing: border-box; outline: none; }
-        .form-group input:focus { border-color: var(--primary-blue); }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-
-        /* กล่องอัปโหลด/วางรูป */
-        .paste-zone { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: 0.2s; outline: none; position: relative; }
-        .paste-zone:hover { border-color: var(--primary-blue); background: #eff6ff; }
-        .paste-zone img { max-width: 80px; max-height: 80px; object-fit: contain; display: none; margin: 10px auto 0 auto; border-radius: 8px; background: #fff; padding: 5px; border: 1px solid #e2e8f0; }
-        .paste-zone p { margin: 0; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; pointer-events: none;}
-        .paste-zone span { display: block; font-size: 0.75rem; color: #94a3b8; margin-top: 5px; pointer-events: none;}
-        
-        .btn-save { width: 100%; background: var(--coin-color); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; font-weight: 800; cursor: pointer; margin-top: 10px; font-family: inherit; }
-        .btn-save:hover { background: #059669; }
-        .btn-delete { width: 100%; background: transparent; color: var(--thb-color); border: 2px solid var(--thb-color); padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 15px; font-family: inherit; }
-        .btn-delete:hover { background: var(--thb-color); color: white; }
-
-        /* Toast */
-        .toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 10px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); font-weight: 600; }
-        .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
-        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
-    </style>
-</head>
-<body>
-
-    <nav class="navbar">
-        <button class="nav-btn active" onclick="showPage('all', this)">หน้าแรก</button>
-        <button class="nav-btn" onclick="showPage('tier1', this)">Tier 1</button>
-        <button class="nav-btn" onclick="showPage('tier2', this)">Tier 2</button>
-        <button class="nav-btn" onclick="showPage('sweet', this)">SWEET CUBEE</button>
-        <button class="nav-btn" onclick="showPage('huge', this)">HUGE CUBEE</button>
-    </nav>
-
-    <div class="container">
-        <div id="tier1" class="page-section show">
-            <div class="category-header">
-                <div class="category-title"><h2>⭐ Tier 1 Cubee</h2></div>
-                <span class="price-tag price-coin">ราคา: 7,000 คอยน์</span>
-            </div>
-            <button class="btn-add" onclick="openEditModal(null, 'tier1')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
-            <div class="grid" id="grid-tier1"></div>
-        </div>
-
-        <div id="tier2" class="page-section show">
-            <div class="category-header">
-                <div class="category-title"><h2>🌟 Tier 2 Cubee</h2></div>
-                <span class="price-tag price-coin">ราคา: 15,000 คอยน์</span>
-            </div>
-            <button class="btn-add" onclick="openEditModal(null, 'tier2')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
-            <div class="grid" id="grid-tier2"></div>
-        </div>
-
-        <div id="sweet" class="page-section show">
-            <div class="category-header">
-                <div class="category-title"><h2 style="color: #db2777;">🍬 SWEET CUBEE Gacha</h2></div>
-                <span class="price-tag price-thb">ราคา: 49.- บาท</span>
-            </div>
-            <button class="btn-add" onclick="openEditModal(null, 'sweet')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
-            <div class="grid" id="grid-sweet"></div>
-        </div>
-
-        <div id="huge" class="page-section show">
-            <div class="category-header">
-                <div class="category-title"><h2 style="color: #dc2626;">🔥 HUGE CUBEE Gacha</h2></div>
-                <span class="price-tag price-thb">ราคา: 449.- บาท</span>
-            </div>
-            <button class="btn-add" onclick="openEditModal(null, 'huge')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
-            <div class="grid" id="grid-huge"></div>
-        </div>
-    </div>
-
-    <!-- 1. ป๊อปอัพดูข้อมูล -->
-    <div id="infoModal" class="modal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('infoModal')">&times;</button>
-            <h3 id="v-name" class="modal-title">ชื่อ</h3>
-            <div class="modal-images">
-                <div class="modal-img-card"><img id="v-petImg" src="" alt="Cubee"><span>ตัว Cubee</span></div>
-                <div class="modal-img-card"><img id="v-itemImg" src="" alt="Item"><span id="v-itemName">ผลผลิต</span></div>
-            </div>
-            <ul class="stats-list">
-                <li><span class="stats-label">🍗 ความจุอาหาร:</span> <span id="v-food" class="stats-value"></span></li>
-                <li><span class="stats-label">⚙️ กำลังผลิต:</span> <span id="v-prod" class="stats-value"></span></li>
-                <li><span class="stats-label">📦 ความจุผลผลิต:</span> <span id="v-max" class="stats-value"></span></li>
-                <li><span class="stats-label">💰 ราคาขายไอเทม:</span> <span id="v-price" class="stats-highlight"></span></li>
-                <li><span class="stats-label">⏱️ ผลิตได้ (1 ชม.):</span> <span id="v-hrQty" class="stats-value"></span></li>
-                <li><span class="stats-label">💎 รายได้ (1 ชม.):</span> <span id="v-hrCoin" class="stats-highlight"></span></li>
-                <li>
-                    <span class="stats-label">🔄 รอบเติมอาหาร:</span> 
-                    <span style="text-align: right; font-size: 0.9em; line-height: 1.4;">
-                        เติมทีละ 1 ช่อง: <b id="v-refill1" style="color:#0f172a;"></b><br>
-                        เติมทีละ 2 ช่อง: <b id="v-refill2" style="color:#0f172a;"></b>
-                    </span>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- 2. ป๊อปอัพฟอร์มแก้ไข -->
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('editModal')">&times;</button>
-            <h3 class="modal-title" style="border-bottom:none;">⚙️ จัดการข้อมูล</h3>
-            <input type="hidden" id="e-id">
-            <input type="hidden" id="e-category">
-            
-            <div class="form-group">
-                <label>ชื่อ Cubee / ไอเทม</label>
-                <input type="text" id="e-name" placeholder="เช่น Marshmellow Cubee">
-            </div>
-            <div class="form-group">
-                <label>คำอธิบายสั้นๆ (แสดงหน้าแรก)</label>
-                <input type="text" id="e-desc" placeholder="เช่น ข้อมูลสัตว์เลี้ยงประเภท Cubee">
-            </div>
-
-            <!-- ระบบกล่องรับการวางรูป/คลิกอัปโหลด -->
-            <label style="display: block; font-size: 0.9rem; font-weight: 600; color: var(--text-main); margin-bottom: 5px;">รูปภาพ</label>
-            <div class="form-row" style="margin-bottom: 15px;">
-                <!-- กล่องรูป Cubee -->
-                <div class="paste-zone" id="zone-pet" tabindex="0">
-                    <p>📸 รูปตัว Cubee</p>
-                    <span>คลิกเพื่อเลือกไฟล์<br>หรือกด Ctrl+V เพื่อวาง</span>
-                    <input type="file" id="file-pet" accept="image/*" style="display:none;">
-                    <img id="preview-pet" src="">
-                    <input type="hidden" id="e-petImg">
-                </div>
-                <!-- กล่องรูป ผลผลิต -->
-                <div class="paste-zone" id="zone-item" tabindex="0">
-                    <p>📸 รูปผลผลิต</p>
-                    <span>คลิกเพื่อเลือกไฟล์<br>หรือกด Ctrl+V เพื่อวาง</span>
-                    <input type="file" id="file-item" accept="image/*" style="display:none;">
-                    <img id="preview-item" src="">
-                    <input type="hidden" id="e-itemImg">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>ชื่อผลผลิต</label>
-                <input type="text" id="e-itemName" placeholder="เช่น เยลลี่เด้งดึ๋ง">
-            </div>
-
-            <div class="form-row">
-                <div class="form-group"><label>ความจุอาหาร</label><input type="text" id="e-food" placeholder="เช่น 600 ชิ้น"></div>
-                <div class="form-group"><label>กำลังผลิต</label><input type="text" id="e-prod" placeholder="เช่น 2 ชิ้น / รอบ"></div>
-                <div class="form-group"><label>ความจุสูงสุด</label><input type="text" id="e-max" placeholder="เช่น 120 ชิ้น"></div>
-                <div class="form-group"><label>ราคาขาย</label><input type="text" id="e-price" placeholder="เช่น X คอยน์"></div>
-                <div class="form-group"><label>ผลิตได้ (1 ชม.)</label><input type="text" id="e-hrQty" placeholder="เช่น X ชิ้น"></div>
-                <div class="form-group"><label>รายได้ (1 ชม.)</label><input type="text" id="e-hrCoin" placeholder="เช่น X คอยน์"></div>
-                <div class="form-group"><label>รอบเติม (1 ช่อง)</label><input type="text" id="e-refill1" placeholder="เช่น 10 รอบ"></div>
-                <div class="form-group"><label>รอบเติม (2 ช่อง)</label><input type="text" id="e-refill2" placeholder="เช่น 5 รอบ"></div>
-            </div>
-
-            <button class="btn-save" onclick="saveData()">💾 บันทึกการตั้งค่า</button>
-            <button class="btn-delete" id="btn-delete" onclick="deleteData()" style="display:none;">🗑️ ลบข้อมูลนี้ออก</button>
-        </div>
-    </div>
-
-    <div id="toast" class="toast">บันทึกข้อมูลเรียบร้อยแล้ว! ✨</div>
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
 
     <script>
+        // 1. นำ firebaseConfig ที่ได้จากเว็บ Firebase มาวางทับตรงนี้ทั้งหมด
+        const firebaseConfig = {
+            apiKey: "AIzaSyDmmi0VA4FoGPAKXIY4vVX9lRWk2O_-87s", 
+            authDomain: "tinytails-db.firebaseapp.com", 
+            databaseURL: "tinytails-db", 
+            projectId: "tinytails-db.firebasestorage.app",
+            storageBucket: "943214555111", 
+            messagingSenderId: "1:943214555111:web:47b39cf1ed806cbdcd5742", 
+            appId: "G-T8WB70WXZ7" 
+        };
+
+        // 2. เริ่มต้นเชื่อมต่อฐานข้อมูล
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
         const defaultData = [
             { id: 1, category: 'tier1', name: 'Marshmellow Cubee', desc: 'ข้อมูลสัตว์เลี้ยงประเภท Cubee', petImg: 'https://via.placeholder.com/110/cbd5e1/ffffff?text=Marshmellow', itemImg: 'https://via.placeholder.com/110/cbd5e1/0f172a?text=Item', itemName: 'ผลผลิต', food: '600 ชิ้น', prod: '2 ชิ้น / รอบ', max: '120 ชิ้น', price: 'X', hrQty: 'X ชิ้น', hrCoin: 'X คอยน์', refill1: '10 รอบ', refill2: '5 รอบ' },
             { id: 2, category: 'sweet', name: 'Gummy Bear Cubee', desc: 'ผลผลิต: เยลลี่หมีเด้งดึ๋ง', petImg: 'https://via.placeholder.com/110/f59e0b/ffffff?text=Gummy', itemImg: 'https://via.placeholder.com/110/f59e0b/0f172a?text=Jelly', itemName: 'เยลลี่หมีเด้งดึ๋ง', food: '750', prod: 'X', max: '150', price: '20', hrQty: 'X', hrCoin: 'X', refill1: '12 รอบ', refill2: '6 รอบ' }
         ];
 
-        let cubeeDb = JSON.parse(localStorage.getItem('tinytails_db')) || defaultData;
+        let cubeeDb = [];
 
+        // 3. ระบบดึงข้อมูลแบบ Realtime (แทนที่ localStorage)
+        // ทุกครั้งที่มีการแก้ข้อมูล โค้ดส่วนนี้จะทำงานอัตโนมัติ ทำให้หน้าเว็บทุกคนอัปเดตพร้อมกัน
+        db.ref('tinytails_db').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                cubeeDb = Object.values(data); // แปลงข้อมูลจากก้อน Object เป็น Array
+            } else {
+                cubeeDb = defaultData; // ถ้าฐานข้อมูลว่างเปล่า ให้ใช้ข้อมูลตัวอย่าง
+            }
+            renderUI();
+        });
+
+        // ==========================================
+        // ฟังก์ชัน UI และการจัดการหน้าเว็บเหมือนเดิมทั้งหมด
+        // ==========================================
         function renderUI() {
             ['tier1', 'tier2', 'sweet', 'huge'].forEach(cat => {
                 const grid = document.getElementById(`grid-${cat}`);
@@ -353,7 +147,6 @@
             }
         }
 
-        // --- ระบบอัปโหลดรูปภาพ 2 รูปแบบ (คลิกอัปโหลด & Ctrl+V) ---
         function processImageFile(file, previewId, hiddenInputId) {
             if (!file || !file.type.startsWith('image/')) return;
             const reader = new FileReader();
@@ -377,14 +170,11 @@
             reader.readAsDataURL(file);
         }
 
-        // ผูก Event ให้กล่อง (คลิกเพื่ออัปโหลด)
         document.getElementById('zone-pet').addEventListener('click', () => document.getElementById('file-pet').click());
         document.getElementById('zone-item').addEventListener('click', () => document.getElementById('file-item').click());
-
         document.getElementById('file-pet').addEventListener('change', function(e) { processImageFile(e.target.files[0], 'preview-pet', 'e-petImg'); });
         document.getElementById('file-item').addEventListener('change', function(e) { processImageFile(e.target.files[0], 'preview-item', 'e-itemImg'); });
 
-        // ผูก Event ให้กล่อง (Ctrl+V)
         function setupPaste(zoneId, previewId, hiddenId) {
             document.getElementById(zoneId).addEventListener('paste', function(e) {
                 e.preventDefault();
@@ -400,10 +190,13 @@
         setupPaste('zone-pet', 'preview-pet', 'e-petImg');
         setupPaste('zone-item', 'preview-item', 'e-itemImg');
 
+        // 4. แก้ไขระบบ Save ให้วิ่งไปหา Firebase แทน
         function saveData() {
             let id = document.getElementById('e-id').value;
+            let finalId = id ? parseInt(id) : Date.now(); // สร้างไอดีใหม่ถ้าไม่มี
+
             let newData = {
-                id: id ? parseInt(id) : Date.now(),
+                id: finalId,
                 category: document.getElementById('e-category').value,
                 name: document.getElementById('e-name').value || 'ไม่มีชื่อ',
                 desc: document.getElementById('e-desc').value || '-',
@@ -420,29 +213,27 @@
                 refill2: document.getElementById('e-refill2').value || '-'
             };
 
-            if(id) {
-                let index = cubeeDb.findIndex(x => x.id === parseInt(id));
-                cubeeDb[index] = newData;
-            } else {
-                cubeeDb.push(newData);
-            }
-
-            localStorage.setItem('tinytails_db', JSON.stringify(cubeeDb));
-            closeModal('editModal');
-            renderUI();
-            
-            let toast = document.getElementById("toast");
-            toast.className = "toast show";
-            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+            // โยนข้อมูลอัปเดตขึ้น Firebase
+            db.ref('tinytails_db/' + finalId).set(newData).then(() => {
+                closeModal('editModal');
+                let toast = document.getElementById("toast");
+                toast.className = "toast show";
+                setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+            }).catch((error) => {
+                alert("เกิดข้อผิดพลาดในการบันทึก: " + error);
+            });
         }
 
+        // 5. แก้ไขระบบ Delete ให้ลบใน Firebase
         function deleteData() {
             if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้ทิ้งถาวร?')) {
                 let id = parseInt(document.getElementById('e-id').value);
-                cubeeDb = cubeeDb.filter(x => x.id !== id);
-                localStorage.setItem('tinytails_db', JSON.stringify(cubeeDb));
-                closeModal('editModal');
-                renderUI();
+                
+                db.ref('tinytails_db/' + id).remove().then(() => {
+                    closeModal('editModal');
+                }).catch((error) => {
+                    alert("เกิดข้อผิดพลาดในการลบ: " + error);
+                });
             }
         }
 
@@ -451,8 +242,4 @@
             if (event.target == document.getElementById('infoModal')) closeModal('infoModal');
             if (event.target == document.getElementById('editModal')) closeModal('editModal');
         }
-
-        window.onload = renderUI;
     </script>
-</body>
-</html>
