@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TINYTAILS CUBEE</title>
     
-    <link rel="icon" href="https://i.postimg.cc/xxxxxx/logo21700f4bb9b95926.png" type="image/png">
+    <link rel="icon" href="icon.png" type="image/png">
+    
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -411,7 +412,6 @@
 
         function appendUnit(val, unit) {
             if (!val || val === '-') return '-';
-            // ป้องกันการเติมหน่วยซ้ำ หากผู้ใช้เผลอพิมพ์ "คอยน์/ชิ้น" มาด้วย
             let cleanVal = String(val).replace('ชิ้น/รอบ', '').replace('คอยน์/ชิ้น', '').replace('คอยน์', '').replace('วินาที/รอบ', '').trim();
             return `${cleanVal} ${unit}`;
         }
@@ -429,7 +429,7 @@
             document.getElementById('v-prod').innerText = appendUnit(data.prod, 'ชิ้น/รอบ');
             document.getElementById('v-time').innerText = appendUnit(data.time, 'วินาที/รอบ');
             document.getElementById('v-max').innerText = data.max || '-';
-            document.getElementById('v-price').innerText = appendUnit(data.price, 'คอยน์/ชิ้น'); // อัปเดตหน่วยราคาขาย
+            document.getElementById('v-price').innerText = appendUnit(data.price, 'คอยน์/ชิ้น'); 
             
             document.getElementById('v-hrQty').innerText = data.hrQty || '-';
             document.getElementById('v-hrCoin').innerText = data.hrCoin || '-';
