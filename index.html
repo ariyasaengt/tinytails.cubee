@@ -23,6 +23,7 @@
             --box-bg: #f8fafc;
         }
 
+        /* 🌙 โหมดมืด */
         body.dark-mode {
             --bg-light: #0f172a;
             --card-bg: #1e293b;
@@ -75,6 +76,33 @@
         .btn-view:hover { background: var(--text-main); color: var(--card-bg); }
         .btn-edit { background: var(--box-bg); color: var(--text-muted); border: 2px solid transparent; padding: 10px; border-radius: 10px; font-weight: 600; font-family: inherit; cursor: pointer; transition: 0.2s; }
         .btn-edit:hover { background: var(--border-color); color: var(--text-main);}
+
+        /* 🌟 ปุ่มลอยด้านข้าง (Floating Button) */
+        .floating-btn {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: var(--text-main);
+            color: var(--card-bg);
+            border: none;
+            border-radius: 50px;
+            padding: 15px 25px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 150;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+        .floating-btn:hover {
+            transform: translateY(-5px);
+            background: var(--primary-blue);
+            color: white;
+        }
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-bg); backdrop-filter: blur(5px); z-index: 200; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
         .modal-content { background: var(--card-bg); border-radius: 24px; width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto; padding: 30px; position: relative; animation: slideUp 0.3s ease; border: 1px solid var(--border-color); box-shadow: 0 10px 25px rgba(0,0,0,0.2); box-sizing: border-box; }
@@ -160,6 +188,9 @@
             .paste-zone img { max-width: 55px; max-height: 55px; }
             .url-input { font-size: 0.75rem; padding: 6px 10px; }
             .btn-save, .btn-delete { padding: 12px; font-size: 1rem; }
+
+            /* ย่อปุ่มลอยในมือถือให้ไม่เกะกะ */
+            .floating-btn { bottom: 20px; right: 15px; padding: 12px 18px; font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -215,6 +246,8 @@
             <div class="grid" id="grid-huge"></div>
         </div>
     </div>
+
+    <button class="floating-btn" onclick="showPriceStats()">🏆 อันดับราคา</button>
 
     <div id="infoModal" class="modal">
         <div class="modal-content">
@@ -306,6 +339,29 @@
 
             <button class="btn-save" onclick="saveData()">💾 บันทึกการตั้งค่า</button>
             <button class="btn-delete" id="btn-delete" onclick="deleteData()" style="display:none;">🗑️ ลบข้อมูลนี้ออก</button>
+        </div>
+    </div>
+
+    <div id="statsModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('statsModal')">&times;</button>
+            <h3 class="modal-title" style="border-bottom:none;">🏆 สถิติราคาไอเทม</h3>
+            
+            <div style="background: var(--box-bg); padding: 20px; border-radius: 16px; margin-bottom: 15px; border: 1px solid var(--border-color); text-align: center; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: -10px; right: -10px; font-size: 4rem; opacity: 0.1;">💰</div>
+                <h4 style="margin: 0 0 15px 0; color: var(--coin-color); font-size: 1.2rem;">ราคาแพงที่สุด</h4>
+                <img id="stat-high-img" src="" style="width: 80px; height: 80px; object-fit: contain; border-radius: 12px; background: var(--card-bg); border: 2px solid var(--coin-color); padding: 5px; margin-bottom: 10px;">
+                <div id="stat-high-name" style="font-weight: bold; color: var(--text-main); font-size: 1.1rem; margin-bottom: 5px;">-</div>
+                <div id="stat-high-price" style="color: var(--coin-color); font-weight: 800; font-size: 1.3rem;">-</div>
+            </div>
+
+            <div style="background: var(--box-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--border-color); text-align: center; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: -10px; right: -10px; font-size: 4rem; opacity: 0.1;">📉</div>
+                <h4 style="margin: 0 0 15px 0; color: var(--thb-color); font-size: 1.2rem;">ราคาถูกที่สุด</h4>
+                <img id="stat-low-img" src="" style="width: 80px; height: 80px; object-fit: contain; border-radius: 12px; background: var(--card-bg); border: 2px solid var(--thb-color); padding: 5px; margin-bottom: 10px;">
+                <div id="stat-low-name" style="font-weight: bold; color: var(--text-main); font-size: 1.1rem; margin-bottom: 5px;">-</div>
+                <div id="stat-low-price" style="color: var(--thb-color); font-weight: 800; font-size: 1.3rem;">-</div>
+            </div>
         </div>
     </div>
 
@@ -415,6 +471,48 @@
             return `${cleanVal} ${unit}`;
         }
 
+        // 🌟 ฟังก์ชันดึงสถิติราคาแพงสุดและถูกสุด
+        function showPriceStats() {
+            if (cubeeDb.length === 0) {
+                alert("ยังไม่มีข้อมูล Cubee ในระบบครับ");
+                return;
+            }
+
+            // กรองเอาเฉพาะข้อมูลที่มีระบุราคาเอาไว้ (ตัดพวกที่เว้นว่าง หรือใส่ - ออก)
+            let validItems = cubeeDb.filter(item => {
+                let p = parseFloat(String(item.price).replace(/[^\d.-]/g, ''));
+                return !isNaN(p) && p > 0;
+            });
+
+            if (validItems.length === 0) {
+                alert("ยังไม่มีการระบุราคาไอเทมในระบบครับ");
+                return;
+            }
+
+            // เรียงลำดับจากราคาสูงสุด ไป ต่ำสุด
+            validItems.sort((a, b) => {
+                let pA = parseFloat(String(a.price).replace(/[^\d.-]/g, ''));
+                let pB = parseFloat(String(b.price).replace(/[^\d.-]/g, ''));
+                return pB - pA;
+            });
+
+            // ดึงตัวแรก (แพงสุด) และ ตัวสุดท้าย (ถูกสุด)
+            let highest = validItems[0];
+            let lowest = validItems[validItems.length - 1];
+
+            // เติมข้อมูลลงในป๊อปอัพสถิติ
+            document.getElementById('stat-high-img').src = highest.petImg || 'https://via.placeholder.com/80/cbd5e1/ffffff?text=Img';
+            document.getElementById('stat-high-name').innerText = highest.name || '-';
+            document.getElementById('stat-high-price').innerText = appendUnit(highest.price, 'คอยน์/ชิ้น');
+
+            document.getElementById('stat-low-img').src = lowest.petImg || 'https://via.placeholder.com/80/cbd5e1/ffffff?text=Img';
+            document.getElementById('stat-low-name').innerText = lowest.name || '-';
+            document.getElementById('stat-low-price').innerText = appendUnit(lowest.price, 'คอยน์/ชิ้น');
+
+            // เปิดป๊อปอัพ
+            document.getElementById('statsModal').style.display = 'flex';
+        }
+
         function openViewModal(id) {
             let data = cubeeDb.find(x => x.id === id);
             if(!data) return;
@@ -424,8 +522,6 @@
             document.getElementById('v-itemName').innerText = data.itemName;
             
             document.getElementById('v-food').innerText = data.food || '-';
-            // ลบการแสดงผลช่องกินอาหารที่หน้าดูข้อมูลออก
-            
             document.getElementById('v-prod').innerText = appendUnit(data.prod, 'ชิ้น/รอบ');
             document.getElementById('v-time').innerText = appendUnit(data.time, 'วินาที/รอบ');
             document.getElementById('v-max').innerText = data.max || '-';
@@ -448,7 +544,7 @@
             };
 
             let food = getNum('e-food');
-            let eat = 64; // ล็อกค่าการกินอาหารไว้ที่ 64 ชิ้น/รอบ เสมอ
+            let eat = 64; 
             let prod = getNum('e-prod');
             let time = getNum('e-time');
             let price = getNum('e-price');
@@ -466,7 +562,6 @@
             }
 
             if (food > 0) {
-                // คำนวณรอบเติมโดยใช้ 64 เป็นฐานเสมอ
                 document.getElementById('e-refill1').value = Math.floor(food / eat);
                 document.getElementById('e-refill2').value = Math.floor((food * 2) / eat);
             } else {
@@ -488,7 +583,6 @@
                 
                 document.getElementById('e-itemName').value = data.itemName;
                 document.getElementById('e-food').value = data.food || '';
-                // ลบการดึงข้อมูล eat มาแสดง
                 document.getElementById('e-prod').value = data.prod || '';
                 document.getElementById('e-time').value = data.time || '';
                 document.getElementById('e-max').value = data.max || '';
@@ -505,7 +599,6 @@
                 document.getElementById('e-id').value = '';
                 document.getElementById('e-category').value = category;
                 
-                // ลบ e-eat ออกจากรายการรีเซ็ต
                 ['e-name','e-desc','e-petImg','e-itemImg','e-itemName','e-food','e-prod','e-time','e-max','e-price','e-hrQty','e-hrCoin','e-refill1','e-refill2'].forEach(field => document.getElementById(field).value = '');
                 
                 showPreviewImage('preview-pet', '');
@@ -611,7 +704,7 @@
                 itemImg: document.getElementById('e-itemImg').value || 'https://via.placeholder.com/100/cbd5e1/0f172a?text=Item',
                 itemName: document.getElementById('e-itemName').value || '-',
                 food: document.getElementById('e-food').value || '-',
-                eat: 64, // เซฟค่า 64 ลงฐานข้อมูลเผื่อในอนาคตต้องการใช้
+                eat: 64, 
                 prod: document.getElementById('e-prod').value || '-',
                 time: document.getElementById('e-time').value || '-',
                 max: document.getElementById('e-max').value || '-',
@@ -645,9 +738,11 @@
 
         function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
         
+        // อัปเดตให้รองรับการปิดป๊อปอัพตัวใหม่
         window.onclick = function(event) {
             if (event.target == document.getElementById('infoModal')) closeModal('infoModal');
             if (event.target == document.getElementById('editModal')) closeModal('editModal');
+            if (event.target == document.getElementById('statsModal')) closeModal('statsModal');
         }
     </script>
 </body>
