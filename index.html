@@ -77,7 +77,7 @@
         .btn-edit { background: var(--box-bg); color: var(--text-muted); border: 2px solid transparent; padding: 10px; border-radius: 10px; font-weight: 600; font-family: inherit; cursor: pointer; transition: 0.2s; }
         .btn-edit:hover { background: var(--border-color); color: var(--text-main);}
 
-        /* 🌟 ปุ่มลอยด้านข้าง (Floating Button) */
+        /* ปุ่มลอยด้านข้าง (Floating Button) */
         .floating-btn {
             position: fixed;
             right: 20px;
@@ -153,6 +153,15 @@
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
 
+        /* Styles สำหรับรายการจัดอันดับในป๊อปอัพสถิติ */
+        .stat-rank-list { list-style: none; padding: 0; margin: 0; }
+        .stat-rank-item { display: flex; align-items: center; gap: 12px; padding: 10px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 8px; }
+        .stat-rank-number { font-weight: 800; font-size: 1.1rem; min-width: 24px; text-align: center; }
+        .stat-rank-img { width: 40px; height: 40px; object-fit: contain; border-radius: 8px; background: var(--box-bg); border: 1px solid var(--border-color); padding: 2px; }
+        .stat-rank-info { flex: 1; min-width: 0; }
+        .stat-rank-name { font-weight: 600; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .stat-rank-val { font-weight: 800; font-size: 0.95rem; text-align: right; }
+
         @media (max-width: 768px) {
             .navbar { padding: 10px; gap: 8px; }
             .nav-btn { padding: 8px 12px; font-size: 0.85rem; }
@@ -188,8 +197,6 @@
             .paste-zone img { max-width: 55px; max-height: 55px; }
             .url-input { font-size: 0.75rem; padding: 6px 10px; }
             .btn-save, .btn-delete { padding: 12px; font-size: 1rem; }
-
-            /* ย่อปุ่มลอยในมือถือให้ไม่เกะกะ */
             .floating-btn { bottom: 20px; right: 15px; padding: 12px 18px; font-size: 0.9rem; }
         }
     </style>
@@ -249,6 +256,7 @@
 
     <button class="floating-btn" onclick="showPriceStats()">🏆 อันดับราคา</button>
 
+    <!-- ป๊อปอัพดูข้อมูล -->
     <div id="infoModal" class="modal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('infoModal')">&times;</button>
@@ -277,6 +285,7 @@
         </div>
     </div>
 
+    <!-- ป๊อปอัพฟอร์มแก้ไข -->
     <div id="editModal" class="modal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('editModal')">&times;</button>
@@ -342,25 +351,26 @@
         </div>
     </div>
 
+    <!-- 🌟 ป๊อปอัพแสดงอันดับ Top 5 (แพงที่สุด & ถูกที่สุด) -->
     <div id="statsModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 550px;">
             <button class="close-btn" onclick="closeModal('statsModal')">&times;</button>
-            <h3 class="modal-title" style="border-bottom:none;">🏆 สถิติราคาไอเทม</h3>
+            <h3 class="modal-title" style="border-bottom:none;">🏆 จัดอันดับราคาขายไอเทม</h3>
             
-            <div style="background: var(--box-bg); padding: 20px; border-radius: 16px; margin-bottom: 15px; border: 1px solid var(--border-color); text-align: center; position: relative; overflow: hidden;">
-                <div style="position: absolute; top: -10px; right: -10px; font-size: 4rem; opacity: 0.1;">💰</div>
-                <h4 style="margin: 0 0 15px 0; color: var(--coin-color); font-size: 1.2rem;">ราคาแพงที่สุด</h4>
-                <img id="stat-high-img" src="" style="width: 80px; height: 80px; object-fit: contain; border-radius: 12px; background: var(--card-bg); border: 2px solid var(--coin-color); padding: 5px; margin-bottom: 10px;">
-                <div id="stat-high-name" style="font-weight: bold; color: var(--text-main); font-size: 1.1rem; margin-bottom: 5px;">-</div>
-                <div id="stat-high-price" style="color: var(--coin-color); font-weight: 800; font-size: 1.3rem;">-</div>
+            <!-- ส่วนของ: 5 อันดับแพงที่สุด -->
+            <div style="background: var(--box-bg); padding: 18px; border-radius: 16px; margin-bottom: 20px; border: 1px solid var(--border-color);">
+                <h4 style="margin: 0 0 12px 0; color: var(--coin-color); font-size: 1.1rem; display: flex; align-items: center; gap: 6px;">📈 Top 5 ราคาแพงที่สุด</h4>
+                <div id="stat-high-list" class="stat-rank-list">
+                    <!-- รายการจะถูกใส่เข้ามาแบบอัตโนมัติด้วย JavaScript -->
+                </div>
             </div>
 
-            <div style="background: var(--box-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--border-color); text-align: center; position: relative; overflow: hidden;">
-                <div style="position: absolute; top: -10px; right: -10px; font-size: 4rem; opacity: 0.1;">📉</div>
-                <h4 style="margin: 0 0 15px 0; color: var(--thb-color); font-size: 1.2rem;">ราคาถูกที่สุด</h4>
-                <img id="stat-low-img" src="" style="width: 80px; height: 80px; object-fit: contain; border-radius: 12px; background: var(--card-bg); border: 2px solid var(--thb-color); padding: 5px; margin-bottom: 10px;">
-                <div id="stat-low-name" style="font-weight: bold; color: var(--text-main); font-size: 1.1rem; margin-bottom: 5px;">-</div>
-                <div id="stat-low-price" style="color: var(--thb-color); font-weight: 800; font-size: 1.3rem;">-</div>
+            <!-- ส่วนของ: 5 อันดับถูกที่สุด -->
+            <div style="background: var(--box-bg); padding: 18px; border-radius: 16px; border: 1px solid var(--border-color);">
+                <h4 style="margin: 0 0 12px 0; color: var(--thb-color); font-size: 1.1rem; display: flex; align-items: center; gap: 6px;">📉 Top 5 ราคาถูกที่สุด</h4>
+                <div id="stat-low-list" class="stat-rank-list">
+                    <!-- รายการจะถูกใส่เข้ามาแบบอัตโนมัติด้วย JavaScript -->
+                </div>
             </div>
         </div>
     </div>
@@ -471,14 +481,16 @@
             return `${cleanVal} ${unit}`;
         }
 
-        // 🌟 ฟังก์ชันดึงสถิติราคาแพงสุดและถูกสุด
+        // ========================================================
+        // 🌟 ฟังก์ชันคำนวณและจัดอันดับ Top 5 แพงที่สุด และ ถูกที่สุด 
+        // ========================================================
         function showPriceStats() {
             if (cubeeDb.length === 0) {
                 alert("ยังไม่มีข้อมูล Cubee ในระบบครับ");
                 return;
             }
 
-            // กรองเอาเฉพาะข้อมูลที่มีระบุราคาเอาไว้ (ตัดพวกที่เว้นว่าง หรือใส่ - ออก)
+            // กรองข้อมูลสกัดเอาเฉพาะตัวที่มีระบุราคาแบบเป็นตัวเลขได้จริง
             let validItems = cubeeDb.filter(item => {
                 let p = parseFloat(String(item.price).replace(/[^\d.-]/g, ''));
                 return !isNaN(p) && p > 0;
@@ -489,27 +501,59 @@
                 return;
             }
 
-            // เรียงลำดับจากราคาสูงสุด ไป ต่ำสุด
-            validItems.sort((a, b) => {
+            // 1. เรียงลำดับสำหรับฝั่ง "แพงที่สุด" (มาก -> น้อย)
+            let highSorted = [...validItems].sort((a, b) => {
                 let pA = parseFloat(String(a.price).replace(/[^\d.-]/g, ''));
                 let pB = parseFloat(String(b.price).replace(/[^\d.-]/g, ''));
                 return pB - pA;
             });
 
-            // ดึงตัวแรก (แพงสุด) และ ตัวสุดท้าย (ถูกสุด)
-            let highest = validItems[0];
-            let lowest = validItems[validItems.length - 1];
+            // 2. เรียงลำดับสำหรับฝั่ง "ถูกที่สุด" (น้อย -> มาก)
+            let lowSorted = [...validItems].sort((a, b) => {
+                let pA = parseFloat(String(a.price).replace(/[^\d.-]/g, ''));
+                let pB = parseFloat(String(b.price).replace(/[^\d.-]/g, ''));
+                return pA - pB;
+            });
 
-            // เติมข้อมูลลงในป๊อปอัพสถิติ
-            document.getElementById('stat-high-img').src = highest.petImg || 'https://via.placeholder.com/80/cbd5e1/ffffff?text=Img';
-            document.getElementById('stat-high-name').innerText = highest.name || '-';
-            document.getElementById('stat-high-price').innerText = appendUnit(highest.price, 'คอยน์/ชิ้น');
+            // ดึงข้อมูลมาแค่ 5 อันดับแรก (หรือเท่าที่มีอยู่จริงถ้าข้อมูลไม่ถึง 5 ตัว)
+            let topHigh = highSorted.slice(0, 5);
+            let topLow = lowSorted.slice(0, 5);
 
-            document.getElementById('stat-low-img').src = lowest.petImg || 'https://via.placeholder.com/80/cbd5e1/ffffff?text=Img';
-            document.getElementById('stat-low-name').innerText = lowest.name || '-';
-            document.getElementById('stat-low-price').innerText = appendUnit(lowest.price, 'คอยน์/ชิ้น');
+            // เจน HTML เพื่อไปแสดงผลในกลุ่มแพงที่สุด
+            let highListEl = document.getElementById('stat-high-list');
+            highListEl.innerHTML = '';
+            topHigh.forEach((item, index) => {
+                let emoji = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}`;
+                highListEl.innerHTML += `
+                    <div class="stat-rank-item" style="border-left: 4px solid var(--coin-color);">
+                        <div class="stat-rank-number">${emoji}</div>
+                        <img class="stat-rank-img" src="${item.petImg || 'https://via.placeholder.com/40/cbd5e1/ffffff?text=Img'}">
+                        <div class="stat-rank-info">
+                            <div class="stat-rank-name">${item.name}</div>
+                        </div>
+                        <div class="stat-rank-val" style="color: var(--coin-color);">${appendUnit(item.price, 'คอยน์')}</div>
+                    </div>
+                `;
+            });
 
-            // เปิดป๊อปอัพ
+            // เจน HTML เพื่อไปแสดงผลในกลุ่มถูกที่สุด
+            let lowListEl = document.getElementById('stat-low-list');
+            lowListEl.innerHTML = '';
+            topLow.forEach((item, index) => {
+                let emoji = index === 0 ? '📉' : `${index + 1}`;
+                lowListEl.innerHTML += `
+                    <div class="stat-rank-item" style="border-left: 4px solid var(--thb-color);">
+                        <div class="stat-rank-number">${emoji}</div>
+                        <img class="stat-rank-img" src="${item.petImg || 'https://via.placeholder.com/40/cbd5e1/ffffff?text=Img'}">
+                        <div class="stat-rank-info">
+                            <div class="stat-rank-name">${item.name}</div>
+                        </div>
+                        <div class="stat-rank-val" style="color: var(--thb-color);">${appendUnit(item.price, 'คอยน์')}</div>
+                    </div>
+                `;
+            });
+
+            // เปิดป๊อปอัพบอร์ดจัดอันดับ
             document.getElementById('statsModal').style.display = 'flex';
         }
 
@@ -587,10 +631,6 @@
                 document.getElementById('e-time').value = data.time || '';
                 document.getElementById('e-max').value = data.max || '';
                 document.getElementById('e-price').value = data.price || '';
-                document.getElementById('e-hrQty').value = data.hrQty || '';
-                document.getElementById('e-hrCoin').value = data.hrCoin || '';
-                document.getElementById('e-refill1').value = data.refill1 || '';
-                document.getElementById('e-refill2').value = data.refill2 || '';
                 
                 showPreviewImage('preview-pet', data.petImg);
                 showPreviewImage('preview-item', data.itemImg);
@@ -738,7 +778,6 @@
 
         function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
         
-        // อัปเดตให้รองรับการปิดป๊อปอัพตัวใหม่
         window.onclick = function(event) {
             if (event.target == document.getElementById('infoModal')) closeModal('infoModal');
             if (event.target == document.getElementById('editModal')) closeModal('editModal');
