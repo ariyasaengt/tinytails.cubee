@@ -468,27 +468,24 @@
         function processAuth() {
             let email = document.getElementById('authEmail').value;
             let pass = document.getElementById('authPassword').value;
-
-            if (!email || !pass) {
-                alert('กรุณากรอกอีเมลและรหัสผ่านให้ครบถ้วน');
-                return;
-            }
+            let username = document.getElementById('authUsername').value;
 
             if (isLoginMode) {
-                auth.signInWithEmailAndPassword(email, pass)
-                    .then(() => {
-                        closeModal('authModal');
-                        showToast('เข้าสู่ระบบสำเร็จ! ปลดล็อคปุ่มแก้ไขแล้ว 🔓');
-                    })
-                    .catch(err => alert('เข้าสู่ระบบล้มเหลว: ' + err.message));
+        // ล็อกอินปกติ
+        auth.signInWithEmailAndPassword(email, pass).then(() => {
+            closeModal('authModal');
+            showToast('ยินดีต้อนรับกลับมา!');
+        });
             } else {
-                auth.createUserWithEmailAndPassword(email, pass)
-                    .then(() => {
-                        closeModal('authModal');
-                        showToast('สมัครสมาชิกสำเร็จ! ตอนนี้คุณสามารถเพิ่มข้อมูลได้แล้ว 🎉');
-                        isLoginMode = true; 
-                    })
-                    .catch(err => alert('สมัครสมาชิกล้มเหลว: ' + err.message));
+                // สมัครสมาชิกใหม่ + บันทึกชื่อเริ่มต้น
+                auth.createUserWithEmailAndPassword(email, pass).then((result) => {
+                    db.ref('users/' + result.user.uid).set({
+                        username: username,
+                        photoUrl: "https://via.placeholder.com/100" // รูปเริ่มต้น
+                    });
+                    closeModal('authModal');
+                    showToast('สมัครสมาชิกสำเร็จ!');
+                });
             }
         }
 
