@@ -6,7 +6,6 @@
     <title>TINYTAILS CUBEE</title>
     
     <link rel="icon" href="https://img2.pic.in.th/icon88e0717927d5a748.png" type="image/png">
-    
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -24,7 +23,6 @@
             --box-bg: #f8fafc;
         }
 
-        /* 🌙 โหมดมืด */
         body.dark-mode {
             --bg-light: #0f172a;
             --card-bg: #1e293b;
@@ -43,6 +41,10 @@
         .nav-btn.active { background-color: var(--primary-blue); color: white; border-color: var(--primary-blue); box-shadow: 0 4px 12px rgba(59,130,246,0.2); }
         .theme-btn { background: transparent; border: none; font-size: 1.5rem; cursor: pointer; padding: 5px 10px; transition: transform 0.2s; }
         .theme-btn:hover { transform: scale(1.1); }
+        
+        /* ปุ่มล็อคอินในแถบเมนู */
+        .auth-nav-btn { background: var(--coin-color); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.2s; font-family: inherit; font-size: 0.95rem; }
+        .auth-nav-btn:hover { background: #059669; }
 
         .search-container { max-width: 600px; margin: 30px auto 10px auto; padding: 0 20px; }
         .search-box { width: 100%; padding: 14px 20px; border-radius: 30px; border: 2px solid var(--border-color); background: var(--card-bg); color: var(--text-main); font-size: 1.05rem; font-family: inherit; outline: none; transition: 0.3s; box-sizing: border-box; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
@@ -61,7 +63,7 @@
         .price-thb { color: var(--thb-color); border-left: 4px solid var(--thb-color); }
         .price-special { color: var(--special-color); border-left: 4px solid var(--special-color); }
 
-        .btn-add { background: var(--primary-blue); color: white; border: none; padding: 10px 20px; border-radius: 12px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: 0.2s; margin-bottom: 20px; font-family: inherit; }
+        .btn-add { display: none; background: var(--primary-blue); color: white; border: none; padding: 10px 20px; border-radius: 12px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: 0.2s; margin-bottom: 20px; font-family: inherit; }
         .btn-add:hover { background: #2563eb; transform: translateY(-2px); }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
@@ -128,7 +130,6 @@
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
 
-        /* Styles สำหรับหน้าจัดอันดับ */
         .stat-rank-list { list-style: none; padding: 0; margin: 0; }
         .stat-rank-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 12px; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
         .stat-rank-item:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.05); border-color: var(--primary-blue); }
@@ -140,7 +141,7 @@
 
         @media (max-width: 768px) {
             .navbar { padding: 10px; gap: 6px; }
-            .nav-btn { padding: 8px 12px; font-size: 0.8rem; }
+            .nav-btn, .auth-nav-btn { padding: 8px 12px; font-size: 0.8rem; }
             .theme-btn { font-size: 1.2rem; padding: 5px; }
             .search-container { padding: 0 10px; margin-top: 15px; }
             .search-box { padding: 10px 15px; font-size: 0.9rem; }
@@ -192,6 +193,8 @@
         <button class="nav-btn" onclick="showPage('huge', this)">HUGE</button>
         <button class="nav-btn" onclick="showPage('special', this)">SPECIAL</button>
         <button class="nav-btn" onclick="showPage('ranking', this)">🏆 จัดอันดับ</button>
+        <!-- 🌟 ปุ่ม Login -->
+        <button class="auth-nav-btn" id="authBtn" onclick="openAuthModal()">🔑 เข้าสู่ระบบ</button>
         <button class="theme-btn" id="themeToggle" onclick="toggleTheme()" title="เปลี่ยนโหมดมืด/สว่าง">🌙</button>
     </nav>
 
@@ -200,7 +203,6 @@
     </div>
 
     <div class="container">
-        <!-- หมวดหมู่: Tier 1 -->
         <div id="tier1" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2>⭐ Tier 1 Cubee</h2></div>
@@ -210,7 +212,6 @@
             <div class="grid" id="grid-tier1"></div>
         </div>
 
-        <!-- หมวดหมู่: Tier 2 -->
         <div id="tier2" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2>🌟 Tier 2 Cubee</h2></div>
@@ -220,7 +221,6 @@
             <div class="grid" id="grid-tier2"></div>
         </div>
 
-        <!-- หมวดหมู่: SWEET -->
         <div id="sweet" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2 style="color: #db2777;">🍬 SWEET CUBEE Gacha</h2></div>
@@ -230,7 +230,6 @@
             <div class="grid" id="grid-sweet"></div>
         </div>
 
-        <!-- หมวดหมู่: HUGE -->
         <div id="huge" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2 style="color: #dc2626;">🔥 HUGE CUBEE Gacha</h2></div>
@@ -240,7 +239,6 @@
             <div class="grid" id="grid-huge"></div>
         </div>
 
-        <!-- หมวดหมู่ใหม่: SPECIAL -->
         <div id="special" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2 style="color: var(--special-color);">✨ SPECIAL CUBEE</h2></div>
@@ -250,19 +248,38 @@
             <div class="grid" id="grid-special"></div>
         </div>
 
-        <!-- หน้าจัดอันดับราคาแบบเต็ม -->
         <div id="ranking" class="page-section">
             <div class="category-header">
                 <div class="category-title"><h2>🏆 จัดอันดับราคาขายไอเทม</h2></div>
                 <span class="price-tag" style="background: var(--box-bg); color: var(--text-muted); border-color: var(--border-color);">คลิกเพื่อดูข้อมูล</span>
             </div>
             <div id="full-ranking-container" style="max-width: 800px; margin: 0 auto;">
-                <!-- รายการจัดอันดับจะถูกแทรกที่นี่ -->
+                <!-- แทรกข้อมูลจัดอันดับ -->
             </div>
         </div>
     </div>
 
-    <!-- ป๊อปอัพดูข้อมูล -->
+    <!-- 🌟 ป๊อปอัพเข้าสู่ระบบ / สมัครสมาชิก -->
+    <div id="authModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <button class="close-btn" onclick="closeModal('authModal')">&times;</button>
+            <h3 id="authTitle" class="modal-title">🔑 เข้าสู่ระบบจัดการข้อมูล</h3>
+            <div class="form-group">
+                <label>อีเมล</label>
+                <input type="email" id="authEmail" placeholder="เช่น admin@tinytails.com">
+            </div>
+            <div class="form-group">
+                <label>รหัสผ่าน</label>
+                <input type="password" id="authPassword" placeholder="อย่างน้อย 6 ตัวอักษร">
+            </div>
+            <button class="btn-save" id="authSubmitBtn" onclick="processAuth()">เข้าสู่ระบบ</button>
+            
+            <p style="text-align: center; margin-top: 15px; font-size: 0.9rem;">
+                <a href="#" id="authToggleLink" onclick="toggleAuthMode()" style="color: var(--primary-blue); font-weight: bold; text-decoration: none;">ยังไม่มีบัญชีใช่ไหม? กดสมัครสมาชิกที่นี่</a>
+            </p>
+        </div>
+    </div>
+
     <div id="infoModal" class="modal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('infoModal')">&times;</button>
@@ -271,7 +288,6 @@
                 <div class="modal-img-card"><img id="v-petImg" src="" alt="Cubee"><span>ตัว Cubee</span></div>
                 <div class="modal-img-card"><img id="v-itemImg" src="" alt="Item"><span id="v-itemName">ผลผลิต</span></div>
             </div>
-            
             <ul class="stats-list">
                 <li><span class="stats-label">🍗 ความจุอาหาร:</span> <span id="v-food" class="stats-value"></span></li>
                 <li><span class="stats-label">⚙️ กำลังผลิต:</span> <span id="v-prod" class="stats-value"></span></li>
@@ -291,7 +307,6 @@
         </div>
     </div>
 
-    <!-- ป๊อปอัพฟอร์มแก้ไข -->
     <div id="editModal" class="modal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('editModal')">&times;</button>
@@ -319,7 +334,6 @@
                     </div>
                     <input type="text" id="e-petImg" class="url-input" placeholder="🔗 หรือวางลิงก์รูป (URL) ที่นี่..." oninput="showPreviewImage('preview-pet', this.value)">
                 </div>
-                
                 <div>
                     <div class="paste-zone" id="zone-item">
                         <p>📸 รูปผลผลิต</p>
@@ -339,16 +353,12 @@
             <div class="form-row">
                 <div class="form-group"><label>ความจุอาหาร</label><input type="text" id="e-food" placeholder="เช่น 600" oninput="autoCalculate()"></div>
                 <div class="form-group"><label>กำลังผลิต (ชิ้น/รอบ)</label><input type="text" id="e-prod" placeholder="เช่น 2" oninput="autoCalculate()"></div>
-                
                 <div class="form-group"><label>ใช้เวลา (วินาที/รอบ)</label><input type="text" id="e-time" placeholder="เช่น 60" oninput="autoCalculate()"></div>
                 <div class="form-group"><label>ความจุสูงสุด</label><input type="text" id="e-max" placeholder="เช่น 120"></div>
-                
                 <div class="form-group"><label>ราคาขาย (คอยน์/ชิ้น)</label><input type="text" id="e-price" placeholder="เช่น 25" oninput="autoCalculate()"></div>
                 <div class="form-group"><label>ผลิตได้ (1 ชม.)</label><input type="text" id="e-hrQty" placeholder="จะคำนวณให้อัตโนมัติ" readonly style="background:#f1f5f9;"></div>
-                
                 <div class="form-group"><label>รายได้ (1 ชม.)</label><input type="text" id="e-hrCoin" placeholder="จะคำนวณให้อัตโนมัติ" readonly style="background:#f1f5f9;"></div>
                 <div class="form-group"><label>รอบเติม (1 ช่อง)</label><input type="text" id="e-refill1" placeholder="จะคำนวณให้อัตโนมัติ" readonly style="background:#f1f5f9;"></div>
-                
                 <div class="form-group"><label>รอบเติม (2 ช่อง)</label><input type="text" id="e-refill2" placeholder="จะคำนวณให้อัตโนมัติ" readonly style="background:#f1f5f9;"></div>
             </div>
 
@@ -357,9 +367,11 @@
         </div>
     </div>
 
-    <div id="toast" class="toast">บันทึกข้อมูลเรียบร้อยแล้ว! ✨</div>
+    <div id="toast" class="toast">ข้อความแจ้งเตือน</div>
 
+    <!-- 🌟 ดึงสคริปต์ Auth ของ Firebase เพิ่มเข้ามา -->
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
 
     <script>
@@ -380,9 +392,96 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        const auth = firebase.auth(); // กำหนดตัวแปรระบบ Auth
 
         let cubeeDb = [];
         let searchText = ''; 
+        let currentUser = null; // ตัวแปรเก็บสถานะการล็อคอิน
+        let isLoginMode = true; // โหมดป๊อปอัพ (true=Login, false=Register)
+
+        // 🌟 ตรวจสอบสถานะว่าใครล็อคอินอยู่
+        auth.onAuthStateChanged((user) => {
+            currentUser = user;
+            let authBtn = document.getElementById('authBtn');
+            let addBtns = document.querySelectorAll('.btn-add');
+            
+            if (user) {
+                // ถ้าล็อคอินแล้ว
+                authBtn.innerText = '🚪 ออกจากระบบ';
+                authBtn.style.background = 'var(--thb-color)';
+                authBtn.onclick = logoutUser;
+                // โชว์ปุ่มเพิ่มข้อมูลทุกหมวดหมู่
+                addBtns.forEach(btn => btn.style.display = 'block');
+            } else {
+                // ถ้ายังไม่ล็อคอิน
+                authBtn.innerText = '🔑 เข้าสู่ระบบ';
+                authBtn.style.background = 'var(--coin-color)';
+                authBtn.onclick = openAuthModal;
+                // ซ่อนปุ่มเพิ่มข้อมูล
+                addBtns.forEach(btn => btn.style.display = 'none');
+            }
+            renderUI(); // รีเฟรชหน้าเพื่อซ่อน/โชว์ปุ่มแก้ไข
+        });
+
+        function showToast(msg) {
+            let toast = document.getElementById("toast");
+            toast.innerText = msg;
+            toast.className = "toast show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+
+        // 🌟 ระบบเข้าสู่ระบบ & สมัครสมาชิก
+        function openAuthModal() {
+            document.getElementById('authEmail').value = '';
+            document.getElementById('authPassword').value = '';
+            document.getElementById('authModal').style.display = 'flex';
+        }
+
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            if (isLoginMode) {
+                document.getElementById('authTitle').innerText = '🔑 เข้าสู่ระบบจัดการข้อมูล';
+                document.getElementById('authSubmitBtn').innerText = 'เข้าสู่ระบบ';
+                document.getElementById('authToggleLink').innerText = 'ยังไม่มีบัญชีใช่ไหม? กดสมัครสมาชิกที่นี่';
+            } else {
+                document.getElementById('authTitle').innerText = '📝 สมัครสมาชิกใหม่';
+                document.getElementById('authSubmitBtn').innerText = 'สมัครสมาชิก';
+                document.getElementById('authToggleLink').innerText = 'มีบัญชีอยู่แล้ว? กดเข้าสู่ระบบที่นี่';
+            }
+        }
+
+        function processAuth() {
+            let email = document.getElementById('authEmail').value;
+            let pass = document.getElementById('authPassword').value;
+
+            if (!email || !pass) {
+                alert('กรุณากรอกอีเมลและรหัสผ่านให้ครบถ้วน');
+                return;
+            }
+
+            if (isLoginMode) {
+                auth.signInWithEmailAndPassword(email, pass)
+                    .then(() => {
+                        closeModal('authModal');
+                        showToast('เข้าสู่ระบบสำเร็จ! ปลดล็อคปุ่มแก้ไขแล้ว 🔓');
+                    })
+                    .catch(err => alert('เข้าสู่ระบบล้มเหลว: ' + err.message));
+            } else {
+                auth.createUserWithEmailAndPassword(email, pass)
+                    .then(() => {
+                        closeModal('authModal');
+                        showToast('สมัครสมาชิกสำเร็จ! ตอนนี้คุณสามารถเพิ่มข้อมูลได้แล้ว 🎉');
+                        isLoginMode = true; // คืนค่ากลับโหมดล็อคอิน
+                    })
+                    .catch(err => alert('สมัครสมาชิกล้มเหลว: ' + err.message));
+            }
+        }
+
+        function logoutUser() {
+            if(confirm('ต้องการออกจากระบบใช่หรือไม่?')) {
+                auth.signOut().then(() => showToast('ออกจากระบบเรียบร้อยแล้ว 🔒'));
+            }
+        }
 
         db.ref('tinytails_db').on('value', (snapshot) => {
             const data = snapshot.val();
@@ -400,7 +499,6 @@
         }
 
         function renderUI() {
-            // เพิ่มหมวดหมู่ special เข้ามาในลูปการแสดงผล
             ['tier1', 'tier2', 'sweet', 'huge', 'special'].forEach(cat => {
                 const grid = document.getElementById(`grid-${cat}`);
                 if(grid) grid.innerHTML = ''; 
@@ -413,6 +511,9 @@
             });
 
             filteredDb.forEach(item => {
+                // 🌟 ตรวจสอบถ้ายังไม่ล็อคอิน จะไม่โชว์ปุ่มแก้ไข
+                let editBtnHtml = currentUser ? `<button class="btn-edit" onclick="openEditModal(${item.id})">✏️ แก้ไข</button>` : '';
+
                 let html = `
                     <div class="card">
                         <div>
@@ -422,7 +523,7 @@
                         </div>
                         <div class="btn-group">
                             <button class="btn-view" onclick="openViewModal(${item.id})">🔍 ข้อมูล</button>
-                            <button class="btn-edit" onclick="openEditModal(${item.id})">✏️ แก้ไข</button>
+                            ${editBtnHtml}
                         </div>
                     </div>
                 `;
@@ -431,11 +532,9 @@
                 }
             });
 
-            // ทำการอัปเดตหน้าจัดอันดับทุกครั้งที่มีข้อมูลใหม่หรือเมื่อค้นหา
             renderRankingPage();
         }
 
-        // 🌟 ฟังก์ชันเรนเดอร์หน้าจัดอันดับแบบเต็ม
         function renderRankingPage() {
             let container = document.getElementById('full-ranking-container');
             if(!container) return;
@@ -455,7 +554,6 @@
                 return;
             }
 
-            // เรียงลำดับจากแพงไปถูก
             validItems.sort((a, b) => {
                 let pA = parseFloat(String(a.price).replace(/[^\d.-]/g, ''));
                 let pB = parseFloat(String(b.price).replace(/[^\d.-]/g, ''));
@@ -464,7 +562,6 @@
 
             let html = '<div class="stat-rank-list">';
             validItems.forEach((item, index) => {
-                // ใส่เหรียญรางวัลให้อันดับ 1-3
                 let emoji = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}`;
                 html += `
                     <div class="stat-rank-item" style="border-left: 4px solid var(--coin-color);" onclick="openViewModal(${item.id})">
@@ -503,7 +600,6 @@
             
             if(pageId === 'all') {
                 sections.forEach(sec => {
-                    // โชว์หมวดหมู่ทั้งหมด ยกเว้นหน้าจัดอันดับ
                     if(sec.id !== 'ranking') sec.classList.add('show');
                     else sec.classList.remove('show');
                 });
@@ -577,6 +673,13 @@
         }
 
         function openEditModal(id, category = '') {
+            // 🌟 ดักก่อนเลยว่าถ้ายังไม่ล็อคอิน ห้ามเข้าหน้าเพิ่มข้อมูลเด็ดขาด!
+            if (!currentUser) {
+                alert('โปรดเข้าสู่ระบบก่อนทำการเพิ่มหรือแก้ไขข้อมูลครับ 🔒');
+                openAuthModal();
+                return;
+            }
+
             if(id) {
                 let data = cubeeDb.find(x => x.id === id);
                 document.getElementById('e-id').value = data.id;
@@ -609,7 +712,6 @@
             }
             
             autoCalculate();
-            
             document.getElementById('editModal').style.display = 'flex';
         }
 
@@ -632,14 +734,10 @@
         }
 
         document.getElementById('zone-pet').addEventListener('click', (e) => {
-            if(e.target.tagName.toLowerCase() !== 'input') {
-                document.getElementById('file-pet').click();
-            }
+            if(e.target.tagName.toLowerCase() !== 'input') document.getElementById('file-pet').click();
         });
         document.getElementById('zone-item').addEventListener('click', (e) => {
-            if(e.target.tagName.toLowerCase() !== 'input') {
-                document.getElementById('file-item').click();
-            }
+            if(e.target.tagName.toLowerCase() !== 'input') document.getElementById('file-item').click();
         });
 
         function processImageFile(file, previewId, hiddenInputId) {
@@ -656,9 +754,8 @@
                     else { if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; } }
                     canvas.width = width; canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const base64data = canvas.toDataURL('image/png'); 
-                    document.getElementById(hiddenInputId).value = base64data;
-                    showPreviewImage(previewId, base64data);
+                    document.getElementById(hiddenInputId).value = canvas.toDataURL('image/png'); 
+                    showPreviewImage(previewId, canvas.toDataURL('image/png'));
                 };
                 img.src = event.target.result;
             };
@@ -669,31 +766,27 @@
         document.getElementById('file-item').addEventListener('change', function(e) { processImageFile(e.target.files[0], 'preview-item', 'e-itemImg'); });
 
         let hoveredZone = null;
-
         document.getElementById('zone-pet').addEventListener('mouseenter', () => { hoveredZone = 'pet'; document.getElementById('zone-pet').classList.add('hovering'); });
         document.getElementById('zone-pet').addEventListener('mouseleave', () => { hoveredZone = null; document.getElementById('zone-pet').classList.remove('hovering'); });
-        
         document.getElementById('zone-item').addEventListener('mouseenter', () => { hoveredZone = 'item'; document.getElementById('zone-item').classList.add('hovering'); });
         document.getElementById('zone-item').addEventListener('mouseleave', () => { hoveredZone = null; document.getElementById('zone-item').classList.remove('hovering'); });
 
         document.addEventListener('paste', function(e) {
             if (!hoveredZone) return; 
-
             const items = (e.clipboardData || e.originalEvent.clipboardData).items;
             for (let i = 0; i < items.length; i++) {
                 if (items[i].kind === 'file' && items[i].type.startsWith('image/')) {
                     e.preventDefault();
-                    if (hoveredZone === 'pet') {
-                        processImageFile(items[i].getAsFile(), 'preview-pet', 'e-petImg');
-                    } else if (hoveredZone === 'item') {
-                        processImageFile(items[i].getAsFile(), 'preview-item', 'e-itemImg');
-                    }
+                    if (hoveredZone === 'pet') processImageFile(items[i].getAsFile(), 'preview-pet', 'e-petImg');
+                    else if (hoveredZone === 'item') processImageFile(items[i].getAsFile(), 'preview-item', 'e-itemImg');
                     break;
                 }
             }
         });
 
         function saveData() {
+            if (!currentUser) return alert('โปรดเข้าสู่ระบบก่อนทำการบันทึกข้อมูลครับ 🔒');
+
             let id = document.getElementById('e-id').value;
             let finalId = id ? parseInt(id) : Date.now();
 
@@ -719,19 +812,20 @@
 
             db.ref('tinytails_db/' + finalId).set(newData).then(() => {
                 closeModal('editModal');
-                let toast = document.getElementById("toast");
-                toast.className = "toast show";
-                setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+                showToast('บันทึกข้อมูลเรียบร้อยแล้ว! ✨');
             }).catch((error) => {
                 alert("เกิดข้อผิดพลาดในการบันทึก: " + error);
             });
         }
 
         function deleteData() {
+            if (!currentUser) return alert('โปรดเข้าสู่ระบบก่อนทำการลบข้อมูลครับ 🔒');
+
             if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้ทิ้งถาวร?')) {
                 let id = parseInt(document.getElementById('e-id').value);
                 db.ref('tinytails_db/' + id).remove().then(() => {
                     closeModal('editModal');
+                    showToast('ลบข้อมูลเรียบร้อยแล้ว 🗑️');
                 }).catch((error) => {
                     alert("เกิดข้อผิดพลาดในการลบ: " + error);
                 });
@@ -743,6 +837,7 @@
         window.onclick = function(event) {
             if (event.target == document.getElementById('infoModal')) closeModal('infoModal');
             if (event.target == document.getElementById('editModal')) closeModal('editModal');
+            if (event.target == document.getElementById('authModal')) closeModal('authModal');
         }
     </script>
 </body>
