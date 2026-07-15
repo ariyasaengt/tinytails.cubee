@@ -17,6 +17,7 @@
             --border-color: #e2e8f0;
             --coin-color: #10b981; 
             --thb-color: #ef4444; 
+            --special-color: #8b5cf6;
             --primary-blue: #3b82f6;
             --nav-bg: rgba(255, 255, 255, 0.8);
             --modal-bg: rgba(15, 23, 42, 0.6);
@@ -36,8 +37,8 @@
 
         body { font-family: 'Kanit', sans-serif; background-color: var(--bg-light); color: var(--text-main); margin: 0; padding: 0; min-height: 100vh; transition: background-color 0.3s, color 0.3s; }
 
-        .navbar { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 15px; padding: 20px; background: var(--nav-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; transition: 0.3s; }
-        .nav-btn { background-color: var(--box-bg); color: var(--text-muted); border: 1px solid var(--border-color); padding: 10px 25px; border-radius: 50px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: 0.2s; font-family: inherit;}
+        .navbar { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px; padding: 20px; background: var(--nav-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; transition: 0.3s; }
+        .nav-btn { background-color: var(--box-bg); color: var(--text-muted); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 50px; font-size: 0.95rem; font-weight: 800; cursor: pointer; transition: 0.2s; font-family: inherit;}
         .nav-btn:hover { background-color: var(--border-color); color: var(--text-main); }
         .nav-btn.active { background-color: var(--primary-blue); color: white; border-color: var(--primary-blue); box-shadow: 0 4px 12px rgba(59,130,246,0.2); }
         .theme-btn { background: transparent; border: none; font-size: 1.5rem; cursor: pointer; padding: 5px 10px; transition: transform 0.2s; }
@@ -58,6 +59,7 @@
         .price-tag { font-size: 1.1rem; font-weight: 600; background: var(--card-bg); padding: 6px 16px; border-radius: 30px; border: 1px solid var(--border-color); }
         .price-coin { color: var(--coin-color); border-left: 4px solid var(--coin-color); }
         .price-thb { color: var(--thb-color); border-left: 4px solid var(--thb-color); }
+        .price-special { color: var(--special-color); border-left: 4px solid var(--special-color); }
 
         .btn-add { background: var(--primary-blue); color: white; border: none; padding: 10px 20px; border-radius: 12px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: 0.2s; margin-bottom: 20px; font-family: inherit; }
         .btn-add:hover { background: #2563eb; transform: translateY(-2px); }
@@ -76,33 +78,6 @@
         .btn-view:hover { background: var(--text-main); color: var(--card-bg); }
         .btn-edit { background: var(--box-bg); color: var(--text-muted); border: 2px solid transparent; padding: 10px; border-radius: 10px; font-weight: 600; font-family: inherit; cursor: pointer; transition: 0.2s; }
         .btn-edit:hover { background: var(--border-color); color: var(--text-main);}
-
-        /* ปุ่มลอยด้านข้าง (Floating Button) */
-        .floating-btn {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            background: var(--text-main);
-            color: var(--card-bg);
-            border: none;
-            border-radius: 50px;
-            padding: 15px 25px;
-            font-size: 1rem;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            z-index: 150;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.3s;
-            font-family: inherit;
-        }
-        .floating-btn:hover {
-            transform: translateY(-5px);
-            background: var(--primary-blue);
-            color: white;
-        }
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-bg); backdrop-filter: blur(5px); z-index: 200; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
         .modal-content { background: var(--card-bg); border-radius: 24px; width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto; padding: 30px; position: relative; animation: slideUp 0.3s ease; border: 1px solid var(--border-color); box-shadow: 0 10px 25px rgba(0,0,0,0.2); box-sizing: border-box; }
@@ -153,19 +128,20 @@
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
 
-        /* Styles สำหรับรายการจัดอันดับในป๊อปอัพสถิติ */
+        /* Styles สำหรับหน้าจัดอันดับ */
         .stat-rank-list { list-style: none; padding: 0; margin: 0; }
-        .stat-rank-item { display: flex; align-items: center; gap: 12px; padding: 10px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 8px; }
-        .stat-rank-number { font-weight: 800; font-size: 1.1rem; min-width: 24px; text-align: center; }
-        .stat-rank-img { width: 40px; height: 40px; object-fit: contain; border-radius: 8px; background: var(--box-bg); border: 1px solid var(--border-color); padding: 2px; }
+        .stat-rank-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 12px; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+        .stat-rank-item:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.05); border-color: var(--primary-blue); }
+        .stat-rank-number { font-weight: 800; font-size: 1.3rem; min-width: 30px; text-align: center; }
+        .stat-rank-img { width: 55px; height: 55px; object-fit: contain; border-radius: 12px; background: var(--box-bg); border: 1px solid var(--border-color); padding: 4px; }
         .stat-rank-info { flex: 1; min-width: 0; }
-        .stat-rank-name { font-weight: 600; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .stat-rank-val { font-weight: 800; font-size: 0.95rem; text-align: right; }
+        .stat-rank-name { font-weight: 800; font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main); }
+        .stat-rank-val { font-weight: 800; font-size: 1.2rem; text-align: right; }
 
         @media (max-width: 768px) {
-            .navbar { padding: 10px; gap: 8px; }
-            .nav-btn { padding: 8px 12px; font-size: 0.85rem; }
-            .theme-btn { font-size: 1.2rem; }
+            .navbar { padding: 10px; gap: 6px; }
+            .nav-btn { padding: 8px 12px; font-size: 0.8rem; }
+            .theme-btn { font-size: 1.2rem; padding: 5px; }
             .search-container { padding: 0 10px; margin-top: 15px; }
             .search-box { padding: 10px 15px; font-size: 0.9rem; }
             .category-header { flex-direction: column; align-items: flex-start; gap: 10px; margin-top: 20px; }
@@ -197,7 +173,12 @@
             .paste-zone img { max-width: 55px; max-height: 55px; }
             .url-input { font-size: 0.75rem; padding: 6px 10px; }
             .btn-save, .btn-delete { padding: 12px; font-size: 1rem; }
-            .floating-btn { bottom: 20px; right: 15px; padding: 12px 18px; font-size: 0.9rem; }
+
+            .stat-rank-item { padding: 12px; gap: 10px; }
+            .stat-rank-number { font-size: 1.1rem; }
+            .stat-rank-img { width: 45px; height: 45px; }
+            .stat-rank-name { font-size: 0.95rem; }
+            .stat-rank-val { font-size: 1rem; }
         }
     </style>
 </head>
@@ -209,6 +190,8 @@
         <button class="nav-btn" onclick="showPage('tier2', this)">Tier 2</button>
         <button class="nav-btn" onclick="showPage('sweet', this)">SWEET</button>
         <button class="nav-btn" onclick="showPage('huge', this)">HUGE</button>
+        <button class="nav-btn" onclick="showPage('special', this)">SPECIAL</button>
+        <button class="nav-btn" onclick="showPage('ranking', this)">🏆 จัดอันดับ</button>
         <button class="theme-btn" id="themeToggle" onclick="toggleTheme()" title="เปลี่ยนโหมดมืด/สว่าง">🌙</button>
     </nav>
 
@@ -217,6 +200,7 @@
     </div>
 
     <div class="container">
+        <!-- หมวดหมู่: Tier 1 -->
         <div id="tier1" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2>⭐ Tier 1 Cubee</h2></div>
@@ -226,6 +210,7 @@
             <div class="grid" id="grid-tier1"></div>
         </div>
 
+        <!-- หมวดหมู่: Tier 2 -->
         <div id="tier2" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2>🌟 Tier 2 Cubee</h2></div>
@@ -235,6 +220,7 @@
             <div class="grid" id="grid-tier2"></div>
         </div>
 
+        <!-- หมวดหมู่: SWEET -->
         <div id="sweet" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2 style="color: #db2777;">🍬 SWEET CUBEE Gacha</h2></div>
@@ -244,6 +230,7 @@
             <div class="grid" id="grid-sweet"></div>
         </div>
 
+        <!-- หมวดหมู่: HUGE -->
         <div id="huge" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2 style="color: #dc2626;">🔥 HUGE CUBEE Gacha</h2></div>
@@ -252,9 +239,28 @@
             <button class="btn-add" onclick="openEditModal(null, 'huge')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
             <div class="grid" id="grid-huge"></div>
         </div>
-    </div>
 
-    <button class="floating-btn" onclick="showPriceStats()">🏆 อันดับราคา</button>
+        <!-- หมวดหมู่ใหม่: SPECIAL -->
+        <div id="special" class="page-section show">
+            <div class="category-header">
+                <div class="category-title"><h2 style="color: var(--special-color);">✨ SPECIAL CUBEE</h2></div>
+                <span class="price-tag price-special">กิจกรรมสปาว</span>
+            </div>
+            <button class="btn-add" onclick="openEditModal(null, 'special')" style="background: var(--special-color);">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
+            <div class="grid" id="grid-special"></div>
+        </div>
+
+        <!-- หน้าจัดอันดับราคาแบบเต็ม -->
+        <div id="ranking" class="page-section">
+            <div class="category-header">
+                <div class="category-title"><h2>🏆 จัดอันดับราคาขายไอเทม</h2></div>
+                <span class="price-tag" style="background: var(--box-bg); color: var(--text-muted); border-color: var(--border-color);">คลิกเพื่อดูข้อมูล</span>
+            </div>
+            <div id="full-ranking-container" style="max-width: 800px; margin: 0 auto;">
+                <!-- รายการจัดอันดับจะถูกแทรกที่นี่ -->
+            </div>
+        </div>
+    </div>
 
     <!-- ป๊อปอัพดูข้อมูล -->
     <div id="infoModal" class="modal">
@@ -347,31 +353,7 @@
             </div>
 
             <button class="btn-save" onclick="saveData()">💾 บันทึกการตั้งค่า</button>
-            <button class="btn-delete" id="btn-delete" onclick="deleteData()" style="display:none;">🗑️ ลบข้อมูลนี้ออก</button>
-        </div>
-    </div>
-
-    <!-- 🌟 ป๊อปอัพแสดงอันดับ Top 5 (แพงที่สุด & ถูกที่สุด) -->
-    <div id="statsModal" class="modal">
-        <div class="modal-content" style="max-width: 550px;">
-            <button class="close-btn" onclick="closeModal('statsModal')">&times;</button>
-            <h3 class="modal-title" style="border-bottom:none;">🏆 จัดอันดับราคาขายไอเทม</h3>
-            
-            <!-- ส่วนของ: 5 อันดับแพงที่สุด -->
-            <div style="background: var(--box-bg); padding: 18px; border-radius: 16px; margin-bottom: 20px; border: 1px solid var(--border-color);">
-                <h4 style="margin: 0 0 12px 0; color: var(--coin-color); font-size: 1.1rem; display: flex; align-items: center; gap: 6px;">📈 Top 5 ราคาแพงที่สุด</h4>
-                <div id="stat-high-list" class="stat-rank-list">
-                    <!-- รายการจะถูกใส่เข้ามาแบบอัตโนมัติด้วย JavaScript -->
-                </div>
-            </div>
-
-            <!-- ส่วนของ: 5 อันดับถูกที่สุด -->
-            <div style="background: var(--box-bg); padding: 18px; border-radius: 16px; border: 1px solid var(--border-color);">
-                <h4 style="margin: 0 0 12px 0; color: var(--thb-color); font-size: 1.1rem; display: flex; align-items: center; gap: 6px;">📉 Top 5 ราคาถูกที่สุด</h4>
-                <div id="stat-low-list" class="stat-rank-list">
-                    <!-- รายการจะถูกใส่เข้ามาแบบอัตโนมัติด้วย JavaScript -->
-                </div>
-            </div>
+            <button class="btn-delete" id="btn-delete" onclick="deleteData()">🗑️ ลบข้อมูลนี้ออก</button>
         </div>
     </div>
 
@@ -418,7 +400,8 @@
         }
 
         function renderUI() {
-            ['tier1', 'tier2', 'sweet', 'huge'].forEach(cat => {
+            // เพิ่มหมวดหมู่ special เข้ามาในลูปการแสดงผล
+            ['tier1', 'tier2', 'sweet', 'huge', 'special'].forEach(cat => {
                 const grid = document.getElementById(`grid-${cat}`);
                 if(grid) grid.innerHTML = ''; 
             });
@@ -447,6 +430,56 @@
                     document.getElementById(`grid-${item.category}`).insertAdjacentHTML('beforeend', html);
                 }
             });
+
+            // ทำการอัปเดตหน้าจัดอันดับทุกครั้งที่มีข้อมูลใหม่หรือเมื่อค้นหา
+            renderRankingPage();
+        }
+
+        // 🌟 ฟังก์ชันเรนเดอร์หน้าจัดอันดับแบบเต็ม
+        function renderRankingPage() {
+            let container = document.getElementById('full-ranking-container');
+            if(!container) return;
+
+            if (cubeeDb.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding: 40px;">ยังไม่มีข้อมูลในระบบครับ</p>';
+                return;
+            }
+
+            let validItems = cubeeDb.filter(item => {
+                let p = parseFloat(String(item.price).replace(/[^\d.-]/g, ''));
+                return !isNaN(p) && p > 0;
+            });
+
+            if (validItems.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding: 40px;">ยังไม่มีการระบุราคาไอเทมในระบบครับ</p>';
+                return;
+            }
+
+            // เรียงลำดับจากแพงไปถูก
+            validItems.sort((a, b) => {
+                let pA = parseFloat(String(a.price).replace(/[^\d.-]/g, ''));
+                let pB = parseFloat(String(b.price).replace(/[^\d.-]/g, ''));
+                return pB - pA;
+            });
+
+            let html = '<div class="stat-rank-list">';
+            validItems.forEach((item, index) => {
+                // ใส่เหรียญรางวัลให้อันดับ 1-3
+                let emoji = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}`;
+                html += `
+                    <div class="stat-rank-item" style="border-left: 4px solid var(--coin-color);" onclick="openViewModal(${item.id})">
+                        <div class="stat-rank-number">${emoji}</div>
+                        <img class="stat-rank-img" src="${item.petImg || 'https://via.placeholder.com/40/cbd5e1/ffffff?text=Img'}">
+                        <div class="stat-rank-info">
+                            <div class="stat-rank-name">${item.name}</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 3px;">📦 ผลผลิต: ${item.itemName}</div>
+                        </div>
+                        <div class="stat-rank-val" style="color: var(--coin-color);">${appendUnit(item.price, 'คอยน์')}</div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
         }
 
         function toggleTheme() {
@@ -467,8 +500,13 @@
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             clickedBtn.classList.add('active');
             let sections = document.querySelectorAll('.page-section');
+            
             if(pageId === 'all') {
-                sections.forEach(sec => sec.classList.add('show'));
+                sections.forEach(sec => {
+                    // โชว์หมวดหมู่ทั้งหมด ยกเว้นหน้าจัดอันดับ
+                    if(sec.id !== 'ranking') sec.classList.add('show');
+                    else sec.classList.remove('show');
+                });
             } else {
                 sections.forEach(sec => sec.classList.remove('show'));
                 document.getElementById(pageId).classList.add('show');
@@ -479,82 +517,6 @@
             if (!val || val === '-') return '-';
             let cleanVal = String(val).replace('ชิ้น/รอบ', '').replace('คอยน์/ชิ้น', '').replace('คอยน์', '').replace('วินาที/รอบ', '').trim();
             return `${cleanVal} ${unit}`;
-        }
-
-        // ========================================================
-        // 🌟 ฟังก์ชันคำนวณและจัดอันดับ Top 5 แพงที่สุด และ ถูกที่สุด 
-        // ========================================================
-        function showPriceStats() {
-            if (cubeeDb.length === 0) {
-                alert("ยังไม่มีข้อมูล Cubee ในระบบครับ");
-                return;
-            }
-
-            // กรองข้อมูลสกัดเอาเฉพาะตัวที่มีระบุราคาแบบเป็นตัวเลขได้จริง
-            let validItems = cubeeDb.filter(item => {
-                let p = parseFloat(String(item.price).replace(/[^\d.-]/g, ''));
-                return !isNaN(p) && p > 0;
-            });
-
-            if (validItems.length === 0) {
-                alert("ยังไม่มีการระบุราคาไอเทมในระบบครับ");
-                return;
-            }
-
-            // 1. เรียงลำดับสำหรับฝั่ง "แพงที่สุด" (มาก -> น้อย)
-            let highSorted = [...validItems].sort((a, b) => {
-                let pA = parseFloat(String(a.price).replace(/[^\d.-]/g, ''));
-                let pB = parseFloat(String(b.price).replace(/[^\d.-]/g, ''));
-                return pB - pA;
-            });
-
-            // 2. เรียงลำดับสำหรับฝั่ง "ถูกที่สุด" (น้อย -> มาก)
-            let lowSorted = [...validItems].sort((a, b) => {
-                let pA = parseFloat(String(a.price).replace(/[^\d.-]/g, ''));
-                let pB = parseFloat(String(b.price).replace(/[^\d.-]/g, ''));
-                return pA - pB;
-            });
-
-            // ดึงข้อมูลมาแค่ 5 อันดับแรก (หรือเท่าที่มีอยู่จริงถ้าข้อมูลไม่ถึง 5 ตัว)
-            let topHigh = highSorted.slice(0, 5);
-            let topLow = lowSorted.slice(0, 5);
-
-            // เจน HTML เพื่อไปแสดงผลในกลุ่มแพงที่สุด
-            let highListEl = document.getElementById('stat-high-list');
-            highListEl.innerHTML = '';
-            topHigh.forEach((item, index) => {
-                let emoji = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}`;
-                highListEl.innerHTML += `
-                    <div class="stat-rank-item" style="border-left: 4px solid var(--coin-color);">
-                        <div class="stat-rank-number">${emoji}</div>
-                        <img class="stat-rank-img" src="${item.petImg || 'https://via.placeholder.com/40/cbd5e1/ffffff?text=Img'}">
-                        <div class="stat-rank-info">
-                            <div class="stat-rank-name">${item.name}</div>
-                        </div>
-                        <div class="stat-rank-val" style="color: var(--coin-color);">${appendUnit(item.price, 'คอยน์')}</div>
-                    </div>
-                `;
-            });
-
-            // เจน HTML เพื่อไปแสดงผลในกลุ่มถูกที่สุด
-            let lowListEl = document.getElementById('stat-low-list');
-            lowListEl.innerHTML = '';
-            topLow.forEach((item, index) => {
-                let emoji = index === 0 ? '📉' : `${index + 1}`;
-                lowListEl.innerHTML += `
-                    <div class="stat-rank-item" style="border-left: 4px solid var(--thb-color);">
-                        <div class="stat-rank-number">${emoji}</div>
-                        <img class="stat-rank-img" src="${item.petImg || 'https://via.placeholder.com/40/cbd5e1/ffffff?text=Img'}">
-                        <div class="stat-rank-info">
-                            <div class="stat-rank-name">${item.name}</div>
-                        </div>
-                        <div class="stat-rank-val" style="color: var(--thb-color);">${appendUnit(item.price, 'คอยน์')}</div>
-                    </div>
-                `;
-            });
-
-            // เปิดป๊อปอัพบอร์ดจัดอันดับ
-            document.getElementById('statsModal').style.display = 'flex';
         }
 
         function openViewModal(id) {
@@ -781,7 +743,6 @@
         window.onclick = function(event) {
             if (event.target == document.getElementById('infoModal')) closeModal('infoModal');
             if (event.target == document.getElementById('editModal')) closeModal('editModal');
-            if (event.target == document.getElementById('statsModal')) closeModal('statsModal');
         }
     </script>
 </body>
