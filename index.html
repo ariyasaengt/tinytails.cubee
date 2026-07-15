@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TINYTAILS CUBEE</title>
     
+    <!-- Favicon รูปตัวละครน่ารักๆ ของคุณ -->
     <link rel="icon" href="https://img2.pic.in.th/icon88e0717927d5a748.png" type="image/png">
+    
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -23,6 +25,7 @@
             --box-bg: #f8fafc;
         }
 
+        /* 🌙 โหมดมืด */
         body.dark-mode {
             --bg-light: #0f172a;
             --card-bg: #1e293b;
@@ -193,7 +196,7 @@
         <button class="nav-btn" onclick="showPage('huge', this)">HUGE</button>
         <button class="nav-btn" onclick="showPage('special', this)">SPECIAL</button>
         <button class="nav-btn" onclick="showPage('ranking', this)">🏆 จัดอันดับ</button>
-        <!-- 🌟 ปุ่ม Login -->
+        <!-- ปุ่มเข้าสู่ระบบ -->
         <button class="auth-nav-btn" id="authBtn" onclick="openAuthModal()">🔑 เข้าสู่ระบบ</button>
         <button class="theme-btn" id="themeToggle" onclick="toggleTheme()" title="เปลี่ยนโหมดมืด/สว่าง">🌙</button>
     </nav>
@@ -203,6 +206,7 @@
     </div>
 
     <div class="container">
+        <!-- หมวดหมู่: Tier 1 -->
         <div id="tier1" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2>⭐ Tier 1 Cubee</h2></div>
@@ -212,6 +216,7 @@
             <div class="grid" id="grid-tier1"></div>
         </div>
 
+        <!-- หมวดหมู่: Tier 2 -->
         <div id="tier2" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2>🌟 Tier 2 Cubee</h2></div>
@@ -221,6 +226,7 @@
             <div class="grid" id="grid-tier2"></div>
         </div>
 
+        <!-- หมวดหมู่: SWEET -->
         <div id="sweet" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2 style="color: #db2777;">🍬 SWEET CUBEE Gacha</h2></div>
@@ -230,6 +236,7 @@
             <div class="grid" id="grid-sweet"></div>
         </div>
 
+        <!-- หมวดหมู่: HUGE -->
         <div id="huge" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2 style="color: #dc2626;">🔥 HUGE CUBEE Gacha</h2></div>
@@ -239,6 +246,7 @@
             <div class="grid" id="grid-huge"></div>
         </div>
 
+        <!-- หมวดหมู่: SPECIAL -->
         <div id="special" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2 style="color: var(--special-color);">✨ SPECIAL CUBEE</h2></div>
@@ -248,13 +256,14 @@
             <div class="grid" id="grid-special"></div>
         </div>
 
+        <!-- หน้าจัดอันดับ -->
         <div id="ranking" class="page-section">
             <div class="category-header">
                 <div class="category-title"><h2>🏆 จัดอันดับราคาขายไอเทม</h2></div>
                 <span class="price-tag" style="background: var(--box-bg); color: var(--text-muted); border-color: var(--border-color);">คลิกเพื่อดูข้อมูล</span>
             </div>
             <div id="full-ranking-container" style="max-width: 800px; margin: 0 auto;">
-                <!-- แทรกข้อมูลจัดอันดับ -->
+                <!-- จะถูกแทรกข้อมูลด้วย JavaScript -->
             </div>
         </div>
     </div>
@@ -272,14 +281,21 @@
                 <label>รหัสผ่าน</label>
                 <input type="password" id="authPassword" placeholder="อย่างน้อย 6 ตัวอักษร">
             </div>
+            
             <button class="btn-save" id="authSubmitBtn" onclick="processAuth()">เข้าสู่ระบบ</button>
             
+            <!-- 🌟 ลิงก์ลืมรหัสผ่าน -->
+            <p style="text-align: center; margin-top: 10px; font-size: 0.85rem;">
+                <a href="#" onclick="resetPassword()" style="color: var(--text-muted); text-decoration: underline;">ลืมรหัสผ่านใช่ไหม?</a>
+            </p>
+
             <p style="text-align: center; margin-top: 15px; font-size: 0.9rem;">
                 <a href="#" id="authToggleLink" onclick="toggleAuthMode()" style="color: var(--primary-blue); font-weight: bold; text-decoration: none;">ยังไม่มีบัญชีใช่ไหม? กดสมัครสมาชิกที่นี่</a>
             </p>
         </div>
     </div>
 
+    <!-- ป๊อปอัพดูข้อมูล -->
     <div id="infoModal" class="modal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('infoModal')">&times;</button>
@@ -307,6 +323,7 @@
         </div>
     </div>
 
+    <!-- ป๊อปอัพฟอร์มแก้ไข -->
     <div id="editModal" class="modal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('editModal')">&times;</button>
@@ -369,7 +386,7 @@
 
     <div id="toast" class="toast">ข้อความแจ้งเตือน</div>
 
-    <!-- 🌟 ดึงสคริปต์ Auth ของ Firebase เพิ่มเข้ามา -->
+    <!-- Scripts -->
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
@@ -392,35 +409,30 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-        const auth = firebase.auth(); // กำหนดตัวแปรระบบ Auth
+        const auth = firebase.auth(); 
 
         let cubeeDb = [];
         let searchText = ''; 
-        let currentUser = null; // ตัวแปรเก็บสถานะการล็อคอิน
-        let isLoginMode = true; // โหมดป๊อปอัพ (true=Login, false=Register)
+        let currentUser = null; 
+        let isLoginMode = true; 
 
-        // 🌟 ตรวจสอบสถานะว่าใครล็อคอินอยู่
         auth.onAuthStateChanged((user) => {
             currentUser = user;
             let authBtn = document.getElementById('authBtn');
             let addBtns = document.querySelectorAll('.btn-add');
             
             if (user) {
-                // ถ้าล็อคอินแล้ว
                 authBtn.innerText = '🚪 ออกจากระบบ';
                 authBtn.style.background = 'var(--thb-color)';
                 authBtn.onclick = logoutUser;
-                // โชว์ปุ่มเพิ่มข้อมูลทุกหมวดหมู่
                 addBtns.forEach(btn => btn.style.display = 'block');
             } else {
-                // ถ้ายังไม่ล็อคอิน
                 authBtn.innerText = '🔑 เข้าสู่ระบบ';
                 authBtn.style.background = 'var(--coin-color)';
                 authBtn.onclick = openAuthModal;
-                // ซ่อนปุ่มเพิ่มข้อมูล
                 addBtns.forEach(btn => btn.style.display = 'none');
             }
-            renderUI(); // รีเฟรชหน้าเพื่อซ่อน/โชว์ปุ่มแก้ไข
+            renderUI();
         });
 
         function showToast(msg) {
@@ -430,7 +442,6 @@
             setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
         }
 
-        // 🌟 ระบบเข้าสู่ระบบ & สมัครสมาชิก
         function openAuthModal() {
             document.getElementById('authEmail').value = '';
             document.getElementById('authPassword').value = '';
@@ -471,7 +482,7 @@
                     .then(() => {
                         closeModal('authModal');
                         showToast('สมัครสมาชิกสำเร็จ! ตอนนี้คุณสามารถเพิ่มข้อมูลได้แล้ว 🎉');
-                        isLoginMode = true; // คืนค่ากลับโหมดล็อคอิน
+                        isLoginMode = true; 
                     })
                     .catch(err => alert('สมัครสมาชิกล้มเหลว: ' + err.message));
             }
@@ -481,6 +492,31 @@
             if(confirm('ต้องการออกจากระบบใช่หรือไม่?')) {
                 auth.signOut().then(() => showToast('ออกจากระบบเรียบร้อยแล้ว 🔒'));
             }
+        }
+
+        // 🌟 ระบบลืมรหัสผ่าน (กู้คืนรหัส)
+        function resetPassword() {
+            let email = document.getElementById('authEmail').value;
+            
+            if (!email) {
+                alert('โปรดกรอกอีเมลของคุณในช่อง "อีเมล" ก่อน แล้วค่อยกดปุ่มลืมรหัสผ่านครับ 📧');
+                return;
+            }
+
+            auth.sendPasswordResetEmail(email)
+                .then(() => {
+                    alert('ส่งลิงก์รีเซ็ตรหัสผ่านไปที่อีเมลแล้ว! โปรดตรวจสอบกล่องจดหมายของคุณ (หรือโฟลเดอร์สแปม) 📬');
+                    closeModal('authModal');
+                })
+                .catch((error) => {
+                    if (error.code === 'auth/user-not-found') {
+                        alert('ไม่พบบัญชีผู้ใช้นี้ในระบบครับ โปรดตรวจสอบอีเมลอีกครั้ง');
+                    } else if (error.code === 'auth/invalid-email') {
+                        alert('รูปแบบอีเมลไม่ถูกต้องครับ');
+                    } else {
+                        alert('เกิดข้อผิดพลาด: ' + error.message);
+                    }
+                });
         }
 
         db.ref('tinytails_db').on('value', (snapshot) => {
@@ -511,7 +547,6 @@
             });
 
             filteredDb.forEach(item => {
-                // 🌟 ตรวจสอบถ้ายังไม่ล็อคอิน จะไม่โชว์ปุ่มแก้ไข
                 let editBtnHtml = currentUser ? `<button class="btn-edit" onclick="openEditModal(${item.id})">✏️ แก้ไข</button>` : '';
 
                 let html = `
@@ -673,7 +708,6 @@
         }
 
         function openEditModal(id, category = '') {
-            // 🌟 ดักก่อนเลยว่าถ้ายังไม่ล็อคอิน ห้ามเข้าหน้าเพิ่มข้อมูลเด็ดขาด!
             if (!currentUser) {
                 alert('โปรดเข้าสู่ระบบก่อนทำการเพิ่มหรือแก้ไขข้อมูลครับ 🔒');
                 openAuthModal();
