@@ -196,9 +196,12 @@
         <button class="nav-btn" onclick="showPage('huge', this)">HUGE</button>
         <button class="nav-btn" onclick="showPage('special', this)">SPECIAL</button>
         <button class="nav-btn" onclick="showPage('ranking', this)">🏆 จัดอันดับ</button>
-        <!-- ปุ่มเข้าสู่ระบบ -->
-        <button class="auth-nav-btn" id="authBtn" onclick="openAuthModal()">🔑 เข้าสู่ระบบ</button>
-        <button class="theme-btn" id="themeToggle" onclick="toggleTheme()" title="เปลี่ยนโหมดมืด/สว่าง">🌙</button>
+        <!-- แทนที่ปุ่มเข้าสู่ระบบเดิม -->
+        <div id="userProfileBar" style="display:none; align-items: center; gap: 10px; background: #000; padding: 5px 15px; border-radius: 50px; border: 1px solid #444;">
+            <img id="userPhoto" src="" style="width: 30px; height: 30px; border-radius: 50%; cursor: pointer;" onclick="openProfileEdit()">
+            <span id="displayUsername" style="color: white; font-weight: bold;"></span>
+        </div>
+        <button id="loginBtn" class="auth-nav-btn" onclick="openAuthModal()">🔑 เข้าสู่ระบบ</button>
     </nav>
 
     <div class="search-container">
