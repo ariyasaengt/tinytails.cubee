@@ -877,6 +877,19 @@
             if (event.target == document.getElementById('editModal')) closeModal('editModal');
             if (event.target == document.getElementById('authModal')) closeModal('authModal');
         }
+
+        function updateProfile(newUsername, newPhotoUrl) {
+            if (!currentUser) return;
+            db.ref('users/' + currentUser.uid).update({
+                username: newUsername,
+                photoUrl: newPhotoUrl
+            }).then(() => {
+                showToast('อัปเดตโปรไฟล์เรียบร้อยแล้ว');
+                renderUI();
+            });
+        }
+
+function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
     </script>
 </body>
 </html>
