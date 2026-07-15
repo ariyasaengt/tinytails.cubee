@@ -84,10 +84,65 @@
         <input type="text" id="searchInput" class="search-box" placeholder="🔍 ค้นหาชื่อ Cubee..." oninput="handleSearch()" autocomplete="off">
     </div>
 
-    <div class="container">
-        <!-- เนื้อหาหมวดหมู่ต่างๆ -->
-        <div id="tier1" class="page-section show">...</div>
-        <div id="ranking" class="page-section">...</div>
+<div class="container">
+        <!-- หมวดหมู่: Tier 1 -->
+        <div id="tier1" class="page-section show">
+            <div class="category-header">
+                <div class="category-title"><h2>⭐ Tier 1 Cubee</h2></div>
+                <span class="price-tag price-coin">ราคา: 7,000 คอยน์</span>
+            </div>
+            <button class="btn-add" onclick="openEditModal(null, 'tier1')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
+            <div class="grid" id="grid-tier1"></div>
+        </div>
+
+        <!-- หมวดหมู่: Tier 2 -->
+        <div id="tier2" class="page-section">
+            <div class="category-header">
+                <div class="category-title"><h2>🌟 Tier 2 Cubee</h2></div>
+                <span class="price-tag price-coin">ราคา: 15,000 คอยน์</span>
+            </div>
+            <button class="btn-add" onclick="openEditModal(null, 'tier2')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
+            <div class="grid" id="grid-tier2"></div>
+        </div>
+
+        <!-- หมวดหมู่: SWEET -->
+        <div id="sweet" class="page-section">
+            <div class="category-header">
+                <div class="category-title"><h2 style="color: #db2777;">🍬 SWEET CUBEE Gacha</h2></div>
+                <span class="price-tag price-thb">ราคา: 49.- บาท</span>
+            </div>
+            <button class="btn-add" onclick="openEditModal(null, 'sweet')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
+            <div class="grid" id="grid-sweet"></div>
+        </div>
+
+        <!-- หมวดหมู่: HUGE -->
+        <div id="huge" class="page-section">
+            <div class="category-header">
+                <div class="category-title"><h2 style="color: #dc2626;">🔥 HUGE CUBEE Gacha</h2></div>
+                <span class="price-tag price-thb">ราคา: 449.- บาท</span>
+            </div>
+            <button class="btn-add" onclick="openEditModal(null, 'huge')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
+            <div class="grid" id="grid-huge"></div>
+        </div>
+
+        <!-- หมวดหมู่: SPECIAL -->
+        <div id="special" class="page-section">
+            <div class="category-header">
+                <div class="category-title"><h2 style="color: var(--special-color);">✨ SPECIAL CUBEE</h2></div>
+                <span class="price-tag price-special">กิจกรรมสปาว</span>
+            </div>
+            <button class="btn-add" onclick="openEditModal(null, 'special')" style="background: var(--special-color);">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
+            <div class="grid" id="grid-special"></div>
+        </div>
+
+        <!-- หน้าจัดอันดับ -->
+        <div id="ranking" class="page-section">
+            <div class="category-header">
+                <div class="category-title"><h2>🏆 จัดอันดับราคาขายไอเทม</h2></div>
+                <span class="price-tag" style="background: var(--box-bg); color: var(--text-muted); border-color: var(--border-color);">คลิกเพื่อดูข้อมูล</span>
+            </div>
+            <div id="full-ranking-container" style="max-width: 800px; margin: 0 auto;"></div>
+        </div>
     </div>
 
     <!-- Script ครบชุด -->
