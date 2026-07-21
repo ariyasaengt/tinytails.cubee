@@ -17,6 +17,7 @@
             --text-muted: #a1a1aa;
             --border-color: #27272a;
             --coin-color: #fbbf24; 
+            --ruby-color: #f43f5e;
             --thb-color: #ef4444; 
             --special-color: #8b5cf6;
             --primary-blue: #fbbf24;
@@ -32,6 +33,7 @@
             --text-muted: #64748b;
             --border-color: #e2e8f0;
             --coin-color: #10b981; 
+            --ruby-color: #e11d48;
             --thb-color: #ef4444; 
             --special-color: #8b5cf6;
             --primary-blue: #3b82f6;
@@ -61,17 +63,16 @@
         .page-section.show { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .category-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; margin-top: 30px; margin-bottom: 25px; }
+        .category-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; margin-top: 30px; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
         .category-title h2 { font-size: 1.8rem; font-weight: 800; margin: 0; color: var(--text-main); }
         
+        .price-tags-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .price-tag-wrapper { display: flex; align-items: center; gap: 8px; }
-        .price-tag { font-size: 1.1rem; font-weight: 600; background: var(--card-bg); padding: 6px 16px; border-radius: 30px; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 6px; }
+        .price-tag { font-size: 1.05rem; font-weight: 600; background: var(--card-bg); padding: 6px 16px; border-radius: 30px; border: 1px solid var(--border-color); display: inline-flex; align-items: center; gap: 6px; }
         .price-coin { color: var(--coin-color); border-left: 4px solid var(--coin-color); }
-        .price-thb { color: var(--thb-color); border-left: 4px solid var(--thb-color); }
-        .price-special { color: var(--special-color); border-left: 4px solid var(--special-color); }
+        .price-ruby { color: var(--ruby-color); border-left: 4px solid var(--ruby-color); }
         
-        /* ปุ่มแก้ไขราคาสำหรับแอดมิน */
-        .btn-edit-price { display: none; background: var(--box-bg); color: var(--text-muted); border: 1px solid var(--border-color); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 0.9rem; align-items: center; justify-content: center; transition: 0.2s; }
+        .btn-edit-price { display: none; background: var(--box-bg); color: var(--text-muted); border: 1px solid var(--border-color); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 0.9rem; align-items: center; justify-content: center; transition: 0.2s; }
         .btn-edit-price:hover { background: var(--coin-color); color: #000; border-color: var(--coin-color); }
 
         .btn-add { display: none; background: var(--coin-color); color: #000; border: none; padding: 10px 20px; border-radius: 12px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: 0.2s; margin-bottom: 20px; font-family: inherit; }
@@ -242,8 +243,13 @@
         <div id="tier1" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2>⭐ Tier 1 Cubee</h2></div>
-                <div class="price-tag-wrapper">
-                    <span class="price-tag price-coin" id="price-text-tier1">ราคา: 7,000 คอยน์</span>
+                <div class="price-tags-group">
+                    <div class="price-tag-wrapper">
+                        <span class="price-tag price-coin" id="price-coin-tier1">ราคา: 7,000 Coin</span>
+                    </div>
+                    <div class="price-tag-wrapper" id="wrap-ruby-tier1" style="display:none;">
+                        <span class="price-tag price-ruby" id="price-ruby-tier1">ราคา: 0 Ruby</span>
+                    </div>
                     <button class="btn-edit-price" id="btn-edit-tier1" onclick="openEditPriceModal('tier1', 'Tier 1 Cubee')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
                 </div>
             </div>
@@ -255,8 +261,13 @@
         <div id="tier2" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2>🌟 Tier 2 Cubee</h2></div>
-                <div class="price-tag-wrapper">
-                    <span class="price-tag price-coin" id="price-text-tier2">ราคา: 15,000 คอยน์</span>
+                <div class="price-tags-group">
+                    <div class="price-tag-wrapper">
+                        <span class="price-tag price-coin" id="price-coin-tier2">ราคา: 15,000 Coin</span>
+                    </div>
+                    <div class="price-tag-wrapper" id="wrap-ruby-tier2" style="display:none;">
+                        <span class="price-tag price-ruby" id="price-ruby-tier2">ราคา: 0 Ruby</span>
+                    </div>
                     <button class="btn-edit-price" id="btn-edit-tier2" onclick="openEditPriceModal('tier2', 'Tier 2 Cubee')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
                 </div>
             </div>
@@ -268,8 +279,13 @@
         <div id="tier3" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2>💎 Tier 3 Cubee</h2></div>
-                <div class="price-tag-wrapper">
-                    <span class="price-tag price-coin" id="price-text-tier3">ราคา: 30,000 คอยน์</span>
+                <div class="price-tags-group">
+                    <div class="price-tag-wrapper">
+                        <span class="price-tag price-coin" id="price-coin-tier3">ราคา: 30,000 Coin</span>
+                    </div>
+                    <div class="price-tag-wrapper" id="wrap-ruby-tier3" style="display:none;">
+                        <span class="price-tag price-ruby" id="price-ruby-tier3">ราคา: 0 Ruby</span>
+                    </div>
                     <button class="btn-edit-price" id="btn-edit-tier3" onclick="openEditPriceModal('tier3', 'Tier 3 Cubee')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
                 </div>
             </div>
@@ -281,8 +297,13 @@
         <div id="sweet" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2 style="color: #db2777;">🍬 SWEET CUBEE Gacha</h2></div>
-                <div class="price-tag-wrapper">
-                    <span class="price-tag price-thb" id="price-text-sweet">ราคา: 49.- บาท</span>
+                <div class="price-tags-group">
+                    <div class="price-tag-wrapper">
+                        <span class="price-tag price-coin" id="price-coin-sweet">ราคา: 0 Coin</span>
+                    </div>
+                    <div class="price-tag-wrapper" id="wrap-ruby-sweet" style="display:none;">
+                        <span class="price-tag price-ruby" id="price-ruby-sweet">ราคา: 0 Ruby</span>
+                    </div>
                     <button class="btn-edit-price" id="btn-edit-sweet" onclick="openEditPriceModal('sweet', 'SWEET CUBEE Gacha')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
                 </div>
             </div>
@@ -294,8 +315,13 @@
         <div id="huge" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2 style="color: #dc2626;">🔥 HUGE CUBEE Gacha</h2></div>
-                <div class="price-tag-wrapper">
-                    <span class="price-tag price-thb" id="price-text-huge">ราคา: 449.- บาท</span>
+                <div class="price-tags-group">
+                    <div class="price-tag-wrapper">
+                        <span class="price-tag price-coin" id="price-coin-huge">ราคา: 0 Coin</span>
+                    </div>
+                    <div class="price-tag-wrapper" id="wrap-ruby-huge" style="display:none;">
+                        <span class="price-tag price-ruby" id="price-ruby-huge">ราคา: 0 Ruby</span>
+                    </div>
                     <button class="btn-edit-price" id="btn-edit-huge" onclick="openEditPriceModal('huge', 'HUGE CUBEE Gacha')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
                 </div>
             </div>
@@ -307,8 +333,13 @@
         <div id="special" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2 style="color: var(--special-color);">✨ SPECIAL CUBEE</h2></div>
-                <div class="price-tag-wrapper">
-                    <span class="price-tag price-special" id="price-text-special">กิจกรรมสปาว</span>
+                <div class="price-tags-group">
+                    <div class="price-tag-wrapper">
+                        <span class="price-tag price-coin" id="price-coin-special">ราคา: 0 Coin</span>
+                    </div>
+                    <div class="price-tag-wrapper" id="wrap-ruby-special" style="display:none;">
+                        <span class="price-tag price-ruby" id="price-ruby-special">ราคา: 0 Ruby</span>
+                    </div>
                     <button class="btn-edit-price" id="btn-edit-special" onclick="openEditPriceModal('special', 'SPECIAL CUBEE')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
                 </div>
             </div>
@@ -328,7 +359,7 @@
         </div>
     </div>
 
-    <!-- 🌟 ป๊อปอัพแก้ไขราคาหมวดหมู่ -->
+    <!-- 🌟 ป๊อปอัพแก้ไขราคาหมวดหมู่ (แยก Coin และ Ruby) -->
     <div id="priceModal" class="modal">
         <div class="modal-content" style="max-width: 400px;">
             <button class="close-btn" onclick="closeModal('priceModal')">&times;</button>
@@ -336,8 +367,13 @@
             <input type="hidden" id="edit-price-category">
             
             <div class="form-group" style="margin-top: 15px;">
-                <label>ข้อความราคาใหม่ (เช่น ราคา: 5,000 คอยน์ หรือ 39.- บาท)</label>
-                <input type="text" id="edit-price-input" placeholder="ระบุราคาใหม่ที่นี่...">
+                <label>🪙 ราคา Coin (ใส่เฉพาะตัวเลข เช่น 7000)</label>
+                <input type="text" id="edit-coin-input" placeholder="เช่น 7000 (เว้นว่างถ้าไม่ใช้)">
+            </div>
+
+            <div class="form-group">
+                <label>💎 ราคา Ruby (ใส่เฉพาะตัวเลข เช่น 50)</label>
+                <input type="text" id="edit-ruby-input" placeholder="เช่น 50 (เว้นว่างถ้าไม่ใช้)">
             </div>
 
             <button class="btn-save" onclick="saveCategoryPrice()">💾 บันทึกราคาใหม่</button>
@@ -460,7 +496,7 @@
                 <div class="form-group"><label>กำลังผลิต (ชิ้น/รอบ)</label><input type="text" id="e-prod" placeholder="เช่น 2" oninput="autoCalculate()"></div>
                 <div class="form-group"><label>ใช้เวลา (วินาที/รอบ)</label><input type="text" id="e-time" placeholder="เช่น 60" oninput="autoCalculate()"></div>
                 <div class="form-group"><label>ความจุสูงสุด</label><input type="text" id="e-max" placeholder="เช่น 120"></div>
-                <div class="form-group"><label>ราคาขาย (คอยน์/ชิ้น)</label><input type="text" id="e-price" placeholder="เช่น 25" oninput="autoCalculate()"></div>
+                <div class="form-group"><label>ราคาขาย (Coin/ชิ้น)</label><input type="text" id="e-price" placeholder="เช่น 25" oninput="autoCalculate()"></div>
                 <div class="form-group"><label>ผลิตได้ (1 ชม.)</label><input type="text" id="e-hrQty" placeholder="จะคำนวณให้อัตโนมัติ" readonly style="background:#09090b; color:var(--text-muted);"></div>
                 <div class="form-group"><label>รายได้ (1 ชม.)</label><input type="text" id="e-hrCoin" placeholder="จะคำนวณให้อัตโนมัติ" readonly style="background:#09090b; color:var(--text-muted);"></div>
                 <div class="form-group"><label>รอบเติม (1 ช่อง)</label><input type="text" id="e-refill1" placeholder="จะคำนวณให้อัตโนมัติ" readonly style="background:#09090b; color:var(--text-muted);"></div>
@@ -502,7 +538,7 @@
         const auth = firebase.auth(); 
 
         let cubeeDb = [];
-        let categoryPrices = {}; // เก็บข้อมูลราคาหมวดหมู่
+        let categoryPrices = {}; 
         let searchText = ''; 
         let currentUser = null; 
 
@@ -577,7 +613,6 @@
             }
         }
 
-        // โหลดข้อมูลไอเทม Cubee
         db.ref('tinytails_db').on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -588,7 +623,6 @@
             renderUI();
         });
 
-        // โหลดข้อมูลราคาหมวดหมู่จาก Firebase
         db.ref('category_prices').on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -599,18 +633,37 @@
 
         function updateCategoryPricesUI() {
             const defaults = {
-                tier1: "ราคา: 7,000 คอยน์",
-                tier2: "ราคา: 15,000 คอยน์",
-                tier3: "ราคา: 30,000 คอยน์",
-                sweet: "ราคา: 49.- บาท",
-                huge: "ราคา: 449.- บาท",
-                special: "กิจกรรมสปาว"
+                tier1: { coin: "7,000", ruby: "" },
+                tier2: { coin: "15,000", ruby: "" },
+                tier3: { coin: "30,000", ruby: "" },
+                sweet: { coin: "", ruby: "" },
+                huge: { coin: "", ruby: "" },
+                special: { coin: "", ruby: "" }
             };
 
             ['tier1', 'tier2', 'tier3', 'sweet', 'huge', 'special'].forEach(cat => {
-                let el = document.getElementById(`price-text-${cat}`);
-                if (el) {
-                    el.innerText = categoryPrices[cat] || defaults[cat];
+                let pData = categoryPrices[cat] || defaults[cat];
+                
+                let coinEl = document.getElementById(`price-coin-${cat}`);
+                let rubyEl = document.getElementById(`price-ruby-${cat}`);
+                let rubyWrap = document.getElementById(`wrap-ruby-${cat}`);
+
+                if (coinEl) {
+                    if (pData.coin && pData.coin.trim() !== "") {
+                        coinEl.innerText = `ราคา: ${pData.coin} Coin`;
+                        coinEl.parentElement.style.display = 'flex';
+                    } else {
+                        coinEl.parentElement.style.display = 'none';
+                    }
+                }
+
+                if (rubyEl && rubyWrap) {
+                    if (pData.ruby && pData.ruby.trim() !== "") {
+                        rubyEl.innerText = `ราคา: ${pData.ruby} Ruby`;
+                        rubyWrap.style.display = 'flex';
+                    } else {
+                        rubyWrap.style.display = 'none';
+                    }
                 }
             });
         }
@@ -620,8 +673,9 @@
             document.getElementById('edit-price-category').value = category;
             document.getElementById('priceModalTitle').innerText = `🏷️ แก้ไขราคา: ${titleName}`;
             
-            let currentText = document.getElementById(`price-text-${category}`).innerText;
-            document.getElementById('edit-price-input').value = currentText;
+            let pData = categoryPrices[category] || { coin: '', ruby: '' };
+            document.getElementById('edit-coin-input').value = pData.coin || '';
+            document.getElementById('edit-ruby-input').value = pData.ruby || '';
             
             document.getElementById('priceModal').style.display = 'flex';
         }
@@ -629,14 +683,15 @@
         function saveCategoryPrice() {
             if (!currentUser) return alert('โปรดเข้าสู่ระบบก่อนทำการบันทึกครับ 🔒');
             let cat = document.getElementById('edit-price-category').value;
-            let newPriceText = document.getElementById('edit-price-input').value;
+            let coinVal = document.getElementById('edit-coin-input').value;
+            let rubyVal = document.getElementById('edit-ruby-input').value;
 
-            if (!newPriceText) {
-                alert('กรุณากรอกข้อมูลราคา');
-                return;
-            }
+            let priceObject = {
+                coin: coinVal,
+                ruby: rubyVal
+            };
 
-            db.ref('category_prices/' + cat).set(newPriceText).then(() => {
+            db.ref('category_prices/' + cat).set(priceObject).then(() => {
                 closeModal('priceModal');
                 showToast('อัปเดตราคาหมวดหมู่เรียบร้อยแล้ว! ✨');
             }).catch(err => {
@@ -721,7 +776,7 @@
                             <div class="stat-rank-name">${item.name}</div>
                             <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 3px;">📦 ผลผลิต: ${item.itemName}</div>
                         </div>
-                        <div class="stat-rank-val" style="color: var(--coin-color);">${appendUnit(item.price, 'คอยน์')}</div>
+                        <div class="stat-rank-val" style="color: var(--coin-color);">${appendUnit(item.price, 'Coin')}</div>
                     </div>
                 `;
             });
@@ -761,7 +816,7 @@
 
         function appendUnit(val, unit) {
             if (!val || val === '-') return '-';
-            let cleanVal = String(val).replace('ชิ้น/รอบ', '').replace('คอยน์/ชิ้น', '').replace('คอยน์', '').replace('วินาที/รอบ', '').trim();
+            let cleanVal = String(val).replace('ชิ้น/รอบ', '').replace('Coin/ชิ้น', '').replace('Coin', '').replace('วินาที/รอบ', '').trim();
             return `${cleanVal} ${unit}`;
         }
 
@@ -777,7 +832,7 @@
             document.getElementById('v-prod').innerText = appendUnit(data.prod, 'ชิ้น/รอบ');
             document.getElementById('v-time').innerText = appendUnit(data.time, 'วินาที/รอบ');
             document.getElementById('v-max').innerText = data.max || '-';
-            document.getElementById('v-price').innerText = appendUnit(data.price, 'คอยน์/ชิ้น'); 
+            document.getElementById('v-price').innerText = appendUnit(data.price, 'Coin/ชิ้น'); 
             
             document.getElementById('v-hrQty').innerText = data.hrQty || '-';
             document.getElementById('v-hrCoin').innerText = data.hrCoin || '-';
