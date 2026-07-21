@@ -133,6 +133,7 @@
         .price-tag { font-size: 1.05rem; font-weight: 600; background: var(--card-bg); padding: 6px 16px; border-radius: 30px; border: 1px solid var(--border-color); display: inline-flex; align-items: center; gap: 6px; }
         .price-coin { border-left: 4px solid var(--coin-color); color: var(--coin-color); }
         .price-ruby { border-left: 4px solid var(--ruby-color); color: var(--ruby-color); }
+        .price-thb { border-left: 4px solid var(--thb-color); color: var(--thb-color); }
         
         .btn-edit-price { display: none; background: var(--box-bg); color: var(--text-muted); border: 1px solid var(--border-color); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 0.9rem; align-items: center; justify-content: center; transition: 0.2s; }
         .btn-edit-price:hover { background: var(--primary-yellow); color: #000; border-color: var(--primary-yellow); }
@@ -344,6 +345,9 @@
                     <div class="price-tag-wrapper" id="wrap-ruby-tier1" style="display:none;">
                         <span class="price-tag price-ruby" id="price-ruby-tier1">ราคา: 0 Ruby</span>
                     </div>
+                    <div class="price-tag-wrapper" id="wrap-thb-tier1" style="display:none;">
+                        <span class="price-tag price-thb" id="price-thb-tier1">ราคา: 0 บาท (ซื้อผ่านเว็บไซต์ TinyTails MC - Store เท่านั้น)</span>
+                    </div>
                     <button class="btn-edit-price" id="btn-edit-tier1" onclick="openEditPriceModal('tier1', 'Tier 1 Cubee')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
                 </div>
             </div>
@@ -361,6 +365,9 @@
                     </div>
                     <div class="price-tag-wrapper" id="wrap-ruby-tier2" style="display:none;">
                         <span class="price-tag price-ruby" id="price-ruby-tier2">ราคา: 0 Ruby</span>
+                    </div>
+                    <div class="price-tag-wrapper" id="wrap-thb-tier2" style="display:none;">
+                        <span class="price-tag price-thb" id="price-thb-tier2">ราคา: 0 บาท (ซื้อผ่านเว็บไซต์ TinyTails MC - Store เท่านั้น)</span>
                     </div>
                     <button class="btn-edit-price" id="btn-edit-tier2" onclick="openEditPriceModal('tier2', 'Tier 2 Cubee')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
                 </div>
@@ -380,6 +387,9 @@
                     <div class="price-tag-wrapper" id="wrap-ruby-tier3" style="display:none;">
                         <span class="price-tag price-ruby" id="price-ruby-tier3">ราคา: 0 Ruby</span>
                     </div>
+                    <div class="price-tag-wrapper" id="wrap-thb-tier3" style="display:none;">
+                        <span class="price-tag price-thb" id="price-thb-tier3">ราคา: 0 บาท (ซื้อผ่านเว็บไซต์ TinyTails MC - Store เท่านั้น)</span>
+                    </div>
                     <button class="btn-edit-price" id="btn-edit-tier3" onclick="openEditPriceModal('tier3', 'Tier 3 Cubee')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
                 </div>
             </div>
@@ -397,6 +407,9 @@
                     </div>
                     <div class="price-tag-wrapper" id="wrap-ruby-sweet" style="display:none;">
                         <span class="price-tag price-ruby" id="price-ruby-sweet">ราคา: 0 Ruby</span>
+                    </div>
+                    <div class="price-tag-wrapper" id="wrap-thb-sweet" style="display:none;">
+                        <span class="price-tag price-thb" id="price-thb-sweet">ราคา: 0 บาท (ซื้อผ่านเว็บไซต์ TinyTails MC - Store เท่านั้น)</span>
                     </div>
                     <button class="btn-edit-price" id="btn-edit-sweet" onclick="openEditPriceModal('sweet', 'SWEET CUBEE Gacha')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
                 </div>
@@ -416,6 +429,9 @@
                     <div class="price-tag-wrapper" id="wrap-ruby-huge" style="display:none;">
                         <span class="price-tag price-ruby" id="price-ruby-huge">ราคา: 0 Ruby</span>
                     </div>
+                    <div class="price-tag-wrapper" id="wrap-thb-huge" style="display:none;">
+                        <span class="price-tag price-thb" id="price-thb-huge">ราคา: 0 บาท (ซื้อผ่านเว็บไซต์ TinyTails MC - Store เท่านั้น)</span>
+                    </div>
                     <button class="btn-edit-price" id="btn-edit-huge" onclick="openEditPriceModal('huge', 'HUGE CUBEE Gacha')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
                 </div>
             </div>
@@ -433,6 +449,9 @@
                     </div>
                     <div class="price-tag-wrapper" id="wrap-ruby-special" style="display:none;">
                         <span class="price-tag price-ruby" id="price-ruby-special">ราคา: 0 Ruby</span>
+                    </div>
+                    <div class="price-tag-wrapper" id="wrap-thb-special" style="display:none;">
+                        <span class="price-tag price-thb" id="price-thb-special">ราคา: 0 บาท (ซื้อผ่านเว็บไซต์ TinyTails MC - Store เท่านั้น)</span>
                     </div>
                     <button class="btn-edit-price" id="btn-edit-special" onclick="openEditPriceModal('special', 'SPECIAL CUBEE')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
                 </div>
@@ -458,7 +477,7 @@
 
     <!-- ป๊อปอัพแก้ไขราคาหมวดหมู่ -->
     <div id="priceModal" class="modal">
-        <div class="modal-content" style="max-width: 400px;">
+        <div class="modal-content" style="max-width: 420px;">
             <button class="close-btn" onclick="closeModal('priceModal')">&times;</button>
             <h3 class="modal-title" id="priceModalTitle">🏷️ แก้ไขราคาหมวดหมู่</h3>
             <input type="hidden" id="edit-price-category">
@@ -471,6 +490,11 @@
             <div class="form-group">
                 <label>💎 ราคา Ruby (พิมพ์ตัวเลขระบบจะใส่คอมมาให้)</label>
                 <input type="text" id="edit-ruby-input" placeholder="เช่น 50 (เว้นว่างถ้าไม่ใช้)" oninput="formatNumberInput(this)">
+            </div>
+
+            <div class="form-group">
+                <label>💵 ราคา บาท (ซื้อผ่านเว็บไซต์ TinyTails MC - Store เท่านั้น)</label>
+                <input type="text" id="edit-thb-input" placeholder="เช่น 150 (เว้นว่างถ้าไม่ใช้)" oninput="formatNumberInput(this)">
             </div>
 
             <button class="btn-save" onclick="saveCategoryPrice()">💾 บันทึกราคาใหม่</button>
@@ -753,12 +777,12 @@
 
         function updateCategoryPricesUI() {
             const defaults = {
-                tier1: { coin: "7,000", ruby: "" },
-                tier2: { coin: "15,000", ruby: "" },
-                tier3: { coin: "30,000", ruby: "" },
-                sweet: { coin: "", ruby: "" },
-                huge: { coin: "", ruby: "" },
-                special: { coin: "", ruby: "" }
+                tier1: { coin: "7,000", ruby: "", thb: "" },
+                tier2: { coin: "15,000", ruby: "", thb: "" },
+                tier3: { coin: "30,000", ruby: "", thb: "" },
+                sweet: { coin: "", ruby: "", thb: "" },
+                huge: { coin: "", ruby: "", thb: "" },
+                special: { coin: "", ruby: "", thb: "" }
             };
 
             ['tier1', 'tier2', 'tier3', 'sweet', 'huge', 'special'].forEach(cat => {
@@ -767,6 +791,8 @@
                 let coinEl = document.getElementById(`price-coin-${cat}`);
                 let rubyEl = document.getElementById(`price-ruby-${cat}`);
                 let rubyWrap = document.getElementById(`wrap-ruby-${cat}`);
+                let thbEl = document.getElementById(`price-thb-${cat}`);
+                let thbWrap = document.getElementById(`wrap-thb-${cat}`);
 
                 if (coinEl) {
                     if (pData.coin && pData.coin.trim() !== "") {
@@ -787,6 +813,16 @@
                         rubyWrap.style.display = 'none';
                     }
                 }
+
+                if (thbEl && thbWrap) {
+                    if (pData.thb && pData.thb.trim() !== "") {
+                        let formattedThb = formatNumber(pData.thb);
+                        thbEl.innerText = `ราคา: ${formattedThb} บาท (ซื้อผ่านเว็บไซต์ TinyTails MC - Store เท่านั้น)`;
+                        thbWrap.style.display = 'flex';
+                    } else {
+                        thbWrap.style.display = 'none';
+                    }
+                }
             });
         }
 
@@ -795,9 +831,10 @@
             document.getElementById('edit-price-category').value = category;
             document.getElementById('priceModalTitle').innerText = `🏷️ แก้ไขราคา: ${titleName}`;
             
-            let pData = categoryPrices[category] || { coin: '', ruby: '' };
+            let pData = categoryPrices[category] || { coin: '', ruby: '', thb: '' };
             document.getElementById('edit-coin-input').value = formatNumber(pData.coin || '');
             document.getElementById('edit-ruby-input').value = formatNumber(pData.ruby || '');
+            document.getElementById('edit-thb-input').value = formatNumber(pData.thb || '');
             
             document.getElementById('priceModal').style.display = 'flex';
         }
@@ -807,10 +844,12 @@
             let cat = document.getElementById('edit-price-category').value;
             let coinVal = document.getElementById('edit-coin-input').value.replace(/,/g, '');
             let rubyVal = document.getElementById('edit-ruby-input').value.replace(/,/g, '');
+            let thbVal = document.getElementById('edit-thb-input').value.replace(/,/g, '');
 
             let priceObject = {
                 coin: coinVal,
-                ruby: rubyVal
+                ruby: rubyVal,
+                thb: thbVal
             };
 
             db.ref('category_prices/' + cat).set(priceObject).then(() => {
@@ -941,7 +980,7 @@
 
         function appendUnit(val, unit) {
             if (!val || val === '-') return '-';
-            let cleanVal = String(val).replace('ชิ้น/รอบ', '').replace('Coin/ชิ้น', '').replace('Coin', '').replace('Ruby', '').replace('วินาที/รอบ', '').trim();
+            let cleanVal = String(val).replace('ชิ้น/รอบ', '').replace('Coin/ชิ้น', '').replace('Coin', '').replace('Ruby', '').replace('บาท', '').replace('วินาที/รอบ', '').trim();
             return `${formatNumber(cleanVal)} ${unit}`;
         }
 
