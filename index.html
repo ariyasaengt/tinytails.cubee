@@ -19,7 +19,7 @@
             --thb-color: #ef4444; 
             --special-color: #8b5cf6;
             --primary-yellow: #fbbf24;
-            --nav-bg: rgba(24, 24, 27, 0.85);
+            --nav-bg: rgba(24, 24, 27, 0.95);
             --modal-bg: rgba(9, 9, 11, 0.8);
             --box-bg: #09090b;
             --input-readonly-bg: #121214;
@@ -37,7 +37,7 @@
             --thb-color: #ef4444; 
             --special-color: #8b5cf6;
             --primary-yellow: #3b82f6;
-            --nav-bg: rgba(255, 255, 255, 0.8);
+            --nav-bg: rgba(255, 255, 255, 0.95);
             --modal-bg: rgba(15, 23, 42, 0.6);
             --box-bg: #f8fafc;
             --input-readonly-bg: #f1f5f9;
@@ -101,6 +101,109 @@
             background: rgba(251, 191, 36, 0.1);
         }
 
+        .hamburger-btn {
+            display: none;
+            background: var(--nav-btn-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            width: 42px;
+            height: 42px;
+            border-radius: 16px;
+            font-size: 1.2rem;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 150;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .mobile-menu-overlay.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .mobile-menu-drawer {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100%;
+            background: var(--card-bg);
+            border-left: 1px solid var(--border-color);
+            z-index: 160;
+            display: flex;
+            flex-direction: column;
+            padding: 25px 20px;
+            box-sizing: border-box;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+        }
+        .mobile-menu-drawer.show {
+            right: 0;
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .mobile-menu-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .mobile-links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            flex: 1;
+            padding-bottom: 20px;
+        }
+        .mobile-nav-btn {
+            background: var(--box-bg);
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: left;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+        .mobile-nav-btn:hover, .mobile-nav-btn.active {
+            background: var(--primary-yellow);
+            color: #000;
+            border-color: var(--primary-yellow);
+        }
+        body.light-mode .mobile-nav-btn.active { color: #fff; }
+
+        .mobile-menu-footer {
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
         .icon-nav-btn { 
             background-color: var(--nav-btn-bg); 
             color: var(--text-main); 
@@ -121,14 +224,17 @@
             background: var(--primary-yellow); 
             color: #000; 
             border: none; 
-            padding: 10px 24px; 
-            border-radius: 16px; 
+            padding: 12px 24px; 
+            border-radius: 14px; 
             font-weight: 800; 
             cursor: pointer; 
             transition: 0.2s; 
             font-family: inherit; 
             font-size: 0.95rem;
             box-shadow: 0 4px 14px rgba(251, 191, 36, 0.25);
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
         }
         body.light-mode .auth-nav-btn { color: #fff; }
         .auth-nav-btn:hover { opacity: 0.9; }
@@ -312,10 +418,10 @@
         }
 
         @media (max-width: 900px) {
-            .navbar { padding: 12px 15px; justify-content: center; }
-            .nav-center { order: 2; width: 100%; }
-            .nav-left { display: none; }
-            .nav-right { order: 3; }
+            .navbar { padding: 12px 20px; }
+            .nav-center { display: none !important; }
+            .hamburger-btn { display: flex; }
+            .nav-left { font-weight: 800; font-size: 1.1rem; color: var(--text-main); }
         }
 
         @media (max-width: 768px) {
@@ -365,7 +471,9 @@
 <body>
 
     <nav class="navbar">
-        <div class="nav-left"></div>
+        <div class="nav-left">
+            <span>🐾 TINYTAILS</span>
+        </div>
 
         <div class="nav-center" id="navCenterButtons">
             <button class="nav-btn active" onclick="showPage('all', this)">หน้าแรก</button>
@@ -381,9 +489,25 @@
 
         <div class="nav-right">
             <button class="icon-nav-btn" id="themeToggle" onclick="toggleTheme()" title="เปลี่ยนโหมดมืด/สว่าง">🌙</button>
-            <button class="auth-nav-btn" id="authBtn" onclick="openAuthModal()">เข้าสู่ระบบ</button>
+            <button class="auth-nav-btn" id="authBtn" onclick="openAuthModal()" style="display:none;">เข้าสู่ระบบ</button>
+            <button class="hamburger-btn" onclick="toggleMobileMenu()">☰</button>
         </div>
     </nav>
+
+    <!-- มือถือ: เมนูแบบลิ้นชัก (Drawer) -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-menu-drawer" id="mobileMenuDrawer">
+        <div class="mobile-menu-header">
+            <h3 class="mobile-menu-title">📌 เมนูนำทางเว็บไซต์</h3>
+            <button class="close-btn" style="position:static;" onclick="toggleMobileMenu()">&times;</button>
+        </div>
+        <div class="mobile-links-container" id="mobileLinksContainer">
+            <!-- รายการเมนูจะถูกสร้างอัตโนมัติรวมถึงหมวดหมู่ใหม่ -->
+        </div>
+        <div class="mobile-menu-footer">
+            <button class="auth-nav-btn" id="authBtnMobile" onclick="openAuthModal(); toggleMobileMenu();">เข้าสู่ระบบ</button>
+        </div>
+    </div>
 
     <div class="search-container">
         <input type="text" id="searchInput" class="search-box" placeholder="🔍 ค้นหาชื่อ Cubee หรือผลผลิตที่ต้องการ..." oninput="handleSearch()" autocomplete="off" name="search-field">
@@ -797,29 +921,56 @@
         auth.onAuthStateChanged((user) => {
             currentUser = user;
             let authBtn = document.getElementById('authBtn');
+            let authBtnMobile = document.getElementById('authBtnMobile');
             let addBtns = document.querySelectorAll('.btn-add');
             let editPriceBtns = document.querySelectorAll('.btn-edit-price');
             let addCatNavBtn = document.getElementById('addCategoryNavBtn');
             
             if (user) {
-                authBtn.innerText = 'ออกจากระบบ';
-                authBtn.style.background = 'var(--thb-color)';
-                authBtn.style.color = '#fff';
-                authBtn.onclick = logoutUser;
+                if(authBtn) {
+                    authBtn.innerText = 'ออกจากระบบ';
+                    authBtn.style.background = 'var(--thb-color)';
+                    authBtn.style.color = '#fff';
+                    authBtn.style.display = 'block';
+                    authBtn.onclick = logoutUser;
+                }
+                if(authBtnMobile) {
+                    authBtnMobile.innerText = 'ออกจากระบบ';
+                    authBtnMobile.style.background = 'var(--thb-color)';
+                    authBtnMobile.style.color = '#fff';
+                    authBtnMobile.onclick = logoutUser;
+                }
                 addBtns.forEach(btn => btn.style.display = 'block');
                 editPriceBtns.forEach(btn => btn.style.display = 'flex');
                 if(addCatNavBtn) addCatNavBtn.style.display = 'inline-block';
             } else {
-                authBtn.innerText = 'เข้าสู่ระบบ';
-                authBtn.style.background = 'var(--primary-yellow)';
-                authBtn.style.color = (document.body.classList.contains('light-mode')) ? '#fff' : '#000';
-                authBtn.onclick = openAuthModal;
+                if(authBtn) {
+                    authBtn.innerText = 'เข้าสู่ระบบ';
+                    authBtn.style.background = 'var(--primary-yellow)';
+                    authBtn.style.color = (document.body.classList.contains('light-mode')) ? '#fff' : '#000';
+                    authBtn.style.display = 'block';
+                    authBtn.onclick = openAuthModal;
+                }
+                if(authBtnMobile) {
+                    authBtnMobile.innerText = 'เข้าสู่ระบบ';
+                    authBtnMobile.style.background = 'var(--primary-yellow)';
+                    authBtnMobile.style.color = (document.body.classList.contains('light-mode')) ? '#fff' : '#000';
+                    authBtnMobile.onclick = () => { openAuthModal(); toggleMobileMenu(); };
+                }
                 addBtns.forEach(btn => btn.style.display = 'none');
                 editPriceBtns.forEach(btn => btn.style.display = 'none');
                 if(addCatNavBtn) addCatNavBtn.style.display = 'none';
             }
             renderUI();
+            rebuildMobileMenu();
         });
+
+        function toggleMobileMenu() {
+            let drawer = document.getElementById('mobileMenuDrawer');
+            let overlay = document.getElementById('mobileMenuOverlay');
+            drawer.classList.toggle('show');
+            overlay.classList.toggle('show');
+        }
 
         function showToast(msg) {
             let toast = document.getElementById("toast");
@@ -864,7 +1015,12 @@
 
         function logoutUser() {
             if(confirm('ต้องการออกจากระบบใช่หรือไม่?')) {
-                auth.signOut().then(() => showToast('ออกจากระบบเรียบร้อยแล้ว 🔒'));
+                auth.signOut().then(() => {
+                    showToast('ออกจากระบบเรียบร้อยแล้ว 🔒');
+                    if(document.getElementById('mobileMenuDrawer').classList.contains('show')) {
+                        toggleMobileMenu();
+                    }
+                });
             }
         }
 
@@ -891,6 +1047,7 @@
             if (data) {
                 categoryMeta = data;
                 updateCategoryMetaUI();
+                rebuildMobileMenu();
             }
         });
 
@@ -936,6 +1093,72 @@
                     }
                 }
             });
+        }
+
+        function rebuildMobileMenu() {
+            let container = document.getElementById('mobileLinksContainer');
+            if(!container) return;
+            container.innerHTML = '';
+
+            const defaultMeta = {
+                tier1: { name: "Tier 1 Cubee", icon: "⭐" },
+                tier2: { name: "Tier 2 Cubee", icon: "🌟" },
+                tier3: { name: "Tier 3 Cubee", icon: "💎" },
+                sweet: { name: "SWEET CUBEE Gacha", icon: "🍬" },
+                huge: { name: "HUGE CUBEE Gacha", icon: "🔥" },
+                special: { name: "SPECIAL CUBEE", icon: "✨" }
+            };
+
+            let menuList = [
+                { id: 'all', name: 'หน้าแรก', icon: '🏠' },
+                { id: 'tier1', name: categoryMeta['tier1']?.name || defaultMeta['tier1'].name, icon: categoryMeta['tier1']?.icon || defaultMeta['tier1'].icon },
+                { id: 'tier2', name: categoryMeta['tier2']?.name || defaultMeta['tier2'].name, icon: categoryMeta['tier2']?.icon || defaultMeta['tier2'].icon },
+                { id: 'tier3', name: categoryMeta['tier3']?.name || defaultMeta['tier3'].name, icon: categoryMeta['tier3']?.icon || defaultMeta['tier3'].icon },
+                { id: 'sweet', name: categoryMeta['sweet']?.name || defaultMeta['sweet'].name, icon: categoryMeta['sweet']?.icon || defaultMeta['sweet'].icon },
+                { id: 'huge', name: categoryMeta['huge']?.name || defaultMeta['huge'].name, icon: categoryMeta['huge']?.icon || defaultMeta['huge'].icon },
+                { id: 'special', name: categoryMeta['special']?.name || defaultMeta['special'].name, icon: categoryMeta['special']?.icon || defaultMeta['special'].icon }
+            ];
+
+            customCategories.forEach(c => {
+                let meta = categoryMeta[c.id] || c;
+                menuList.push({ id: c.id, name: meta.name, icon: meta.icon || '📁' });
+            });
+
+            menuList.push({ id: 'ranking', name: '🏆 จัดอันดับ', icon: '' });
+
+            menuList.forEach(item => {
+                let btn = document.createElement('button');
+                btn.className = `mobile-nav-btn ${item.id === 'all' ? 'active' : ''}`;
+                btn.id = `mob-btn-${item.id}`;
+                let iconStr = (item.icon && !item.icon.startsWith('http')) ? `${item.icon} ` : '';
+                btn.innerText = `${iconStr}${item.name}`;
+                btn.onclick = () => {
+                    showPage(item.id, null);
+                    highlightMobileNav(item.id);
+                    toggleMobileMenu();
+                };
+                container.appendChild(btn);
+            });
+
+            if (currentUser) {
+                let addCatBtnMob = document.createElement('button');
+                addCatNavBtnMob = document.createElement('button');
+                addCatNavBtnMob.className = 'mobile-nav-btn';
+                addCatNavBtnMob.style.border = '2px dashed var(--primary-yellow)';
+                addCatNavBtnMob.style.color = 'var(--primary-yellow)';
+                addCatNavBtnMob.innerText = '➕ เพิ่มหมวดหมู่ใหม่';
+                addCatNavBtnMob.onclick = () => {
+                    toggleMobileMenu();
+                    openAddCategoryModal();
+                };
+                container.appendChild(addCatNavBtnMob);
+            }
+        }
+
+        function highlightMobileNav(activeId) {
+            document.querySelectorAll('.mobile-nav-btn').forEach(btn => btn.classList.remove('active'));
+            let target = document.getElementById(`mob-btn-${activeId}`);
+            if(target) target.classList.add('active');
         }
 
         function rebuildDynamicCategories() {
@@ -991,6 +1214,7 @@
 
             updateCategoryMetaUI();
             updateCategoryPricesUI();
+            rebuildMobileMenu();
             renderUI();
         }
 
@@ -1278,8 +1502,9 @@
         function showPage(pageId, clickedBtn) {
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             if(clickedBtn) clickedBtn.classList.add('active');
-            let sections = document.querySelectorAll('.page-section');
+            highlightMobileNav(pageId);
             
+            let sections = document.querySelectorAll('.page-section');
             if(pageId === 'all') {
                 sections.forEach(sec => {
                     if(sec.id !== 'ranking') sec.classList.add('show');
