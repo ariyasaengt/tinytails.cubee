@@ -128,6 +128,18 @@
         .category-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; margin-top: 30px; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
         .category-title h2 { font-size: 1.8rem; font-weight: 800; margin: 0; color: var(--text-main); }
         
+        .in-game-notice {
+            font-size: 0.9rem;
+            color: var(--coin-color);
+            font-weight: 600;
+            margin-top: 4px;
+        }
+        .in-game-notice span {
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-left: 6px;
+        }
+
         .price-tags-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .price-tag-wrapper { display: flex; align-items: center; gap: 8px; }
         .price-tag { font-size: 1.05rem; font-weight: 600; background: var(--card-bg); padding: 6px 16px; border-radius: 30px; border: 1px solid var(--border-color); display: inline-flex; align-items: center; gap: 6px; }
@@ -135,6 +147,28 @@
         .price-ruby { border-left: 4px solid var(--ruby-color); color: var(--ruby-color); }
         .price-thb { border-left: 4px solid var(--thb-color); color: var(--thb-color); }
         
+        .store-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #f43f5e, #fbbf24);
+            color: #000;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 800;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.25);
+            transition: 0.2s;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+        .store-link-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(244, 63, 94, 0.35);
+        }
+
         .btn-edit-price { display: none; background: var(--box-bg); color: var(--text-muted); border: 1px solid var(--border-color); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 0.9rem; align-items: center; justify-content: center; transition: 0.2s; }
         .btn-edit-price:hover { background: var(--primary-yellow); color: #000; border-color: var(--primary-yellow); }
 
@@ -337,7 +371,10 @@
         <!-- หมวดหมู่: Tier 1 -->
         <div id="tier1" class="page-section show">
             <div class="category-header">
-                <div class="category-title"><h2>⭐ Tier 1 Cubee</h2></div>
+                <div class="category-title">
+                    <h2 style="margin-bottom: 4px;">⭐ Tier 1 Cubee</h2>
+                    <div class="in-game-notice">ซื้อได้ในเกมเท่านั้น <span>(SERVER IP : play.tinytails.fun - version 1.21.11)</span></div>
+                </div>
                 <div class="price-tags-group">
                     <div class="price-tag-wrapper">
                         <span class="price-tag price-coin" id="price-coin-tier1">ราคา: 7,000 Coin</span>
@@ -358,7 +395,10 @@
         <!-- หมวดหมู่: Tier 2 -->
         <div id="tier2" class="page-section show">
             <div class="category-header">
-                <div class="category-title"><h2>🌟 Tier 2 Cubee</h2></div>
+                <div class="category-title">
+                    <h2 style="margin-bottom: 4px;">🌟 Tier 2 Cubee</h2>
+                    <div class="in-game-notice">ซื้อได้ในเกมเท่านั้น <span>(SERVER IP : play.tinytails.fun - version 1.21.11)</span></div>
+                </div>
                 <div class="price-tags-group">
                     <div class="price-tag-wrapper">
                         <span class="price-tag price-coin" id="price-coin-tier2">ราคา: 15,000 Coin</span>
@@ -379,7 +419,10 @@
         <!-- หมวดหมู่: Tier 3 -->
         <div id="tier3" class="page-section show">
             <div class="category-header">
-                <div class="category-title"><h2>💎 Tier 3 Cubee</h2></div>
+                <div class="category-title">
+                    <h2 style="margin-bottom: 4px;">💎 Tier 3 Cubee</h2>
+                    <div class="in-game-notice">ซื้อได้ในเกมเท่านั้น <span>(SERVER IP : play.tinytails.fun - version 1.21.11)</span></div>
+                </div>
                 <div class="price-tags-group">
                     <div class="price-tag-wrapper">
                         <span class="price-tag price-coin" id="price-coin-tier3">ราคา: 30,000 Coin</span>
@@ -400,7 +443,10 @@
         <!-- หมวดหมู่: SWEET -->
         <div id="sweet" class="page-section show">
             <div class="category-header">
-                <div class="category-title"><h2 style="color: #db2777;">🍬 SWEET CUBEE Gacha</h2></div>
+                <div class="category-title">
+                    <h2 style="color: #db2777; margin-bottom: 5px;">🍬 SWEET CUBEE Gacha</h2>
+                    <a href="https://store.tinytails.fun/store" target="_blank" class="store-link-btn">🛒 ไปที่หน้าเว็บไซต์ TinyTails MC - Store</a>
+                </div>
                 <div class="price-tags-group">
                     <div class="price-tag-wrapper">
                         <span class="price-tag price-coin" id="price-coin-sweet">ราคา: 0 Coin</span>
@@ -421,7 +467,10 @@
         <!-- หมวดหมู่: HUGE -->
         <div id="huge" class="page-section show">
             <div class="category-header">
-                <div class="category-title"><h2 style="color: #dc2626;">🔥 HUGE CUBEE Gacha</h2></div>
+                <div class="category-title">
+                    <h2 style="color: #dc2626; margin-bottom: 5px;">🔥 HUGE CUBEE Gacha</h2>
+                    <a href="https://store.tinytails.fun/store" target="_blank" class="store-link-btn">🛒 ไปที่หน้าเว็บไซต์ TinyTails MC - Store</a>
+                </div>
                 <div class="price-tags-group">
                     <div class="price-tag-wrapper">
                         <span class="price-tag price-coin" id="price-coin-huge">ราคา: 0 Coin</span>
@@ -442,7 +491,10 @@
         <!-- หมวดหมู่: SPECIAL -->
         <div id="special" class="page-section show">
             <div class="category-header">
-                <div class="category-title"><h2 style="color: var(--special-color);">✨ SPECIAL CUBEE</h2></div>
+                <div class="category-title">
+                    <h2 style="color: var(--special-color); margin-bottom: 4px;">✨ SPECIAL CUBEE</h2>
+                    <div class="in-game-notice">ได้รับผ่านการทำกิจกรรมในเซิร์ฟเวอร์เท่านั้น</div>
+                </div>
                 <div class="price-tags-group">
                     <div class="price-tag-wrapper">
                         <span class="price-tag price-coin" id="price-coin-special">ราคา: 0 Coin</span>
