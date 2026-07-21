@@ -42,7 +42,6 @@
 
         body { font-family: 'Kanit', sans-serif; background-color: var(--bg-light); color: var(--text-main); margin: 0; padding: 0; min-height: 100vh; transition: background-color 0.3s, color 0.3s; }
 
-        /* 🌟 Navbar ดีไซน์โครงสร้างกรอบเมนูตามตัวอย่าง (ซ้ายขวาไอคอน, ตรงกลางปุ่มเมนูเทียร์ Cubee) */
         .navbar { 
             display: flex; 
             justify-content: space-between; 
@@ -233,7 +232,7 @@
         @media (max-width: 900px) {
             .navbar { padding: 12px 15px; justify-content: center; }
             .nav-center { order: 2; width: 100%; }
-            .nav-left { order: 1; }
+            .nav-left { display: none; }
             .nav-right { order: 3; }
         }
 
@@ -283,11 +282,9 @@
 </head>
 <body>
 
-    <!-- 🌟 แถบเมนูด้านบน (Navbar) ปรับโครงสร้างกรอบตามแบบ และใช้ชื่อเมนูเดิม (หน้าแรก, Tier 1, Tier 2, Tier 3, SWEET, HUGE, SPECIAL, 🏆 จัดอันดับ) -->
+    <!-- 🌟 แถบเมนูด้านบน (Navbar) เอาตะกร้าออกเรียบร้อย -->
     <nav class="navbar">
-        <div class="nav-left">
-            <button class="icon-nav-btn" onclick="showPage('sweet', document.querySelectorAll('.nav-center .nav-btn')[3])" title="ร้านค้า">🛒</button>
-        </div>
+        <div class="nav-left"></div>
 
         <div class="nav-center">
             <button class="nav-btn active" onclick="showPage('all', this)">หน้าแรก</button>
@@ -437,13 +434,13 @@
             <input type="hidden" id="edit-price-category">
             
             <div class="form-group" style="margin-top: 15px;">
-                <label>🪙 ราคา Coin (ใส่เฉพาะตัวเลข เช่น 7000)</label>
-                <input type="text" id="edit-coin-input" placeholder="เช่น 7000 (เว้นว่างถ้าไม่ใช้)">
+                <label>🪙 ราคา Coin (พิมพ์ตัวเลขระบบจะใส่คอมมาให้)</label>
+                <input type="text" id="edit-coin-input" placeholder="เช่น 7000 (เว้นว่างถ้าไม่ใช้)" oninput="formatNumberInput(this)">
             </div>
 
             <div class="form-group">
-                <label>💎 ราคา Ruby (ใส่เฉพาะตัวเลข เช่น 50)</label>
-                <input type="text" id="edit-ruby-input" placeholder="เช่น 50 (เว้นว่างถ้าไม่ใช้)">
+                <label>💎 ราคา Ruby (พิมพ์ตัวเลขระบบจะใส่คอมมาให้)</label>
+                <input type="text" id="edit-ruby-input" placeholder="เช่น 50 (เว้นว่างถ้าไม่ใช้)" oninput="formatNumberInput(this)">
             </div>
 
             <button class="btn-save" onclick="saveCategoryPrice()">💾 บันทึกราคาใหม่</button>
@@ -701,6 +698,30 @@
             }
         });
 
+        // ฟังก์ชันจัดรูปแบบตัวเลขหลักพัน (ใส่คอมมา)
+        function formatNumber(numStr) {
+            if (!numStr) return '';
+            let cleanNum = String(numStr).replace(/[^\d]/g, '');
+            if (cleanNum === '') return '';
+            return Number(cleanNum).toLocaleString('en-US');
+        }
+
+        function formatNumberInput(inputEl) {
+            let cursorPosition = inputEl.selectionStart;
+            let originalLength = inputEl.value.length;
+            
+            let cleanVal = inputEl.value.replace(/[^\d]/g, '');
+            if (cleanVal !== '') {
+                inputEl.value = Number(cleanVal).toLocaleString('en-US');
+            } else {
+                inputEl.value = '';
+            }
+
+            let newLength = inputEl.value.length;
+            cursorPosition = Math.max(0, cursorPosition + (newLength - originalLength));
+            inputEl.setSelectionRange(cursorPosition, cursorPosition);
+        }
+
         function updateCategoryPricesUI() {
             const defaults = {
                 tier1: { coin: "7,000", ruby: "" },
@@ -720,7 +741,8 @@
 
                 if (coinEl) {
                     if (pData.coin && pData.coin.trim() !== "") {
-                        coinEl.innerText = `ราคา: ${pData.coin} Coin`;
+                        let formattedCoin = formatNumber(pData.coin);
+                        coinEl.innerText = `ราคา: ${formattedCoin} Coin`;
                         coinEl.parentElement.style.display = 'flex';
                     } else {
                         coinEl.parentElement.style.display = 'none';
@@ -729,7 +751,8 @@
 
                 if (rubyEl && rubyWrap) {
                     if (pData.ruby && pData.ruby.trim() !== "") {
-                        rubyEl.innerText = `ราคา: ${pData.ruby} Ruby`;
+                        let formattedRuby = formatNumber(pData.ruby);
+                        rubyEl.innerText = `ราคา: ${formattedRuby} Ruby`;
                         rubyWrap.style.display = 'flex';
                     } else {
                         rubyWrap.style.display = 'none';
@@ -744,8 +767,8 @@
             document.getElementById('priceModalTitle').innerText = `🏷️ แก้ไขราคา: ${titleName}`;
             
             let pData = categoryPrices[category] || { coin: '', ruby: '' };
-            document.getElementById('edit-coin-input').value = pData.coin || '';
-            document.getElementById('edit-ruby-input').value = pData.ruby || '';
+            document.getElementById('edit-coin-input').value = formatNumber(pData.coin || '');
+            document.getElementById('edit-ruby-input').value = formatNumber(pData.ruby || '');
             
             document.getElementById('priceModal').style.display = 'flex';
         }
@@ -753,8 +776,8 @@
         function saveCategoryPrice() {
             if (!currentUser) return alert('โปรดเข้าสู่ระบบก่อนทำการบันทึกครับ 🔒');
             let cat = document.getElementById('edit-price-category').value;
-            let coinVal = document.getElementById('edit-coin-input').value;
-            let rubyVal = document.getElementById('edit-ruby-input').value;
+            let coinVal = document.getElementById('edit-coin-input').value.replace(/,/g, '');
+            let rubyVal = document.getElementById('edit-ruby-input').value.replace(/,/g, '');
 
             let priceObject = {
                 coin: coinVal,
@@ -887,7 +910,8 @@
         function appendUnit(val, unit) {
             if (!val || val === '-') return '-';
             let cleanVal = String(val).replace('ชิ้น/รอบ', '').replace('Coin/ชิ้น', '').replace('Coin', '').replace('วินาที/รอบ', '').trim();
-            return `${cleanVal} ${unit}`;
+            let formatted = formatNumber(cleanVal);
+            return `${formatted} ${unit}`;
         }
 
         function openViewModal(id) {
@@ -931,16 +955,16 @@
                 let hrQty = cyclesPerHour * prod; 
                 let hrCoin = hrQty * price; 
                 
-                document.getElementById('e-hrQty').value = Math.floor(hrQty);
-                document.getElementById('e-hrCoin').value = Math.floor(hrCoin);
+                document.getElementById('e-hrQty').value = formatNumber(Math.floor(hrQty));
+                document.getElementById('e-hrCoin').value = formatNumber(Math.floor(hrCoin));
             } else {
                 document.getElementById('e-hrQty').value = '';
                 document.getElementById('e-hrCoin').value = '';
             }
 
             if (food > 0) {
-                document.getElementById('e-refill1').value = Math.floor(food / eat);
-                document.getElementById('e-refill2').value = Math.floor((food * 2) / eat);
+                document.getElementById('e-refill1').value = formatNumber(Math.floor(food / eat));
+                document.getElementById('e-refill2').value = formatNumber(Math.floor((food * 2) / eat));
             } else {
                 document.getElementById('e-refill1').value = '';
                 document.getElementById('e-refill2').value = '';
