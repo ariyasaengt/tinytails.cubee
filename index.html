@@ -63,6 +63,24 @@
         .nav-left, .nav-right { display: flex; align-items: center; gap: 10px; }
         .nav-center { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; flex: 1; }
 
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .brand-logo {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+        .brand-text {
+            font-weight: 800;
+            font-size: 1.15rem;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+        }
+
         .nav-btn { 
             background-color: var(--nav-btn-bg); 
             color: var(--text-muted); 
@@ -421,7 +439,6 @@
             .navbar { padding: 12px 20px; }
             .nav-center { display: none !important; }
             .hamburger-btn { display: flex; }
-            .nav-left { font-weight: 800; font-size: 1.1rem; color: var(--text-main); }
         }
 
         @media (max-width: 768px) {
@@ -472,7 +489,10 @@
 
     <nav class="navbar">
         <div class="nav-left">
-            <span>🐾 TINYTAILS</span>
+            <div class="brand-container">
+                <img src="https://img2.pic.in.th/icon88e0717927d5a748.png" class="brand-logo" alt="TinyTails Logo">
+                <span class="brand-text">TINYTAILS</span>
+            </div>
         </div>
 
         <div class="nav-center" id="navCenterButtons">
@@ -1141,8 +1161,7 @@
             });
 
             if (currentUser) {
-                let addCatBtnMob = document.createElement('button');
-                addCatNavBtnMob = document.createElement('button');
+                let addCatNavBtnMob = document.createElement('button');
                 addCatNavBtnMob.className = 'mobile-nav-btn';
                 addCatNavBtnMob.style.border = '2px dashed var(--primary-yellow)';
                 addCatNavBtnMob.style.color = 'var(--primary-yellow)';
