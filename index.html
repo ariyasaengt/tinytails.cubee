@@ -439,6 +439,7 @@
             .navbar { padding: 12px 20px; }
             .nav-center { display: none !important; }
             .hamburger-btn { display: flex; }
+            #authBtn { display: none !important; }
         }
 
         @media (max-width: 768px) {
@@ -509,7 +510,7 @@
 
         <div class="nav-right">
             <button class="icon-nav-btn" id="themeToggle" onclick="toggleTheme()" title="เปลี่ยนโหมดมืด/สว่าง">🌙</button>
-            <button class="auth-nav-btn" id="authBtn" onclick="openAuthModal()" style="display:none;">เข้าสู่ระบบ</button>
+            <button class="auth-nav-btn" id="authBtn" onclick="openAuthModal()">เข้าสู่ระบบ</button>
             <button class="hamburger-btn" onclick="toggleMobileMenu()">☰</button>
         </div>
     </nav>
