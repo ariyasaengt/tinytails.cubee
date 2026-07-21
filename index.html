@@ -142,6 +142,37 @@
         .stat-rank-name { font-weight: 800; font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main); }
         .stat-rank-val { font-weight: 800; font-size: 1.2rem; text-align: right; }
 
+        /* 🌟 ดีไซน์ป๊อปอัพล็อกอินสไตล์ Minecraft */
+        .mc-auth-box { background: #18181b !important; color: #f4f4f5; border: 1px solid #27272a !important; border-radius: 20px; max-width: 440px !important; padding: 25px !important; box-sizing: border-box; font-family: 'Kanit', sans-serif; }
+        .mc-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #27272a; padding-bottom: 15px; margin-bottom: 20px; }
+        .mc-title-group { display: flex; align-items: center; gap: 12px; }
+        .mc-icon-badge { width: 42px; height: 42px; background: #fbbf24; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #000; font-weight: bold; }
+        .mc-title { font-size: 1.25rem; font-weight: 800; margin: 0; color: #fff; line-height: 1.2; }
+        .mc-subtitle { font-size: 0.8rem; color: #a1a1aa; margin: 0; }
+
+        .version-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #09090b; padding: 5px; border-radius: 14px; border: 1px solid #27272a; margin-bottom: 20px; }
+        .v-tab { background: transparent; border: none; padding: 10px; color: #71717a; font-weight: 600; font-size: 0.9rem; border-radius: 10px; cursor: pointer; transition: 0.2s; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .v-tab.active { background: #27272a; color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+
+        .login-body-grid { display: grid; grid-template-columns: 90px 1fr; gap: 15px; align-items: center; margin-bottom: 15px; }
+        .skin-preview-box { width: 90px; height: 130px; background: #09090b; border: 1px solid #27272a; border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+        .skin-preview-box img { max-height: 120px; object-fit: contain; image-rendering: pixelated; }
+
+        .mc-form-group { margin-bottom: 12px; text-align: left; }
+        .mc-form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: #a1a1aa; margin-bottom: 6px; }
+        .mc-input-wrapper { position: relative; display: flex; align-items: center; }
+        .mc-input { width: 100%; padding: 12px 14px; background: #09090b; border: 1px solid #27272a; border-radius: 12px; color: #fff; font-size: 0.95rem; font-family: inherit; outline: none; transition: 0.2s; box-sizing: border-box; }
+        .mc-input:focus { border-color: #fbbf24; box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.15); }
+        .password-toggle-btn { position: absolute; right: 12px; background: none; border: none; color: #71717a; cursor: pointer; font-size: 1rem; }
+
+        .mc-footer-actions { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; gap: 15px; }
+        .btn-cancel-mc { background: none; border: none; color: #a1a1aa; font-weight: 600; font-size: 0.95rem; cursor: pointer; font-family: inherit; }
+        .btn-cancel-mc:hover { color: #fff; }
+        .btn-submit-mc { flex: 1; background: #fbbf24; color: #000; border: none; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 1rem; cursor: pointer; transition: 0.2s; font-family: inherit; box-shadow: 0 4px 14px rgba(251, 191, 36, 0.3); text-align: center; }
+        .btn-submit-mc:hover { background: #f59e0b; transform: translateY(-1px); }
+        .mc-hint-footer { text-align: center; margin-top: 15px; font-size: 0.8rem; color: #71717a; }
+        .mc-hint-footer code { color: #fbbf24; background: #27272a; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+
         @media (max-width: 768px) {
             .navbar { padding: 10px; gap: 6px; }
             .nav-btn, .auth-nav-btn { padding: 8px 12px; font-size: 0.8rem; }
@@ -192,6 +223,7 @@
         <button class="nav-btn active" onclick="showPage('all', this)">หน้าแรก</button>
         <button class="nav-btn" onclick="showPage('tier1', this)">Tier 1</button>
         <button class="nav-btn" onclick="showPage('tier2', this)">Tier 2</button>
+        <button class="nav-btn" onclick="showPage('tier3', this)">Tier 3</button>
         <button class="nav-btn" onclick="showPage('sweet', this)">SWEET</button>
         <button class="nav-btn" onclick="showPage('huge', this)">HUGE</button>
         <button class="nav-btn" onclick="showPage('special', this)">SPECIAL</button>
@@ -202,7 +234,8 @@
     </nav>
 
     <div class="search-container">
-        <input type="text" id="searchInput" class="search-box" placeholder="🔍 ค้นหาชื่อ Cubee หรือผลผลิตที่ต้องการ..." oninput="handleSearch()">
+        <!-- ป้องกัน Autofill อีเมลด้วย name และ autocomplete ที่ระบุชัดเจน -->
+        <input type="text" id="searchInput" class="search-box" placeholder="🔍 ค้นหาชื่อ Cubee หรือผลผลิตที่ต้องการ..." oninput="handleSearch()" autocomplete="off" name="search-field">
     </div>
 
     <div class="container">
@@ -224,6 +257,16 @@
             </div>
             <button class="btn-add" onclick="openEditModal(null, 'tier2')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
             <div class="grid" id="grid-tier2"></div>
+        </div>
+
+        <!-- หมวดหมู่: Tier 3 -->
+        <div id="tier3" class="page-section show">
+            <div class="category-header">
+                <div class="category-title"><h2>💎 Tier 3 Cubee</h2></div>
+                <span class="price-tag price-coin">ราคา: 30,000 คอยน์</span>
+            </div>
+            <button class="btn-add" onclick="openEditModal(null, 'tier3')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
+            <div class="grid" id="grid-tier3"></div>
         </div>
 
         <!-- หมวดหมู่: SWEET -->
@@ -268,30 +311,59 @@
         </div>
     </div>
 
-    <!-- 🌟 ป๊อปอัพเข้าสู่ระบบ / สมัครสมาชิก -->
+    <!-- 🌟 ป๊อปอัพเข้าสู่ระบบสไตล์ Minecraft -->
     <div id="authModal" class="modal">
-        <div class="modal-content" style="max-width: 400px;">
-            <button class="close-btn" onclick="closeModal('authModal')">&times;</button>
-            <h3 id="authTitle" class="modal-title">🔑 เข้าสู่ระบบจัดการข้อมูล</h3>
-            <div class="form-group">
-                <label>อีเมล</label>
-                <input type="email" id="authEmail" placeholder="เช่น admin@tinytails.com" autocomplete="off">
-            </div>
-            <div class="form-group">
-                <label>รหัสผ่าน</label>
-                <input type="password" id="authPassword" placeholder="อย่างน้อย 6 ตัวอักษร" autocomplete="off">
-            </div>
+        <div class="modal-content mc-auth-box">
+            <button class="close-btn" onclick="closeModal('authModal')" style="background: #27272a; color: #a1a1aa;">&times;</button>
             
-            <button class="btn-save" id="authSubmitBtn" onclick="processAuth()">เข้าสู่ระบบ</button>
-            
-            <!-- 🌟 ลิงก์ลืมรหัสผ่าน -->
-            <p style="text-align: center; margin-top: 10px; font-size: 0.85rem;">
-                <a href="#" onclick="resetPassword()" style="color: var(--text-muted); text-decoration: underline;">ลืมรหัสผ่านใช่ไหม?</a>
-            </p>
+            <div class="mc-header">
+                <div class="mc-title-group">
+                    <div class="mc-icon-badge">➜</div>
+                    <div>
+                        <h3 id="authTitle" class="mc-title">เข้าสู่ระบบ</h3>
+                        <p class="mc-subtitle">บัญชี Minecraft / AuthMe</p>
+                    </div>
+                </div>
+            </div>
 
-            <p style="text-align: center; margin-top: 15px; font-size: 0.9rem;">
-                <a href="#" id="authToggleLink" onclick="toggleAuthMode()" style="color: var(--primary-blue); font-weight: bold; text-decoration: none;">ยังไม่มีบัญชีใช่ไหม? กดสมัครสมาชิกที่นี่</a>
-            </p>
+            <div style="font-size: 0.85rem; font-weight: 600; color: #a1a1aa; margin-bottom: 8px;">เวอร์ชันเกม</div>
+            <div class="version-tabs">
+                <button type="button" class="v-tab active" id="tabJava" onclick="setGameVersion('java')">
+                    💻 Java Edition
+                </button>
+                <button type="button" class="v-tab" id="tabBedrock" onclick="setGameVersion('bedrock')">
+                    📱 Bedrock Edition
+                </button>
+            </div>
+
+            <div class="login-body-grid">
+                <div class="skin-preview-box" title="ตัวอย่างสกินผู้เล่น">
+                    <img id="skinPreviewImg" src="https://minotar.net/avatar/Steve/100.png" alt="Skin Preview">
+                </div>
+                
+                <div>
+                    <div class="mc-form-group">
+                        <label>ชื่อผู้เล่นในเกม</label>
+                        <input type="text" id="authEmail" class="mc-input" placeholder="JONGJANG1542" autocomplete="off" oninput="updateSkinPreview(this.value)">
+                    </div>
+                    <div class="mc-form-group" style="margin-bottom: 0;">
+                        <label>รหัสผ่าน</label>
+                        <div class="mc-input-wrapper">
+                            <input type="password" id="authPassword" class="mc-input" placeholder="••••••" autocomplete="off">
+                            <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility()">👁️</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mc-footer-actions">
+                <button type="button" class="btn-cancel-mc" onclick="closeModal('authModal')">ยกเลิก</button>
+                <button type="button" class="btn-submit-mc" id="authSubmitBtn" onclick="processAuth()">➜ เข้าสู่ระบบ</button>
+            </div>
+
+            <div class="mc-hint-footer">
+                ใช้ชื่อและรหัสผ่านที่ตั้งไว้ใน <code>/register</code> บนเซิร์ฟเวอร์
+            </div>
         </div>
     </div>
 
@@ -414,7 +486,7 @@
         let cubeeDb = [];
         let searchText = ''; 
         let currentUser = null; 
-        let isLoginMode = true; 
+        let selectedGameVersion = 'java';
 
         auth.onAuthStateChanged((user) => {
             currentUser = user;
@@ -445,20 +517,40 @@
         function openAuthModal() {
             document.getElementById('authEmail').value = '';
             document.getElementById('authPassword').value = '';
+            document.getElementById('skinPreviewImg').src = 'https://minotar.net/avatar/Steve/100.png';
             document.getElementById('authModal').style.display = 'flex';
         }
 
-        function toggleAuthMode() {
-            isLoginMode = !isLoginMode;
-            if (isLoginMode) {
-                document.getElementById('authTitle').innerText = '🔑 เข้าสู่ระบบจัดการข้อมูล';
-                document.getElementById('authSubmitBtn').innerText = 'เข้าสู่ระบบ';
-                document.getElementById('authToggleLink').innerText = 'ยังไม่มีบัญชีใช่ไหม? กดสมัครสมาชิกที่นี่';
+        function setGameVersion(version) {
+            selectedGameVersion = version;
+            let tabJava = document.getElementById('tabJava');
+            let tabBedrock = document.getElementById('tabBedrock');
+            
+            if (version === 'java') {
+                tabJava.classList.add('active');
+                tabBedrock.classList.remove('active');
             } else {
-                document.getElementById('authTitle').innerText = '📝 สมัครสมาชิกใหม่';
-                document.getElementById('authSubmitBtn').innerText = 'สมัครสมาชิก';
-                document.getElementById('authToggleLink').innerText = 'มีบัญชีอยู่แล้ว? กดเข้าสู่ระบบที่นี่';
+                tabBedrock.classList.add('active');
+                tabJava.classList.remove('active');
             }
+        }
+
+        function togglePasswordVisibility() {
+            let passInput = document.getElementById('authPassword');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+            } else {
+                passInput.type = 'password';
+            }
+        }
+
+        function updateSkinPreview(username) {
+            let skinImg = document.getElementById('skinPreviewImg');
+            if (!username || username.trim() === '') {
+                skinImg.src = 'https://minotar.net/avatar/Steve/100.png';
+                return;
+            }
+            skinImg.src = `https://minotar.net/avatar/${encodeURIComponent(username.trim())}/100.png`;
         }
 
         function processAuth() {
@@ -466,57 +558,33 @@
             let pass = document.getElementById('authPassword').value;
 
             if (!email || !pass) {
-                alert('กรุณากรอกอีเมลและรหัสผ่านให้ครบถ้วน');
+                alert('กรุณากรอกชื่อผู้เล่นและรหัสผ่านให้ครบถ้วน');
                 return;
             }
 
-            if (isLoginMode) {
-                auth.signInWithEmailAndPassword(email, pass)
-                    .then(() => {
-                        closeModal('authModal');
-                        showToast('เข้าสู่ระบบสำเร็จ! ปลดล็อคปุ่มแก้ไขแล้ว 🔓');
-                    })
-                    .catch(err => alert('เข้าสู่ระบบล้มเหลว: ' + err.message));
-            } else {
-                auth.createUserWithEmailAndPassword(email, pass)
-                    .then(() => {
-                        closeModal('authModal');
-                        showToast('สมัครสมาชิกสำเร็จ! ตอนนี้คุณสามารถเพิ่มข้อมูลได้แล้ว 🎉');
-                        isLoginMode = true; 
-                    })
-                    .catch(err => alert('สมัครสมาชิกล้มเหลว: ' + err.message));
-            }
+            // จำลองการเข้าสู่ระบบผ่าน Firebase (แปลงชื่อผู้เล่นเป็นอีเมลจำลองในระบบหลังบ้าน)
+            let dummyEmail = email.includes('@') ? email : `${email.toLowerCase()}@tinytails.game`;
+
+            auth.signInWithEmailAndPassword(dummyEmail, pass)
+                .then(() => {
+                    closeModal('authModal');
+                    showToast('เข้าสู่ระบบสำเร็จ! ปลดล็อคปุ่มแก้ไขแล้ว 🔓');
+                })
+                .catch(err => {
+                    // หากยังไม่มีบัญชี ให้ทำการสมัครสมาชิกให้อัตโนมัติเพื่อความสะดวก
+                    auth.createUserWithEmailAndPassword(dummyEmail, pass)
+                        .then(() => {
+                            closeModal('authModal');
+                            showToast('สร้างบัญชีและเข้าสู่ระบบสำเร็จ! 🎉');
+                        })
+                        .catch(createErr => alert('เข้าสู่ระบบล้มเหลว: ' + createErr.message));
+                });
         }
 
         function logoutUser() {
             if(confirm('ต้องการออกจากระบบใช่หรือไม่?')) {
                 auth.signOut().then(() => showToast('ออกจากระบบเรียบร้อยแล้ว 🔒'));
             }
-        }
-
-        // 🌟 ระบบลืมรหัสผ่าน (กู้คืนรหัส)
-        function resetPassword() {
-            let email = document.getElementById('authEmail').value;
-            
-            if (!email) {
-                alert('โปรดกรอกอีเมลของคุณในช่อง "อีเมล" ก่อน แล้วค่อยกดปุ่มลืมรหัสผ่านครับ 📧');
-                return;
-            }
-
-            auth.sendPasswordResetEmail(email)
-                .then(() => {
-                    alert('ส่งลิงก์รีเซ็ตรหัสผ่านไปที่อีเมลแล้ว! โปรดตรวจสอบกล่องจดหมายของคุณ (หรือโฟลเดอร์สแปม) 📬');
-                    closeModal('authModal');
-                })
-                .catch((error) => {
-                    if (error.code === 'auth/user-not-found') {
-                        alert('ไม่พบบัญชีผู้ใช้นี้ในระบบครับ โปรดตรวจสอบอีเมลอีกครั้ง');
-                    } else if (error.code === 'auth/invalid-email') {
-                        alert('รูปแบบอีเมลไม่ถูกต้องครับ');
-                    } else {
-                        alert('เกิดข้อผิดพลาด: ' + error.message);
-                    }
-                });
         }
 
         db.ref('tinytails_db').on('value', (snapshot) => {
@@ -535,7 +603,7 @@
         }
 
         function renderUI() {
-            ['tier1', 'tier2', 'sweet', 'huge', 'special'].forEach(cat => {
+            ['tier1', 'tier2', 'tier3', 'sweet', 'huge', 'special'].forEach(cat => {
                 const grid = document.getElementById(`grid-${cat}`);
                 if(grid) grid.innerHTML = ''; 
             });
