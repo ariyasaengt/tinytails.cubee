@@ -63,10 +63,16 @@
 
         .category-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; margin-top: 30px; margin-bottom: 25px; }
         .category-title h2 { font-size: 1.8rem; font-weight: 800; margin: 0; color: var(--text-main); }
-        .price-tag { font-size: 1.1rem; font-weight: 600; background: var(--card-bg); padding: 6px 16px; border-radius: 30px; border: 1px solid var(--border-color); }
+        
+        .price-tag-wrapper { display: flex; align-items: center; gap: 8px; }
+        .price-tag { font-size: 1.1rem; font-weight: 600; background: var(--card-bg); padding: 6px 16px; border-radius: 30px; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 6px; }
         .price-coin { color: var(--coin-color); border-left: 4px solid var(--coin-color); }
         .price-thb { color: var(--thb-color); border-left: 4px solid var(--thb-color); }
         .price-special { color: var(--special-color); border-left: 4px solid var(--special-color); }
+        
+        /* ปุ่มแก้ไขราคาสำหรับแอดมิน */
+        .btn-edit-price { display: none; background: var(--box-bg); color: var(--text-muted); border: 1px solid var(--border-color); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 0.9rem; align-items: center; justify-content: center; transition: 0.2s; }
+        .btn-edit-price:hover { background: var(--coin-color); color: #000; border-color: var(--coin-color); }
 
         .btn-add { display: none; background: var(--coin-color); color: #000; border: none; padding: 10px 20px; border-radius: 12px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: 0.2s; margin-bottom: 20px; font-family: inherit; }
         .btn-add:hover { background: #f59e0b; transform: translateY(-2px); }
@@ -236,7 +242,10 @@
         <div id="tier1" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2>⭐ Tier 1 Cubee</h2></div>
-                <span class="price-tag price-coin">ราคา: 7,000 คอยน์</span>
+                <div class="price-tag-wrapper">
+                    <span class="price-tag price-coin" id="price-text-tier1">ราคา: 7,000 คอยน์</span>
+                    <button class="btn-edit-price" id="btn-edit-tier1" onclick="openEditPriceModal('tier1', 'Tier 1 Cubee')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
+                </div>
             </div>
             <button class="btn-add" onclick="openEditModal(null, 'tier1')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
             <div class="grid" id="grid-tier1"></div>
@@ -246,7 +255,10 @@
         <div id="tier2" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2>🌟 Tier 2 Cubee</h2></div>
-                <span class="price-tag price-coin">ราคา: 15,000 คอยน์</span>
+                <div class="price-tag-wrapper">
+                    <span class="price-tag price-coin" id="price-text-tier2">ราคา: 15,000 คอยน์</span>
+                    <button class="btn-edit-price" id="btn-edit-tier2" onclick="openEditPriceModal('tier2', 'Tier 2 Cubee')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
+                </div>
             </div>
             <button class="btn-add" onclick="openEditModal(null, 'tier2')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
             <div class="grid" id="grid-tier2"></div>
@@ -256,7 +268,10 @@
         <div id="tier3" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2>💎 Tier 3 Cubee</h2></div>
-                <span class="price-tag price-coin">ราคา: 30,000 คอยน์</span>
+                <div class="price-tag-wrapper">
+                    <span class="price-tag price-coin" id="price-text-tier3">ราคา: 30,000 คอยน์</span>
+                    <button class="btn-edit-price" id="btn-edit-tier3" onclick="openEditPriceModal('tier3', 'Tier 3 Cubee')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
+                </div>
             </div>
             <button class="btn-add" onclick="openEditModal(null, 'tier3')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
             <div class="grid" id="grid-tier3"></div>
@@ -266,7 +281,10 @@
         <div id="sweet" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2 style="color: #db2777;">🍬 SWEET CUBEE Gacha</h2></div>
-                <span class="price-tag price-thb">ราคา: 49.- บาท</span>
+                <div class="price-tag-wrapper">
+                    <span class="price-tag price-thb" id="price-text-sweet">ราคา: 49.- บาท</span>
+                    <button class="btn-edit-price" id="btn-edit-sweet" onclick="openEditPriceModal('sweet', 'SWEET CUBEE Gacha')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
+                </div>
             </div>
             <button class="btn-add" onclick="openEditModal(null, 'sweet')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
             <div class="grid" id="grid-sweet"></div>
@@ -276,7 +294,10 @@
         <div id="huge" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2 style="color: #dc2626;">🔥 HUGE CUBEE Gacha</h2></div>
-                <span class="price-tag price-thb">ราคา: 449.- บาท</span>
+                <div class="price-tag-wrapper">
+                    <span class="price-tag price-thb" id="price-text-huge">ราคา: 449.- บาท</span>
+                    <button class="btn-edit-price" id="btn-edit-huge" onclick="openEditPriceModal('huge', 'HUGE CUBEE Gacha')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
+                </div>
             </div>
             <button class="btn-add" onclick="openEditModal(null, 'huge')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
             <div class="grid" id="grid-huge"></div>
@@ -286,7 +307,10 @@
         <div id="special" class="page-section show">
             <div class="category-header">
                 <div class="category-title"><h2 style="color: var(--special-color);">✨ SPECIAL CUBEE</h2></div>
-                <span class="price-tag price-special">กิจกรรมสปาว</span>
+                <div class="price-tag-wrapper">
+                    <span class="price-tag price-special" id="price-text-special">กิจกรรมสปาว</span>
+                    <button class="btn-edit-price" id="btn-edit-special" onclick="openEditPriceModal('special', 'SPECIAL CUBEE')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
+                </div>
             </div>
             <button class="btn-add" onclick="openEditModal(null, 'special')" style="background: var(--special-color);">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
             <div class="grid" id="grid-special"></div>
@@ -301,6 +325,22 @@
             <div id="full-ranking-container" style="max-width: 800px; margin: 0 auto;">
                 <!-- จะถูกแทรกข้อมูลด้วย JavaScript -->
             </div>
+        </div>
+    </div>
+
+    <!-- 🌟 ป๊อปอัพแก้ไขราคาหมวดหมู่ -->
+    <div id="priceModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <button class="close-btn" onclick="closeModal('priceModal')">&times;</button>
+            <h3 class="modal-title" id="priceModalTitle">🏷️ แก้ไขราคาหมวดหมู่</h3>
+            <input type="hidden" id="edit-price-category">
+            
+            <div class="form-group" style="margin-top: 15px;">
+                <label>ข้อความราคาใหม่ (เช่น ราคา: 5,000 คอยน์ หรือ 39.- บาท)</label>
+                <input type="text" id="edit-price-input" placeholder="ระบุราคาใหม่ที่นี่...">
+            </div>
+
+            <button class="btn-save" onclick="saveCategoryPrice()">💾 บันทึกราคาใหม่</button>
         </div>
     </div>
 
@@ -462,6 +502,7 @@
         const auth = firebase.auth(); 
 
         let cubeeDb = [];
+        let categoryPrices = {}; // เก็บข้อมูลราคาหมวดหมู่
         let searchText = ''; 
         let currentUser = null; 
 
@@ -469,6 +510,7 @@
             currentUser = user;
             let authBtn = document.getElementById('authBtn');
             let addBtns = document.querySelectorAll('.btn-add');
+            let editPriceBtns = document.querySelectorAll('.btn-edit-price');
             
             if (user) {
                 authBtn.innerText = '🚪 ออกจากระบบ';
@@ -476,12 +518,14 @@
                 authBtn.style.color = '#fff';
                 authBtn.onclick = logoutUser;
                 addBtns.forEach(btn => btn.style.display = 'block');
+                editPriceBtns.forEach(btn => btn.style.display = 'flex');
             } else {
                 authBtn.innerText = '🔑 เข้าสู่ระบบ';
                 authBtn.style.background = 'var(--coin-color)';
                 authBtn.style.color = '#000';
                 authBtn.onclick = openAuthModal;
                 addBtns.forEach(btn => btn.style.display = 'none');
+                editPriceBtns.forEach(btn => btn.style.display = 'none');
             }
             renderUI();
         });
@@ -508,7 +552,6 @@
             }
         }
 
-        // ฟังก์ชันล็อกอินแอดมิน (ใช้ Sign in เท่านั้น ไม่มีปุ่มสมัครสมาชิกใหม่)
         function processAdminAuth() {
             let email = document.getElementById('authEmail').value;
             let pass = document.getElementById('authPassword').value;
@@ -534,6 +577,7 @@
             }
         }
 
+        // โหลดข้อมูลไอเทม Cubee
         db.ref('tinytails_db').on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -543,6 +587,62 @@
             }
             renderUI();
         });
+
+        // โหลดข้อมูลราคาหมวดหมู่จาก Firebase
+        db.ref('category_prices').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                categoryPrices = data;
+                updateCategoryPricesUI();
+            }
+        });
+
+        function updateCategoryPricesUI() {
+            const defaults = {
+                tier1: "ราคา: 7,000 คอยน์",
+                tier2: "ราคา: 15,000 คอยน์",
+                tier3: "ราคา: 30,000 คอยน์",
+                sweet: "ราคา: 49.- บาท",
+                huge: "ราคา: 449.- บาท",
+                special: "กิจกรรมสปาว"
+            };
+
+            ['tier1', 'tier2', 'tier3', 'sweet', 'huge', 'special'].forEach(cat => {
+                let el = document.getElementById(`price-text-${cat}`);
+                if (el) {
+                    el.innerText = categoryPrices[cat] || defaults[cat];
+                }
+            });
+        }
+
+        function openEditPriceModal(category, titleName) {
+            if (!currentUser) return;
+            document.getElementById('edit-price-category').value = category;
+            document.getElementById('priceModalTitle').innerText = `🏷️ แก้ไขราคา: ${titleName}`;
+            
+            let currentText = document.getElementById(`price-text-${category}`).innerText;
+            document.getElementById('edit-price-input').value = currentText;
+            
+            document.getElementById('priceModal').style.display = 'flex';
+        }
+
+        function saveCategoryPrice() {
+            if (!currentUser) return alert('โปรดเข้าสู่ระบบก่อนทำการบันทึกครับ 🔒');
+            let cat = document.getElementById('edit-price-category').value;
+            let newPriceText = document.getElementById('edit-price-input').value;
+
+            if (!newPriceText) {
+                alert('กรุณากรอกข้อมูลราคา');
+                return;
+            }
+
+            db.ref('category_prices/' + cat).set(newPriceText).then(() => {
+                closeModal('priceModal');
+                showToast('อัปเดตราคาหมวดหมู่เรียบร้อยแล้ว! ✨');
+            }).catch(err => {
+                alert('เกิดข้อผิดพลาด: ' + err.message);
+            });
+        }
 
         function handleSearch() {
             searchText = document.getElementById('searchInput').value.toLowerCase();
@@ -887,6 +987,7 @@
             if (event.target == document.getElementById('infoModal')) closeModal('infoModal');
             if (event.target == document.getElementById('editModal')) closeModal('editModal');
             if (event.target == document.getElementById('authModal')) closeModal('authModal');
+            if (event.target == document.getElementById('priceModal')) closeModal('priceModal');
         }
     </script>
 </body>
