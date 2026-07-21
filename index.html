@@ -22,6 +22,8 @@
             --nav-bg: rgba(24, 24, 27, 0.85);
             --modal-bg: rgba(9, 9, 11, 0.8);
             --box-bg: #09090b;
+            --input-readonly-bg: #121214;
+            --nav-btn-bg: #121214;
         }
 
         body.light-mode {
@@ -38,6 +40,8 @@
             --nav-bg: rgba(255, 255, 255, 0.8);
             --modal-bg: rgba(15, 23, 42, 0.6);
             --box-bg: #f8fafc;
+            --input-readonly-bg: #f1f5f9;
+            --nav-btn-bg: #f1f5f9;
         }
 
         body { font-family: 'Kanit', sans-serif; background-color: var(--bg-light); color: var(--text-main); margin: 0; padding: 0; min-height: 100vh; transition: background-color 0.3s, color 0.3s; }
@@ -60,7 +64,7 @@
         .nav-center { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; flex: 1; }
 
         .nav-btn { 
-            background-color: #121214; 
+            background-color: var(--nav-btn-bg); 
             color: var(--text-muted); 
             border: 1px solid var(--border-color); 
             padding: 10px 22px; 
@@ -78,9 +82,10 @@
             border-color: var(--primary-yellow); 
             box-shadow: 0 4px 14px rgba(251,191,36,0.25); 
         }
+        body.light-mode .nav-btn.active { color: #fff; }
 
         .icon-nav-btn { 
-            background-color: #121214; 
+            background-color: var(--nav-btn-bg); 
             color: var(--text-main); 
             border: 1px solid var(--border-color); 
             width: 42px; 
@@ -108,7 +113,8 @@
             font-size: 0.95rem;
             box-shadow: 0 4px 14px rgba(251, 191, 36, 0.25);
         }
-        .auth-nav-btn:hover { background: #f59e0b; }
+        body.light-mode .auth-nav-btn { color: #fff; }
+        .auth-nav-btn:hover { opacity: 0.9; }
 
         .search-container { max-width: 600px; margin: 30px auto 10px auto; padding: 0 20px; }
         .search-box { width: 100%; padding: 14px 20px; border-radius: 30px; border: 2px solid var(--border-color); background: var(--card-bg); color: var(--text-main); font-size: 1.05rem; font-family: inherit; outline: none; transition: 0.3s; box-sizing: border-box; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2); }
@@ -132,7 +138,8 @@
         .btn-edit-price:hover { background: var(--primary-yellow); color: #000; border-color: var(--primary-yellow); }
 
         .btn-add { display: none; background: var(--primary-yellow); color: #000; border: none; padding: 10px 20px; border-radius: 12px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: 0.2s; margin-bottom: 20px; font-family: inherit; }
-        .btn-add:hover { background: #f59e0b; transform: translateY(-2px); }
+        body.light-mode .btn-add { color: #fff; }
+        .btn-add:hover { opacity: 0.9; transform: translateY(-2px); }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
         .card { background: var(--card-bg); border-radius: 20px; border: 1px solid var(--border-color); padding: 24px; text-align: center; transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2); }
@@ -179,6 +186,12 @@
         .form-group input:focus { border-color: var(--primary-yellow); }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 
+        /* สีช่องกรอกที่ล็อกไว้ (Readonly) ปรับตามโหมด */
+        .form-group input[readonly] {
+            background-color: var(--input-readonly-bg);
+            color: var(--text-main);
+        }
+
         .paste-zone { background: var(--box-bg); border: 2px dashed var(--border-color); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: 0.2s; position: relative; margin-bottom: 8px; }
         .paste-zone:hover, .paste-zone.hovering { border-color: var(--primary-yellow); background: rgba(251, 191, 36, 0.05); }
         .paste-zone img { max-width: 80px; max-height: 80px; object-fit: contain; display: none; margin: 10px auto 0 auto; border-radius: 8px; background: var(--card-bg); padding: 5px; border: 1px solid var(--border-color); }
@@ -189,11 +202,13 @@
         .url-input:focus { border-color: var(--primary-yellow); }
 
         .btn-save { width: 100%; background: var(--primary-yellow); color: #000; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; font-weight: 800; cursor: pointer; margin-top: 10px; font-family: inherit; }
-        .btn-save:hover { background: #f59e0b; }
+        body.light-mode .btn-save { color: #fff; }
+        .btn-save:hover { opacity: 0.9; }
         .btn-delete { width: 100%; background: transparent; color: var(--thb-color); border: 2px solid var(--thb-color); padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 15px; font-family: inherit; }
         .btn-delete:hover { background: var(--thb-color); color: white; }
 
         .toast { visibility: hidden; min-width: 250px; background-color: #18181b; color: #fff; text-align: center; border-radius: 10px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); font-weight: 600; border: 1px solid #27272a; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        body.light-mode .toast { background-color: #ffffff; color: #1e293b; border-color: #e2e8f0; }
         .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
@@ -225,7 +240,7 @@
         .btn-cancel-mc { background: none; border: none; color: #a1a1aa; font-weight: 600; font-size: 0.95rem; cursor: pointer; font-family: inherit; }
         .btn-cancel-mc:hover { color: #fff; }
         .btn-submit-mc { flex: 1; background: #fbbf24; color: #000; border: none; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 1rem; cursor: pointer; transition: 0.2s; font-family: inherit; box-shadow: 0 4px 14px rgba(251, 191, 36, 0.3); text-align: center; }
-        .btn-submit-mc:hover { background: #f59e0b; transform: translateY(-1px); }
+        .btn-submit-mc:hover { opacity: 0.9; transform: translateY(-1px); }
         .mc-hint-footer { text-align: center; margin-top: 15px; font-size: 0.8rem; color: #71717a; }
         .mc-hint-footer code { color: #fbbf24; background: #27272a; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
 
@@ -282,7 +297,6 @@
 </head>
 <body>
 
-    <!-- 🌟 แถบเมนูด้านบน (Navbar) เอาตะกร้าออกเรียบร้อย -->
     <nav class="navbar">
         <div class="nav-left"></div>
 
@@ -435,7 +449,7 @@
             
             <div class="form-group" style="margin-top: 15px;">
                 <label>🪙 ราคา Coin (พิมพ์ตัวเลขระบบจะใส่คอมมาให้)</label>
-                <input type="text" id="edit-coin-input" placeholder="เช่น 7000 (เว้นว่างถ้าไม่ใช้)" oninput="formatNumberInput(this)">
+                <input type="text" id="edit-coin-input" placeholder="เช่น 7,000 (เว้นว่างถ้าไม่ใช้)" oninput="formatNumberInput(this)">
             </div>
 
             <div class="form-group">
@@ -564,10 +578,10 @@
                 <div class="form-group"><label>ใช้เวลา (วินาที/รอบ)</label><input type="text" id="e-time" placeholder="เช่น 60" oninput="autoCalculate()"></div>
                 <div class="form-group"><label>ความจุสูงสุด</label><input type="text" id="e-max" placeholder="เช่น 120"></div>
                 <div class="form-group"><label>ราคาขาย (Coin/ชิ้น)</label><input type="text" id="e-price" placeholder="เช่น 25" oninput="autoCalculate()"></div>
-                <div class="form-group"><label>ผลิตได้ (1 ชม.)</label><input type="text" id="e-hrQty" placeholder="จะคำนวณให้อัตโนมัติ" readonly style="background:#09090b; color:var(--text-muted);"></div>
-                <div class="form-group"><label>รายได้ (1 ชม.)</label><input type="text" id="e-hrCoin" placeholder="จะคำนวณให้อัตโนมัติ" readonly style="background:#09090b; color:var(--text-muted);"></div>
-                <div class="form-group"><label>รอบเติม (1 ช่อง)</label><input type="text" id="e-refill1" placeholder="จะคำนวณให้อัตโนมัติ" readonly style="background:#09090b; color:var(--text-muted);"></div>
-                <div class="form-group"><label>รอบเติม (2 ช่อง)</label><input type="text" id="e-refill2" placeholder="จะคำนวณให้อัตโนมัติ" readonly style="background:#09090b; color:var(--text-muted);"></div>
+                <div class="form-group"><label>ผลิตได้ (1 ชม.)</label><input type="text" id="e-hrQty" placeholder="จะคำนวณให้อัตโนมัติ" readonly></div>
+                <div class="form-group"><label>รายได้ (1 ชม.)</label><input type="text" id="e-hrCoin" placeholder="จะคำนวณให้อัตโนมัติ" readonly></div>
+                <div class="form-group"><label>รอบเติม (1 ช่อง)</label><input type="text" id="e-refill1" placeholder="จะคำนวณให้อัตโนมัติ" readonly></div>
+                <div class="form-group"><label>รอบเติม (2 ช่อง)</label><input type="text" id="e-refill2" placeholder="จะคำนวณให้อัตโนมัติ" readonly></div>
             </div>
 
             <button class="btn-save" onclick="saveData()">💾 บันทึกการตั้งค่า</button>
@@ -625,7 +639,7 @@
             } else {
                 authBtn.innerText = 'เข้าสู่ระบบ';
                 authBtn.style.background = 'var(--primary-yellow)';
-                authBtn.style.color = '#000';
+                authBtn.style.color = (document.body.classList.contains('light-mode')) ? '#fff' : '#000';
                 authBtn.onclick = openAuthModal;
                 addBtns.forEach(btn => btn.style.display = 'none');
                 editPriceBtns.forEach(btn => btn.style.display = 'none');
@@ -698,7 +712,6 @@
             }
         });
 
-        // ฟังก์ชันจัดรูปแบบตัวเลขหลักพัน (ใส่คอมมา)
         function formatNumber(numStr) {
             if (!numStr) return '';
             let cleanNum = String(numStr).replace(/[^\d]/g, '');
