@@ -42,7 +42,7 @@
 
         body { font-family: 'Kanit', sans-serif; background-color: var(--bg-light); color: var(--text-main); margin: 0; padding: 0; min-height: 100vh; transition: background-color 0.3s, color 0.3s; }
 
-        /* 🌟 Navbar ดีไซน์ใหม่ตามตัวอย่าง */
+        /* 🌟 Navbar ดีไซน์โครงสร้างกรอบเมนูตามตัวอย่าง (ซ้ายขวาไอคอน, ตรงกลางปุ่มเมนูเทียร์ Cubee) */
         .navbar { 
             display: flex; 
             justify-content: space-between; 
@@ -283,26 +283,25 @@
 </head>
 <body>
 
-    <!-- 🌟 แถบเมนูด้านบน (Navbar) ปรับตามแบบตัวอย่าง -->
+    <!-- 🌟 แถบเมนูด้านบน (Navbar) ปรับโครงสร้างกรอบตามแบบ และใช้ชื่อเมนูเดิม (หน้าแรก, Tier 1, Tier 2, Tier 3, SWEET, HUGE, SPECIAL, 🏆 จัดอันดับ) -->
     <nav class="navbar">
         <div class="nav-left">
-            <!-- ปุ่มไอคอนตะกร้าสินค้า (หรือลิงก์ร้านค้าเสริม) -->
-            <button class="icon-nav-btn" onclick="showPage('sweet', document.querySelectorAll('.nav-btn')[2])" title="ร้านค้า">🛒</button>
+            <button class="icon-nav-btn" onclick="showPage('sweet', document.querySelectorAll('.nav-center .nav-btn')[3])" title="ร้านค้า">🛒</button>
         </div>
 
         <div class="nav-center">
             <button class="nav-btn active" onclick="showPage('all', this)">หน้าแรก</button>
-            <button class="nav-btn" onclick="showPage('tier1', this)">คู่มือ</button>
-            <button class="nav-btn" onclick="showPage('sweet', this)">ร้านค้า</button>
-            <button class="nav-btn" onclick="showPage('tier2', this)">คอลเลกชัน</button>
-            <button class="nav-btn" onclick="showPage('huge', this)">เติมเงิน</button>
-            <button class="nav-btn" onclick="showPage('ranking', this)">อันดับ</button>
+            <button class="nav-btn" onclick="showPage('tier1', this)">Tier 1</button>
+            <button class="nav-btn" onclick="showPage('tier2', this)">Tier 2</button>
+            <button class="nav-btn" onclick="showPage('tier3', this)">Tier 3</button>
+            <button class="nav-btn" onclick="showPage('sweet', this)">SWEET</button>
+            <button class="nav-btn" onclick="showPage('huge', this)">HUGE</button>
+            <button class="nav-btn" onclick="showPage('special', this)">SPECIAL</button>
+            <button class="nav-btn" onclick="showPage('ranking', this)">🏆 จัดอันดับ</button>
         </div>
 
         <div class="nav-right">
-            <!-- ปุ่มเปลี่ยนธีม Mute/Dark -->
             <button class="icon-nav-btn" id="themeToggle" onclick="toggleTheme()" title="เปลี่ยนโหมดมืด/สว่าง">🌙</button>
-            <!-- ปุ่มเข้าสู่ระบบ -->
             <button class="auth-nav-btn" id="authBtn" onclick="openAuthModal()">เข้าสู่ระบบ</button>
         </div>
     </nav>
