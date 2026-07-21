@@ -116,7 +116,7 @@
         body.light-mode .auth-nav-btn { color: #fff; }
         .auth-nav-btn:hover { opacity: 0.9; }
 
-        .search-container { max-width: 600px; margin: 30px auto 10px auto; padding: 0 20px; }
+        .search-container { max-width: 1000px; margin: 30px auto 10px auto; padding: 0 20px; box-sizing: border-box; width: 100%; }
         .search-box { width: 100%; padding: 14px 20px; border-radius: 30px; border: 2px solid var(--border-color); background: var(--card-bg); color: var(--text-main); font-size: 1.05rem; font-family: inherit; outline: none; transition: 0.3s; box-sizing: border-box; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2); }
         .search-box:focus { border-color: var(--primary-yellow); box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.15); }
 
@@ -339,10 +339,10 @@
                 <div class="category-title"><h2>⭐ Tier 1 Cubee</h2></div>
                 <div class="price-tags-group">
                     <div class="price-tag-wrapper">
-                        <span class="price-tag price-coin" id="price-coin-tier1">ราคา: 7,000</span>
+                        <span class="price-tag price-coin" id="price-coin-tier1">ราคา: 7,000 Coin</span>
                     </div>
                     <div class="price-tag-wrapper" id="wrap-ruby-tier1" style="display:none;">
-                        <span class="price-tag price-ruby" id="price-ruby-tier1">ราคา: 0</span>
+                        <span class="price-tag price-ruby" id="price-ruby-tier1">ราคา: 0 Ruby</span>
                     </div>
                     <button class="btn-edit-price" id="btn-edit-tier1" onclick="openEditPriceModal('tier1', 'Tier 1 Cubee')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
                 </div>
@@ -357,10 +357,10 @@
                 <div class="category-title"><h2>🌟 Tier 2 Cubee</h2></div>
                 <div class="price-tags-group">
                     <div class="price-tag-wrapper">
-                        <span class="price-tag price-coin" id="price-coin-tier2">ราคา: 15,000</span>
+                        <span class="price-tag price-coin" id="price-coin-tier2">ราคา: 15,000 Coin</span>
                     </div>
                     <div class="price-tag-wrapper" id="wrap-ruby-tier2" style="display:none;">
-                        <span class="price-tag price-ruby" id="price-ruby-tier2">ราคา: 0</span>
+                        <span class="price-tag price-ruby" id="price-ruby-tier2">ราคา: 0 Ruby</span>
                     </div>
                     <button class="btn-edit-price" id="btn-edit-tier2" onclick="openEditPriceModal('tier2', 'Tier 2 Cubee')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
                 </div>
@@ -375,10 +375,10 @@
                 <div class="category-title"><h2>💎 Tier 3 Cubee</h2></div>
                 <div class="price-tags-group">
                     <div class="price-tag-wrapper">
-                        <span class="price-tag price-coin" id="price-coin-tier3">ราคา: 30,000</span>
+                        <span class="price-tag price-coin" id="price-coin-tier3">ราคา: 30,000 Coin</span>
                     </div>
                     <div class="price-tag-wrapper" id="wrap-ruby-tier3" style="display:none;">
-                        <span class="price-tag price-ruby" id="price-ruby-tier3">ราคา: 0</span>
+                        <span class="price-tag price-ruby" id="price-ruby-tier3">ราคา: 0 Ruby</span>
                     </div>
                     <button class="btn-edit-price" id="btn-edit-tier3" onclick="openEditPriceModal('tier3', 'Tier 3 Cubee')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
                 </div>
@@ -393,10 +393,10 @@
                 <div class="category-title"><h2 style="color: #db2777;">🍬 SWEET CUBEE Gacha</h2></div>
                 <div class="price-tags-group">
                     <div class="price-tag-wrapper">
-                        <span class="price-tag price-coin" id="price-coin-sweet">ราคา: 0</span>
+                        <span class="price-tag price-coin" id="price-coin-sweet">ราคา: 0 Coin</span>
                     </div>
                     <div class="price-tag-wrapper" id="wrap-ruby-sweet" style="display:none;">
-                        <span class="price-tag price-ruby" id="price-ruby-sweet">ราคา: 0</span>
+                        <span class="price-tag price-ruby" id="price-ruby-sweet">ราคา: 0 Ruby</span>
                     </div>
                     <button class="btn-edit-price" id="btn-edit-sweet" onclick="openEditPriceModal('sweet', 'SWEET CUBEE Gacha')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
                 </div>
@@ -411,10 +411,10 @@
                 <div class="category-title"><h2 style="color: #dc2626;">🔥 HUGE CUBEE Gacha</h2></div>
                 <div class="price-tags-group">
                     <div class="price-tag-wrapper">
-                        <span class="price-tag price-coin" id="price-coin-huge">ราคา: 0</span>
+                        <span class="price-tag price-coin" id="price-coin-huge">ราคา: 0 Coin</span>
                     </div>
                     <div class="price-tag-wrapper" id="wrap-ruby-huge" style="display:none;">
-                        <span class="price-tag price-ruby" id="price-ruby-huge">ราคา: 0</span>
+                        <span class="price-tag price-ruby" id="price-ruby-huge">ราคา: 0 Ruby</span>
                     </div>
                     <button class="btn-edit-price" id="btn-edit-huge" onclick="openEditPriceModal('huge', 'HUGE CUBEE Gacha')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
                 </div>
@@ -429,10 +429,10 @@
                 <div class="category-title"><h2 style="color: var(--special-color);">✨ SPECIAL CUBEE</h2></div>
                 <div class="price-tags-group">
                     <div class="price-tag-wrapper">
-                        <span class="price-tag price-coin" id="price-coin-special">ราคา: 0</span>
+                        <span class="price-tag price-coin" id="price-coin-special">ราคา: 0 Coin</span>
                     </div>
                     <div class="price-tag-wrapper" id="wrap-ruby-special" style="display:none;">
-                        <span class="price-tag price-ruby" id="price-ruby-special">ราคา: 0</span>
+                        <span class="price-tag price-ruby" id="price-ruby-special">ราคา: 0 Ruby</span>
                     </div>
                     <button class="btn-edit-price" id="btn-edit-special" onclick="openEditPriceModal('special', 'SPECIAL CUBEE')" title="แก้ไขราคาหมวดหมู่นี้">✏️</button>
                 </div>
@@ -771,7 +771,7 @@
                 if (coinEl) {
                     if (pData.coin && pData.coin.trim() !== "") {
                         let formattedCoin = formatNumber(pData.coin);
-                        coinEl.innerText = `ราคา: ${formattedCoin}`;
+                        coinEl.innerText = `ราคา: ${formattedCoin} Coin`;
                         coinEl.parentElement.style.display = 'flex';
                     } else {
                         coinEl.parentElement.style.display = 'none';
@@ -781,7 +781,7 @@
                 if (rubyEl && rubyWrap) {
                     if (pData.ruby && pData.ruby.trim() !== "") {
                         let formattedRuby = formatNumber(pData.ruby);
-                        rubyEl.innerText = `ราคา: ${formattedRuby}`;
+                        rubyEl.innerText = `ราคา: ${formattedRuby} Ruby`;
                         rubyWrap.style.display = 'flex';
                     } else {
                         rubyWrap.style.display = 'none';
@@ -901,7 +901,7 @@
                             <div class="stat-rank-name">${item.name}</div>
                             <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 3px;">📦 ผลผลิต: ${item.itemName}</div>
                         </div>
-                        <div class="stat-rank-val">${formattedPrice}</div>
+                        <div class="stat-rank-val">${formattedPrice} Coin</div>
                     </div>
                 `;
             });
@@ -941,8 +941,8 @@
 
         function appendUnit(val, unit) {
             if (!val || val === '-') return '-';
-            let cleanVal = String(val).replace('ชิ้น/รอบ', '').replace('Coin/ชิ้น', '').replace('Coin', '').replace('วินาที/รอบ', '').trim();
-            return formatNumber(cleanVal);
+            let cleanVal = String(val).replace('ชิ้น/รอบ', '').replace('Coin/ชิ้น', '').replace('Coin', '').replace('Ruby', '').replace('วินาที/รอบ', '').trim();
+            return `${formatNumber(cleanVal)} ${unit}`;
         }
 
         function openViewModal(id) {
@@ -960,7 +960,7 @@
             document.getElementById('v-price').innerText = appendUnit(data.price, 'Coin'); 
             
             document.getElementById('v-hrQty').innerText = data.hrQty || '-';
-            let hrCoinFormatted = data.hrCoin && data.hrCoin !== '-' ? formatNumber(data.hrCoin) : '-';
+            let hrCoinFormatted = data.hrCoin && data.hrCoin !== '-' ? `${formatNumber(data.hrCoin)} Coin` : '-';
             document.getElementById('v-hrCoin').innerText = hrCoinFormatted;
             document.getElementById('v-refill1').innerText = data.refill1 || '-';
             document.getElementById('v-refill2').innerText = data.refill2 || '-';
