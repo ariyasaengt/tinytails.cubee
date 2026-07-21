@@ -1,39 +1,893 @@
-<!-- 🌟 ป๊อปอัพเข้าสู่ระบบสำหรับแอดมิน -->
-<div id="authModal" class="modal">
-    <div class="modal-content mc-auth-box">
-        <button class="close-btn" onclick="closeModal('authModal')" style="background: #27272a; color: #a1a1aa;">&times;</button>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TINYTAILS CUBEE</title>
+    
+    <!-- Favicon รูปตัวละครน่ารักๆ ของคุณ -->
+    <link rel="icon" href="https://img2.pic.in.th/icon88e0717927d5a748.png" type="image/png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-light: #09090b;
+            --card-bg: #18181b;
+            --text-main: #f4f4f5;
+            --text-muted: #a1a1aa;
+            --border-color: #27272a;
+            --coin-color: #fbbf24; 
+            --thb-color: #ef4444; 
+            --special-color: #8b5cf6;
+            --primary-blue: #fbbf24;
+            --nav-bg: rgba(24, 24, 27, 0.85);
+            --modal-bg: rgba(9, 9, 11, 0.8);
+            --box-bg: #09090b;
+        }
+
+        body.light-mode {
+            --bg-light: #f5f7fb;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --coin-color: #10b981; 
+            --thb-color: #ef4444; 
+            --special-color: #8b5cf6;
+            --primary-blue: #3b82f6;
+            --nav-bg: rgba(255, 255, 255, 0.8);
+            --modal-bg: rgba(15, 23, 42, 0.6);
+            --box-bg: #f8fafc;
+        }
+
+        body { font-family: 'Kanit', sans-serif; background-color: var(--bg-light); color: var(--text-main); margin: 0; padding: 0; min-height: 100vh; transition: background-color 0.3s, color 0.3s; }
+
+        .navbar { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px; padding: 20px; background: var(--nav-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; transition: 0.3s; }
+        .nav-btn { background-color: var(--box-bg); color: var(--text-muted); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 50px; font-size: 0.95rem; font-weight: 800; cursor: pointer; transition: 0.2s; font-family: inherit;}
+        .nav-btn:hover { background-color: var(--border-color); color: var(--text-main); }
+        .nav-btn.active { background-color: var(--coin-color); color: #000; border-color: var(--coin-color); box-shadow: 0 4px 12px rgba(251,191,36,0.2); }
+        .theme-btn { background: transparent; border: none; font-size: 1.5rem; cursor: pointer; padding: 5px 10px; transition: transform 0.2s; }
+        .theme-btn:hover { transform: scale(1.1); }
         
-        <div class="mc-header">
-            <div class="mc-title-group">
-                <div class="mc-icon-badge">➜</div>
-                <div>
-                    <h3 class="mc-title">เข้าสู่ระบบแอดมิน</h3>
-                    <p class="mc-subtitle">สำหรับผู้ดูแลเว็บไซต์เท่านั้น</p>
-                </div>
-            </div>
-        </div>
+        .auth-nav-btn { background: var(--coin-color); color: #000; border: none; padding: 10px 20px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.2s; font-family: inherit; font-size: 0.95rem; }
+        .auth-nav-btn:hover { background: #f59e0b; }
 
-        <div class="mc-form-group">
-            <label>อีเมลแอดมิน</label>
-            <input type="email" id="authEmail" class="mc-input" placeholder="admin@tinytails.com" autocomplete="off">
-        </div>
+        .search-container { max-width: 600px; margin: 30px auto 10px auto; padding: 0 20px; }
+        .search-box { width: 100%; padding: 14px 20px; border-radius: 30px; border: 2px solid var(--border-color); background: var(--card-bg); color: var(--text-main); font-size: 1.05rem; font-family: inherit; outline: none; transition: 0.3s; box-sizing: border-box; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2); }
+        .search-box:focus { border-color: var(--coin-color); box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.15); }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 10px 20px 80px 20px; }
+        .page-section { display: none; animation: fadeIn 0.4s ease; }
+        .page-section.show { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .category-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; margin-top: 30px; margin-bottom: 25px; }
+        .category-title h2 { font-size: 1.8rem; font-weight: 800; margin: 0; color: var(--text-main); }
+        .price-tag { font-size: 1.1rem; font-weight: 600; background: var(--card-bg); padding: 6px 16px; border-radius: 30px; border: 1px solid var(--border-color); }
+        .price-coin { color: var(--coin-color); border-left: 4px solid var(--coin-color); }
+        .price-thb { color: var(--thb-color); border-left: 4px solid var(--thb-color); }
+        .price-special { color: var(--special-color); border-left: 4px solid var(--special-color); }
+
+        .btn-add { display: none; background: var(--coin-color); color: #000; border: none; padding: 10px 20px; border-radius: 12px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: 0.2s; margin-bottom: 20px; font-family: inherit; }
+        .btn-add:hover { background: #f59e0b; transform: translateY(-2px); }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
+        .card { background: var(--card-bg); border-radius: 20px; border: 1px solid var(--border-color); padding: 24px; text-align: center; transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2); }
+        .card:hover { transform: translateY(-8px); border-color: var(--coin-color); }
         
-        <div class="mc-form-group">
-            <label>รหัสผ่าน</label>
-            <div class="mc-input-wrapper">
-                <input type="password" id="authPassword" class="mc-input" placeholder="••••••" autocomplete="off">
-                <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility()">👁️</button>
+        .img-box { background: var(--box-bg); border-radius: 16px; padding: 25px; margin-bottom: 15px; height: 130px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color); }
+        .img-box img { max-width: 110px; max-height: 110px; object-fit: contain; }
+        .card-title { font-size: 1.35rem; font-weight: 800; margin: 10px 0 5px 0; color: var(--text-main); }
+        .card-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; }
+        
+        .btn-group { display: flex; gap: 10px; margin-top: auto; }
+        .btn-view { flex: 1; background: var(--box-bg); color: var(--text-main); border: 2px solid var(--border-color); padding: 10px; border-radius: 10px; font-weight: 600; font-family: inherit; cursor: pointer; transition: 0.2s; }
+        .btn-view:hover { background: var(--border-color); color: var(--text-main); }
+        .btn-edit { background: var(--box-bg); color: var(--text-muted); border: 2px solid transparent; padding: 10px; border-radius: 10px; font-weight: 600; font-family: inherit; cursor: pointer; transition: 0.2s; }
+        .btn-edit:hover { background: var(--border-color); color: var(--text-main);}
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-bg); backdrop-filter: blur(5px); z-index: 200; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
+        .modal-content { background: var(--card-bg); border-radius: 24px; width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto; padding: 30px; position: relative; animation: slideUp 0.3s ease; border: 1px solid var(--border-color); box-shadow: 0 10px 25px rgba(0,0,0,0.4); box-sizing: border-box; color: var(--text-main); }
+        .modal-content::-webkit-scrollbar { width: 6px; }
+        .modal-content::-webkit-scrollbar-track { background: transparent; }
+        .modal-content::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .close-btn { position: absolute; top: 15px; right: 20px; background: var(--box-bg); border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; color: var(--text-muted); z-index: 10; }
+        .close-btn:hover { background: var(--thb-color); color: #fff; }
+        
+        .modal-title { font-size: 1.5rem; font-weight: 800; color: var(--text-main); text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 15px; margin-top: 0; margin-bottom: 20px; padding-right: 30px; }
+        
+        .modal-images { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; background: var(--box-bg); padding: 15px; border-radius: 16px; border: 1px solid var(--border-color); }
+        .modal-img-card { text-align: center; font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
+        .modal-img-card img { width: 75px; height: 75px; object-fit: contain; background: var(--card-bg); border-radius: 10px; padding: 5px; border: 1px solid var(--border-color); display: block; margin-bottom: 5px; }
+        
+        .stats-list { list-style: none; padding: 0; margin: 0; }
+        .stats-list li { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--border-color); font-size: 0.95rem; }
+        .stats-list li:last-child { border-bottom: none; }
+        .stats-label { color: var(--text-muted); }
+        .stats-value { font-weight: 600; color: var(--text-main); }
+        .stats-highlight { color: var(--coin-color); font-weight: bold; }
+        .refill-val { color: var(--text-main); }
+
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; font-size: 0.9rem; font-weight: 600; color: var(--text-muted); margin-bottom: 5px; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-family: inherit; box-sizing: border-box; outline: none; background: var(--box-bg); color: var(--text-main); }
+        .form-group input:focus { border-color: var(--coin-color); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        .paste-zone { background: var(--box-bg); border: 2px dashed var(--border-color); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: 0.2s; position: relative; margin-bottom: 8px; }
+        .paste-zone:hover, .paste-zone.hovering { border-color: var(--coin-color); background: rgba(251, 191, 36, 0.05); }
+        .paste-zone img { max-width: 80px; max-height: 80px; object-fit: contain; display: none; margin: 10px auto 0 auto; border-radius: 8px; background: var(--card-bg); padding: 5px; border: 1px solid var(--border-color); }
+        .paste-zone p { margin: 0; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; pointer-events: none;}
+        .paste-zone span { display: block; font-size: 0.75rem; color: #71717a; margin-top: 5px; pointer-events: none;}
+        
+        .url-input { width: 100%; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--box-bg); color: var(--text-main); font-size: 0.8rem; box-sizing: border-box; outline: none; transition: 0.3s; font-family: inherit; }
+        .url-input:focus { border-color: var(--coin-color); }
+
+        .btn-save { width: 100%; background: var(--coin-color); color: #000; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; font-weight: 800; cursor: pointer; margin-top: 10px; font-family: inherit; }
+        .btn-save:hover { background: #f59e0b; }
+        .btn-delete { width: 100%; background: transparent; color: var(--thb-color); border: 2px solid var(--thb-color); padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 15px; font-family: inherit; }
+        .btn-delete:hover { background: var(--thb-color); color: white; }
+
+        .toast { visibility: hidden; min-width: 250px; background-color: #18181b; color: #fff; text-align: center; border-radius: 10px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); font-weight: 600; border: 1px solid #27272a; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+        .stat-rank-list { list-style: none; padding: 0; margin: 0; }
+        .stat-rank-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 12px; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+        .stat-rank-item:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.3); border-color: var(--coin-color); }
+        .stat-rank-number { font-weight: 800; font-size: 1.3rem; min-width: 30px; text-align: center; }
+        .stat-rank-img { width: 55px; height: 55px; object-fit: contain; border-radius: 12px; background: var(--box-bg); border: 1px solid var(--border-color); padding: 4px; }
+        .stat-rank-info { flex: 1; min-width: 0; }
+        .stat-rank-name { font-weight: 800; font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main); }
+        .stat-rank-val { font-weight: 800; font-size: 1.2rem; text-align: right; }
+
+        /* 🌟 ดีไซน์ป๊อปอัพล็อกอินแอดมิน */
+        .mc-auth-box { background: #18181b !important; color: #f4f4f5; border: 1px solid #27272a !important; border-radius: 20px; max-width: 420px !important; padding: 25px !important; box-sizing: border-box; font-family: 'Kanit', sans-serif; }
+        .mc-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #27272a; padding-bottom: 15px; margin-bottom: 20px; }
+        .mc-title-group { display: flex; align-items: center; gap: 12px; }
+        .mc-icon-badge { width: 42px; height: 42px; background: #fbbf24; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #000; font-weight: bold; }
+        .mc-title { font-size: 1.25rem; font-weight: 800; margin: 0; color: #fff; line-height: 1.2; }
+        .mc-subtitle { font-size: 0.8rem; color: #a1a1aa; margin: 0; }
+
+        .mc-form-group { margin-bottom: 15px; text-align: left; }
+        .mc-form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: #a1a1aa; margin-bottom: 6px; }
+        .mc-input-wrapper { position: relative; display: flex; align-items: center; }
+        .mc-input { width: 100%; padding: 12px 14px; background: #09090b; border: 1px solid #27272a; border-radius: 12px; color: #fff; font-size: 0.95rem; font-family: inherit; outline: none; transition: 0.2s; box-sizing: border-box; }
+        .mc-input:focus { border-color: #fbbf24; box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.15); }
+        .password-toggle-btn { position: absolute; right: 12px; background: none; border: none; color: #71717a; cursor: pointer; font-size: 1rem; }
+
+        .mc-footer-actions { display: flex; align-items: center; justify-content: space-between; margin-top: 25px; gap: 15px; }
+        .btn-cancel-mc { background: none; border: none; color: #a1a1aa; font-weight: 600; font-size: 0.95rem; cursor: pointer; font-family: inherit; }
+        .btn-cancel-mc:hover { color: #fff; }
+        .btn-submit-mc { flex: 1; background: #fbbf24; color: #000; border: none; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 1rem; cursor: pointer; transition: 0.2s; font-family: inherit; box-shadow: 0 4px 14px rgba(251, 191, 36, 0.3); text-align: center; }
+        .btn-submit-mc:hover { background: #f59e0b; transform: translateY(-1px); }
+        .mc-hint-footer { text-align: center; margin-top: 15px; font-size: 0.8rem; color: #71717a; }
+        .mc-hint-footer code { color: #fbbf24; background: #27272a; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 10px; gap: 6px; }
+            .nav-btn, .auth-nav-btn { padding: 8px 12px; font-size: 0.8rem; }
+            .theme-btn { font-size: 1.2rem; padding: 5px; }
+            .search-container { padding: 0 10px; margin-top: 15px; }
+            .search-box { padding: 10px 15px; font-size: 0.9rem; }
+            .category-header { flex-direction: column; align-items: flex-start; gap: 10px; margin-top: 20px; }
+            .category-title h2 { font-size: 1.4rem; }
+            .price-tag { font-size: 0.85rem; padding: 4px 12px; }
+            .btn-add { font-size: 0.9rem; padding: 10px; width: 100%; text-align: center; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; }
+            .card { padding: 12px; border-radius: 16px; }
+            .img-box { height: 85px; padding: 10px; margin-bottom: 10px; border-radius: 12px; }
+            .img-box img { max-width: 65px; max-height: 65px; }
+            .card-title { font-size: 1.05rem; margin-top: 5px; }
+            .card-desc { font-size: 0.75rem; margin-bottom: 10px; }
+            .btn-view, .btn-edit { padding: 6px; font-size: 0.75rem; border-radius: 8px; }
+            
+            .modal { padding: 15px; }
+            .modal-content { padding: 25px 20px; max-height: 92vh; border-radius: 20px; }
+            .close-btn { top: 12px; right: 12px; width: 30px; height: 30px; font-size: 1rem; }
+            .modal-title { font-size: 1.3rem; margin-bottom: 15px; padding-bottom: 10px; }
+            .modal-images { gap: 10px; padding: 10px; margin-bottom: 15px; }
+            .modal-img-card img { width: 55px; height: 55px; }
+            .stats-list li { font-size: 0.85rem; padding: 8px 0; }
+            .form-group { margin-bottom: 12px; }
+            .form-group label { font-size: 0.85rem; }
+            .form-group input { padding: 10px; font-size: 0.85rem; }
+            .form-row { gap: 10px; }
+            .paste-zone { padding: 12px; margin-bottom: 5px;}
+            .paste-zone p { font-size: 0.8rem; }
+            .paste-zone span { font-size: 0.7rem; }
+            .paste-zone img { max-width: 55px; max-height: 55px; }
+            .url-input { font-size: 0.75rem; padding: 6px 10px; }
+            .btn-save, .btn-delete { padding: 12px; font-size: 1rem; }
+
+            .stat-rank-item { padding: 12px; gap: 10px; }
+            .stat-rank-number { font-size: 1.1rem; }
+            .stat-rank-img { width: 45px; height: 45px; }
+            .stat-rank-name { font-size: 0.95rem; }
+            .stat-rank-val { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <button class="nav-btn active" onclick="showPage('all', this)">หน้าแรก</button>
+        <button class="nav-btn" onclick="showPage('tier1', this)">Tier 1</button>
+        <button class="nav-btn" onclick="showPage('tier2', this)">Tier 2</button>
+        <button class="nav-btn" onclick="showPage('tier3', this)">Tier 3</button>
+        <button class="nav-btn" onclick="showPage('sweet', this)">SWEET</button>
+        <button class="nav-btn" onclick="showPage('huge', this)">HUGE</button>
+        <button class="nav-btn" onclick="showPage('special', this)">SPECIAL</button>
+        <button class="nav-btn" onclick="showPage('ranking', this)">🏆 จัดอันดับ</button>
+        <!-- ปุ่มเข้าสู่ระบบ -->
+        <button class="auth-nav-btn" id="authBtn" onclick="openAuthModal()">🔑 เข้าสู่ระบบ</button>
+        <button class="theme-btn" id="themeToggle" onclick="toggleTheme()" title="เปลี่ยนโหมดมืด/สว่าง">🌙</button>
+    </nav>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-box" placeholder="🔍 ค้นหาชื่อ Cubee หรือผลผลิตที่ต้องการ..." oninput="handleSearch()" autocomplete="off" name="search-field">
+    </div>
+
+    <div class="container">
+        <!-- หมวดหมู่: Tier 1 -->
+        <div id="tier1" class="page-section show">
+            <div class="category-header">
+                <div class="category-title"><h2>⭐ Tier 1 Cubee</h2></div>
+                <span class="price-tag price-coin">ราคา: 7,000 คอยน์</span>
             </div>
+            <button class="btn-add" onclick="openEditModal(null, 'tier1')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
+            <div class="grid" id="grid-tier1"></div>
         </div>
 
-        <div class="mc-footer-actions">
-            <button type="button" class="btn-cancel-mc" onclick="closeModal('authModal')">ยกเลิก</button>
-            <!-- เรียกใช้ฟังก์ชันแอดมินโดยตรง -->
-            <button type="button" class="btn-submit-mc" onclick="processAdminAuth()">➜ เข้าสู่ระบบ</button>
+        <!-- หมวดหมู่: Tier 2 -->
+        <div id="tier2" class="page-section show">
+            <div class="category-header">
+                <div class="category-title"><h2>🌟 Tier 2 Cubee</h2></div>
+                <span class="price-tag price-coin">ราคา: 15,000 คอยน์</span>
+            </div>
+            <button class="btn-add" onclick="openEditModal(null, 'tier2')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
+            <div class="grid" id="grid-tier2"></div>
         </div>
 
-        <div class="mc-hint-footer">
-            ระบบจำกัดสิทธิ์เฉพาะแอดมินเท่านั้น
+        <!-- หมวดหมู่: Tier 3 -->
+        <div id="tier3" class="page-section show">
+            <div class="category-header">
+                <div class="category-title"><h2>💎 Tier 3 Cubee</h2></div>
+                <span class="price-tag price-coin">ราคา: 30,000 คอยน์</span>
+            </div>
+            <button class="btn-add" onclick="openEditModal(null, 'tier3')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
+            <div class="grid" id="grid-tier3"></div>
+        </div>
+
+        <!-- หมวดหมู่: SWEET -->
+        <div id="sweet" class="page-section show">
+            <div class="category-header">
+                <div class="category-title"><h2 style="color: #db2777;">🍬 SWEET CUBEE Gacha</h2></div>
+                <span class="price-tag price-thb">ราคา: 49.- บาท</span>
+            </div>
+            <button class="btn-add" onclick="openEditModal(null, 'sweet')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
+            <div class="grid" id="grid-sweet"></div>
+        </div>
+
+        <!-- หมวดหมู่: HUGE -->
+        <div id="huge" class="page-section show">
+            <div class="category-header">
+                <div class="category-title"><h2 style="color: #dc2626;">🔥 HUGE CUBEE Gacha</h2></div>
+                <span class="price-tag price-thb">ราคา: 449.- บาท</span>
+            </div>
+            <button class="btn-add" onclick="openEditModal(null, 'huge')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
+            <div class="grid" id="grid-huge"></div>
+        </div>
+
+        <!-- หมวดหมู่: SPECIAL -->
+        <div id="special" class="page-section show">
+            <div class="category-header">
+                <div class="category-title"><h2 style="color: var(--special-color);">✨ SPECIAL CUBEE</h2></div>
+                <span class="price-tag price-special">กิจกรรมสปาว</span>
+            </div>
+            <button class="btn-add" onclick="openEditModal(null, 'special')" style="background: var(--special-color);">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
+            <div class="grid" id="grid-special"></div>
+        </div>
+
+        <!-- หน้าจัดอันดับ -->
+        <div id="ranking" class="page-section">
+            <div class="category-header">
+                <div class="category-title"><h2>🏆 จัดอันดับราคาขายไอเทม</h2></div>
+                <span class="price-tag" style="background: var(--box-bg); color: var(--text-muted); border-color: var(--border-color);">คลิกเพื่อดูข้อมูล</span>
+            </div>
+            <div id="full-ranking-container" style="max-width: 800px; margin: 0 auto;">
+                <!-- จะถูกแทรกข้อมูลด้วย JavaScript -->
+            </div>
         </div>
     </div>
-</div>
+
+    <!-- 🌟 ป๊อปอัพเข้าสู่ระบบเฉพาะแอดมิน -->
+    <div id="authModal" class="modal">
+        <div class="modal-content mc-auth-box">
+            <button class="close-btn" onclick="closeModal('authModal')" style="background: #27272a; color: #a1a1aa;">&times;</button>
+            
+            <div class="mc-header">
+                <div class="mc-title-group">
+                    <div class="mc-icon-badge">➜</div>
+                    <div>
+                        <h3 class="mc-title">เข้าสู่ระบบแอดมิน</h3>
+                        <p class="mc-subtitle">สำหรับผู้ดูแลเว็บไซต์เท่านั้น</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mc-form-group">
+                <label>อีเมลแอดมิน</label>
+                <input type="email" id="authEmail" class="mc-input" placeholder="admin@tinytails.com" autocomplete="off">
+            </div>
+            
+            <div class="mc-form-group">
+                <label>รหัสผ่าน</label>
+                <div class="mc-input-wrapper">
+                    <input type="password" id="authPassword" class="mc-input" placeholder="••••••" autocomplete="off">
+                    <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility()">👁️</button>
+                </div>
+            </div>
+
+            <div class="mc-footer-actions">
+                <button type="button" class="btn-cancel-mc" onclick="closeModal('authModal')">ยกเลิก</button>
+                <button type="button" class="btn-submit-mc" onclick="processAdminAuth()">➜ เข้าสู่ระบบ</button>
+            </div>
+
+            <div class="mc-hint-footer">
+                จำกัดสิทธิ์เฉพาะแอดมินเท่านั้น
+            </div>
+        </div>
+    </div>
+
+    <!-- ป๊อปอัพดูข้อมูล -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('infoModal')">&times;</button>
+            <h3 id="v-name" class="modal-title">ชื่อ</h3>
+            <div class="modal-images">
+                <div class="modal-img-card"><img id="v-petImg" src="" alt="Cubee"><span>ตัว Cubee</span></div>
+                <div class="modal-img-card"><img id="v-itemImg" src="" alt="Item"><span id="v-itemName">ผลผลิต</span></div>
+            </div>
+            <ul class="stats-list">
+                <li><span class="stats-label">🍗 ความจุอาหาร:</span> <span id="v-food" class="stats-value"></span></li>
+                <li><span class="stats-label">⚙️ กำลังผลิต:</span> <span id="v-prod" class="stats-value"></span></li>
+                <li><span class="stats-label">⏳ ใช้เวลาผลิต:</span> <span id="v-time" class="stats-value"></span></li>
+                <li><span class="stats-label">📦 ความจุผลผลิต:</span> <span id="v-max" class="stats-value"></span></li>
+                <li><span class="stats-label">💰 ราคาขายไอเทม:</span> <span id="v-price" class="stats-highlight"></span></li>
+                <li><span class="stats-label">⏱️ ผลิตได้ (1 ชม.):</span> <span id="v-hrQty" class="stats-value"></span></li>
+                <li><span class="stats-label">💎 รายได้ (1 ชม.):</span> <span id="v-hrCoin" class="stats-highlight"></span></li>
+                <li>
+                    <span class="stats-label">🔄 รอบเติมอาหาร:</span> 
+                    <span style="text-align: right; font-size: 0.9em; line-height: 1.4;">
+                        เติมทีละ 1 ช่อง: <b id="v-refill1" class="refill-val"></b><br>
+                        เติมทีละ 2 ช่อง: <b id="v-refill2" class="refill-val"></b>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ป๊อปอัพฟอร์มแก้ไข -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('editModal')">&times;</button>
+            <h3 class="modal-title" style="border-bottom:none;">⚙️ จัดการข้อมูล</h3>
+            <input type="hidden" id="e-id">
+            <input type="hidden" id="e-category">
+            
+            <div class="form-group">
+                <label>ชื่อ Cubee / ไอเทม</label>
+                <input type="text" id="e-name" placeholder="เช่น Marshmellow Cubee">
+            </div>
+            <div class="form-group">
+                <label>คำอธิบายสั้นๆ (แสดงหน้าแรก)</label>
+                <input type="text" id="e-desc" placeholder="เช่น ข้อมูลสัตว์เลี้ยงประเภท Cubee">
+            </div>
+
+            <label style="display: block; font-size: 0.9rem; font-weight: 600; color: var(--text-muted); margin-bottom: 5px;">รูปภาพ (อัปโหลด หรือ วางลิงก์)</label>
+            <div class="form-row" style="margin-bottom: 15px;">
+                <div>
+                    <div class="paste-zone" id="zone-pet">
+                        <p>📸 รูปตัว Cubee</p>
+                        <span>คลิกแนบไฟล์<br>หรือชี้เมาส์แล้ว Ctrl+V</span>
+                        <input type="file" id="file-pet" accept="image/*" style="display:none;">
+                        <img id="preview-pet" src="">
+                    </div>
+                    <input type="text" id="e-petImg" class="url-input" placeholder="🔗 หรือวางลิงก์รูป (URL) ที่นี่..." oninput="showPreviewImage('preview-pet', this.value)">
+                </div>
+                <div>
+                    <div class="paste-zone" id="zone-item">
+                        <p>📸 รูปผลผลิต</p>
+                        <span>คลิกแนบไฟล์<br>หรือชี้เมาส์แล้ว Ctrl+V</span>
+                        <input type="file" id="file-item" accept="image/*" style="display:none;">
+                        <img id="preview-item" src="">
+                    </div>
+                    <input type="text" id="e-itemImg" class="url-input" placeholder="🔗 หรือวางลิงก์รูป (URL) ที่นี่..." oninput="showPreviewImage('preview-item', this.value)">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>ชื่อผลผลิต</label>
+                <input type="text" id="e-itemName" placeholder="เช่น เยลลี่เด้งดึ๋ง">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group"><label>ความจุอาหาร</label><input type="text" id="e-food" placeholder="เช่น 600" oninput="autoCalculate()"></div>
+                <div class="form-group"><label>กำลังผลิต (ชิ้น/รอบ)</label><input type="text" id="e-prod" placeholder="เช่น 2" oninput="autoCalculate()"></div>
+                <div class="form-group"><label>ใช้เวลา (วินาที/รอบ)</label><input type="text" id="e-time" placeholder="เช่น 60" oninput="autoCalculate()"></div>
+                <div class="form-group"><label>ความจุสูงสุด</label><input type="text" id="e-max" placeholder="เช่น 120"></div>
+                <div class="form-group"><label>ราคาขาย (คอยน์/ชิ้น)</label><input type="text" id="e-price" placeholder="เช่น 25" oninput="autoCalculate()"></div>
+                <div class="form-group"><label>ผลิตได้ (1 ชม.)</label><input type="text" id="e-hrQty" placeholder="จะคำนวณให้อัตโนมัติ" readonly style="background:#09090b; color:var(--text-muted);"></div>
+                <div class="form-group"><label>รายได้ (1 ชม.)</label><input type="text" id="e-hrCoin" placeholder="จะคำนวณให้อัตโนมัติ" readonly style="background:#09090b; color:var(--text-muted);"></div>
+                <div class="form-group"><label>รอบเติม (1 ช่อง)</label><input type="text" id="e-refill1" placeholder="จะคำนวณให้อัตโนมัติ" readonly style="background:#09090b; color:var(--text-muted);"></div>
+                <div class="form-group"><label>รอบเติม (2 ช่อง)</label><input type="text" id="e-refill2" placeholder="จะคำนวณให้อัตโนมัติ" readonly style="background:#09090b; color:var(--text-muted);"></div>
+            </div>
+
+            <button class="btn-save" onclick="saveData()">💾 บันทึกการตั้งค่า</button>
+            <button class="btn-delete" id="btn-delete" onclick="deleteData()">🗑️ ลบข้อมูลนี้ออก</button>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">ข้อความแจ้งเตือน</div>
+
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
+
+    <script>
+        if(localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            document.getElementById('themeToggle').innerText = '🌙';
+        } else {
+            document.getElementById('themeToggle').innerText = '☀️';
+        }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDmmi0VA4FoGPAKXIY4vVX9lRWk2O_-87s", 
+            authDomain: "tinytails-db.firebaseapp.com", 
+            databaseURL: "https://tinytails-db-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "tinytails-db",
+            storageBucket: "tinytails-db.firebasestorage.app", 
+            messagingSenderId: "943214555111", 
+            appId: "1:943214555111:web:47b39cf1ed806cbdcd5742" 
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const auth = firebase.auth(); 
+
+        let cubeeDb = [];
+        let searchText = ''; 
+        let currentUser = null; 
+
+        auth.onAuthStateChanged((user) => {
+            currentUser = user;
+            let authBtn = document.getElementById('authBtn');
+            let addBtns = document.querySelectorAll('.btn-add');
+            
+            if (user) {
+                authBtn.innerText = '🚪 ออกจากระบบ';
+                authBtn.style.background = 'var(--thb-color)';
+                authBtn.style.color = '#fff';
+                authBtn.onclick = logoutUser;
+                addBtns.forEach(btn => btn.style.display = 'block');
+            } else {
+                authBtn.innerText = '🔑 เข้าสู่ระบบ';
+                authBtn.style.background = 'var(--coin-color)';
+                authBtn.style.color = '#000';
+                authBtn.onclick = openAuthModal;
+                addBtns.forEach(btn => btn.style.display = 'none');
+            }
+            renderUI();
+        });
+
+        function showToast(msg) {
+            let toast = document.getElementById("toast");
+            toast.innerText = msg;
+            toast.className = "toast show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+
+        function openAuthModal() {
+            document.getElementById('authEmail').value = '';
+            document.getElementById('authPassword').value = '';
+            document.getElementById('authModal').style.display = 'flex';
+        }
+
+        function togglePasswordVisibility() {
+            let passInput = document.getElementById('authPassword');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+            } else {
+                passInput.type = 'password';
+            }
+        }
+
+        // ฟังก์ชันล็อกอินแอดมิน (ใช้ Sign in เท่านั้น ไม่มีปุ่มสมัครสมาชิกใหม่)
+        function processAdminAuth() {
+            let email = document.getElementById('authEmail').value;
+            let pass = document.getElementById('authPassword').value;
+
+            if (!email || !pass) {
+                alert('กรุณากรอกอีเมลและรหัสผ่านให้ครบถ้วน');
+                return;
+            }
+
+            auth.signInWithEmailAndPassword(email, pass)
+                .then(() => {
+                    closeModal('authModal');
+                    showToast('เข้าสู่ระบบแอดมินสำเร็จ! ปลดล็อคปุ่มจัดการแล้ว 🔓');
+                })
+                .catch(err => {
+                    alert('เข้าสู่ระบบไม่สำเร็จ: อีเมลหรือรหัสผ่านแอดมินไม่ถูกต้อง');
+                });
+        }
+
+        function logoutUser() {
+            if(confirm('ต้องการออกจากระบบใช่หรือไม่?')) {
+                auth.signOut().then(() => showToast('ออกจากระบบเรียบร้อยแล้ว 🔒'));
+            }
+        }
+
+        db.ref('tinytails_db').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                cubeeDb = Object.values(data);
+            } else {
+                cubeeDb = []; 
+            }
+            renderUI();
+        });
+
+        function handleSearch() {
+            searchText = document.getElementById('searchInput').value.toLowerCase();
+            renderUI();
+        }
+
+        function renderUI() {
+            ['tier1', 'tier2', 'tier3', 'sweet', 'huge', 'special'].forEach(cat => {
+                const grid = document.getElementById(`grid-${cat}`);
+                if(grid) grid.innerHTML = ''; 
+            });
+
+            let filteredDb = cubeeDb.filter(item => {
+                let matchName = item.name.toLowerCase().includes(searchText);
+                let matchItem = item.itemName.toLowerCase().includes(searchText);
+                return matchName || matchItem;
+            });
+
+            filteredDb.forEach(item => {
+                let editBtnHtml = currentUser ? `<button class="btn-edit" onclick="openEditModal(${item.id})">✏️ แก้ไข</button>` : '';
+
+                let html = `
+                    <div class="card">
+                        <div>
+                            <div class="img-box"><img src="${item.petImg}" alt="img"></div>
+                            <h3 class="card-title">${item.name}</h3>
+                            <p class="card-desc">${item.desc}</p>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn-view" onclick="openViewModal(${item.id})">🔍 ข้อมูล</button>
+                            ${editBtnHtml}
+                        </div>
+                    </div>
+                `;
+                if(document.getElementById(`grid-${item.category}`)) {
+                    document.getElementById(`grid-${item.category}`).insertAdjacentHTML('beforeend', html);
+                }
+            });
+
+            renderRankingPage();
+        }
+
+        function renderRankingPage() {
+            let container = document.getElementById('full-ranking-container');
+            if(!container) return;
+
+            if (cubeeDb.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding: 40px;">ยังไม่มีข้อมูลในระบบครับ</p>';
+                return;
+            }
+
+            let validItems = cubeeDb.filter(item => {
+                let p = parseFloat(String(item.price).replace(/[^\d.-]/g, ''));
+                return !isNaN(p) && p > 0;
+            });
+
+            if (validItems.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding: 40px;">ยังไม่มีการระบุราคาไอเทมในระบบครับ</p>';
+                return;
+            }
+
+            validItems.sort((a, b) => {
+                let pA = parseFloat(String(a.price).replace(/[^\d.-]/g, ''));
+                let pB = parseFloat(String(b.price).replace(/[^\d.-]/g, ''));
+                return pB - pA;
+            });
+
+            let html = '<div class="stat-rank-list">';
+            validItems.forEach((item, index) => {
+                let emoji = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}`;
+                html += `
+                    <div class="stat-rank-item" style="border-left: 4px solid var(--coin-color);" onclick="openViewModal(${item.id})">
+                        <div class="stat-rank-number">${emoji}</div>
+                        <img class="stat-rank-img" src="${item.petImg || 'https://via.placeholder.com/40/cbd5e1/ffffff?text=Img'}">
+                        <div class="stat-rank-info">
+                            <div class="stat-rank-name">${item.name}</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 3px;">📦 ผลผลิต: ${item.itemName}</div>
+                        </div>
+                        <div class="stat-rank-val" style="color: var(--coin-color);">${appendUnit(item.price, 'คอยน์')}</div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function toggleTheme() {
+            let body = document.body;
+            let btn = document.getElementById('themeToggle');
+            body.classList.toggle('light-mode');
+            
+            if(body.classList.contains('light-mode')) {
+                localStorage.setItem('theme', 'light');
+                btn.innerText = '🌙';
+            } else {
+                localStorage.setItem('theme', 'dark');
+                btn.innerText = '☀️';
+            }
+        }
+
+        function showPage(pageId, clickedBtn) {
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            clickedBtn.classList.add('active');
+            let sections = document.querySelectorAll('.page-section');
+            
+            if(pageId === 'all') {
+                sections.forEach(sec => {
+                    if(sec.id !== 'ranking') sec.classList.add('show');
+                    else sec.classList.remove('show');
+                });
+            } else {
+                sections.forEach(sec => sec.classList.remove('show'));
+                document.getElementById(pageId).classList.add('show');
+            }
+        }
+
+        function appendUnit(val, unit) {
+            if (!val || val === '-') return '-';
+            let cleanVal = String(val).replace('ชิ้น/รอบ', '').replace('คอยน์/ชิ้น', '').replace('คอยน์', '').replace('วินาที/รอบ', '').trim();
+            return `${cleanVal} ${unit}`;
+        }
+
+        function openViewModal(id) {
+            let data = cubeeDb.find(x => x.id === id);
+            if(!data) return;
+            document.getElementById('v-name').innerText = data.name;
+            document.getElementById('v-petImg').src = data.petImg;
+            document.getElementById('v-itemImg').src = data.itemImg;
+            document.getElementById('v-itemName').innerText = data.itemName;
+            
+            document.getElementById('v-food').innerText = data.food || '-';
+            document.getElementById('v-prod').innerText = appendUnit(data.prod, 'ชิ้น/รอบ');
+            document.getElementById('v-time').innerText = appendUnit(data.time, 'วินาที/รอบ');
+            document.getElementById('v-max').innerText = data.max || '-';
+            document.getElementById('v-price').innerText = appendUnit(data.price, 'คอยน์/ชิ้น'); 
+            
+            document.getElementById('v-hrQty').innerText = data.hrQty || '-';
+            document.getElementById('v-hrCoin').innerText = data.hrCoin || '-';
+            document.getElementById('v-refill1').innerText = data.refill1 || '-';
+            document.getElementById('v-refill2').innerText = data.refill2 || '-';
+            
+            document.getElementById('infoModal').style.display = 'flex';
+        }
+
+        function autoCalculate() {
+            const getNum = (id) => {
+                let val = document.getElementById(id).value;
+                if(!val) return 0;
+                val = String(val).replace(/,/g, '').replace(/[^\d.-]/g, ''); 
+                return parseFloat(val) || 0;
+            };
+
+            let food = getNum('e-food');
+            let eat = 64; 
+            let prod = getNum('e-prod');
+            let time = getNum('e-time');
+            let price = getNum('e-price');
+
+            if (time > 0) {
+                let cyclesPerHour = 3600 / time; 
+                let hrQty = cyclesPerHour * prod; 
+                let hrCoin = hrQty * price; 
+                
+                document.getElementById('e-hrQty').value = Math.floor(hrQty);
+                document.getElementById('e-hrCoin').value = Math.floor(hrCoin);
+            } else {
+                document.getElementById('e-hrQty').value = '';
+                document.getElementById('e-hrCoin').value = '';
+            }
+
+            if (food > 0) {
+                document.getElementById('e-refill1').value = Math.floor(food / eat);
+                document.getElementById('e-refill2').value = Math.floor((food * 2) / eat);
+            } else {
+                document.getElementById('e-refill1').value = '';
+                document.getElementById('e-refill2').value = '';
+            }
+        }
+
+        function openEditModal(id, category = '') {
+            if (!currentUser) {
+                alert('โปรดเข้าสู่ระบบก่อนทำการเพิ่มหรือแก้ไขข้อมูลครับ 🔒');
+                openAuthModal();
+                return;
+            }
+
+            if(id) {
+                let data = cubeeDb.find(x => x.id === id);
+                document.getElementById('e-id').value = data.id;
+                document.getElementById('e-category').value = data.category;
+                document.getElementById('e-name').value = data.name;
+                document.getElementById('e-desc').value = data.desc;
+                
+                document.getElementById('e-petImg').value = data.petImg;
+                document.getElementById('e-itemImg').value = data.itemImg;
+                
+                document.getElementById('e-itemName').value = data.itemName;
+                document.getElementById('e-food').value = data.food || '';
+                document.getElementById('e-prod').value = data.prod || '';
+                document.getElementById('e-time').value = data.time || '';
+                document.getElementById('e-max').value = data.max || '';
+                document.getElementById('e-price').value = data.price || '';
+                
+                showPreviewImage('preview-pet', data.petImg);
+                showPreviewImage('preview-item', data.itemImg);
+                document.getElementById('btn-delete').style.display = 'block';
+            } else {
+                document.getElementById('e-id').value = '';
+                document.getElementById('e-category').value = category;
+                
+                ['e-name','e-desc','e-petImg','e-itemImg','e-itemName','e-food','e-prod','e-time','e-max','e-price','e-hrQty','e-hrCoin','e-refill1','e-refill2'].forEach(field => document.getElementById(field).value = '');
+                
+                showPreviewImage('preview-pet', '');
+                showPreviewImage('preview-item', '');
+                document.getElementById('btn-delete').style.display = 'none';
+            }
+            
+            autoCalculate();
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function showPreviewImage(previewId, src) {
+            let imgEl = document.getElementById(previewId);
+            let pEl = imgEl.parentElement.querySelector('p');
+            let spanEl = imgEl.parentElement.querySelector('span');
+            
+            if(src && (src.startsWith('data:image') || src.startsWith('http'))) {
+                imgEl.src = src;
+                imgEl.style.display = 'block';
+                if(pEl) pEl.style.display = 'none';
+                if(spanEl) spanEl.style.display = 'none';
+            } else {
+                imgEl.src = '';
+                imgEl.style.display = 'none';
+                if(pEl) pEl.style.display = 'block';
+                if(spanEl) spanEl.style.display = 'block';
+            }
+        }
+
+        document.getElementById('zone-pet').addEventListener('click', (e) => {
+            if(e.target.tagName.toLowerCase() !== 'input') document.getElementById('file-pet').click();
+        });
+        document.getElementById('zone-item').addEventListener('click', (e) => {
+            if(e.target.tagName.toLowerCase() !== 'input') document.getElementById('file-item').click();
+        });
+
+        function processImageFile(file, previewId, hiddenInputId) {
+            if (!file || !file.type.startsWith('image/')) return;
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const MAX_SIZE = 150; 
+                    let width = img.width; let height = img.height;
+                    if (width > height) { if (width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; } } 
+                    else { if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; } }
+                    canvas.width = width; canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    document.getElementById(hiddenInputId).value = canvas.toDataURL('image/png'); 
+                    showPreviewImage(previewId, canvas.toDataURL('image/png'));
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        document.getElementById('file-pet').addEventListener('change', function(e) { processImageFile(e.target.files[0], 'preview-pet', 'e-petImg'); });
+        document.getElementById('file-item').addEventListener('change', function(e) { processImageFile(e.target.files[0], 'preview-item', 'e-itemImg'); });
+
+        let hoveredZone = null;
+        document.getElementById('zone-pet').addEventListener('mouseenter', () => { hoveredZone = 'pet'; document.getElementById('zone-pet').classList.add('hovering'); });
+        document.getElementById('zone-pet').addEventListener('mouseleave', () => { hoveredZone = null; document.getElementById('zone-pet').classList.remove('hovering'); });
+        document.getElementById('zone-item').addEventListener('mouseenter', () => { hoveredZone = 'item'; document.getElementById('zone-item').classList.add('hovering'); });
+        document.getElementById('zone-item').addEventListener('mouseleave', () => { hoveredZone = null; document.getElementById('zone-item').classList.remove('hovering'); });
+
+        document.addEventListener('paste', function(e) {
+            if (!hoveredZone) return; 
+            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].kind === 'file' && items[i].type.startsWith('image/')) {
+                    e.preventDefault();
+                    if (hoveredZone === 'pet') processImageFile(items[i].getAsFile(), 'preview-pet', 'e-petImg');
+                    else if (hoveredZone === 'item') processImageFile(items[i].getAsFile(), 'preview-item', 'e-itemImg');
+                    break;
+                }
+            }
+        });
+
+        function saveData() {
+            if (!currentUser) return alert('โปรดเข้าสู่ระบบก่อนทำการบันทึกข้อมูลครับ 🔒');
+
+            let id = document.getElementById('e-id').value;
+            let finalId = id ? parseInt(id) : Date.now();
+
+            let newData = {
+                id: finalId,
+                category: document.getElementById('e-category').value,
+                name: document.getElementById('e-name').value || 'ไม่มีชื่อ',
+                desc: document.getElementById('e-desc').value || '-',
+                petImg: document.getElementById('e-petImg').value || 'https://via.placeholder.com/100/cbd5e1/ffffff?text=Img',
+                itemImg: document.getElementById('e-itemImg').value || 'https://via.placeholder.com/100/cbd5e1/0f172a?text=Item',
+                itemName: document.getElementById('e-itemName').value || '-',
+                food: document.getElementById('e-food').value || '-',
+                eat: 64, 
+                prod: document.getElementById('e-prod').value || '-',
+                time: document.getElementById('e-time').value || '-',
+                max: document.getElementById('e-max').value || '-',
+                price: document.getElementById('e-price').value || '-',
+                hrQty: document.getElementById('e-hrQty').value || '-',
+                hrCoin: document.getElementById('e-hrCoin').value || '-',
+                refill1: document.getElementById('e-refill1').value || '-',
+                refill2: document.getElementById('e-refill2').value || '-'
+            };
+
+            db.ref('tinytails_db/' + finalId).set(newData).then(() => {
+                closeModal('editModal');
+                showToast('บันทึกข้อมูลเรียบร้อยแล้ว! ✨');
+            }).catch((error) => {
+                alert("เกิดข้อผิดพลาดในการบันทึก: " + error);
+            });
+        }
+
+        function deleteData() {
+            if (!currentUser) return alert('โปรดเข้าสู่ระบบก่อนทำการลบข้อมูลครับ 🔒');
+
+            if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้ทิ้งถาวร?')) {
+                let id = parseInt(document.getElementById('e-id').value);
+                db.ref('tinytails_db/' + id).remove().then(() => {
+                    closeModal('editModal');
+                    showToast('ลบข้อมูลเรียบร้อยแล้ว 🗑️');
+                }).catch((error) => {
+                    alert("เกิดข้อผิดพลาดในการลบ: " + error);
+                });
+            }
+        }
+
+        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
+        
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('infoModal')) closeModal('infoModal');
+            if (event.target == document.getElementById('editModal')) closeModal('editModal');
+            if (event.target == document.getElementById('authModal')) closeModal('authModal');
+        }
+    </script>
+</body>
+</html>
