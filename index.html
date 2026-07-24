@@ -962,7 +962,6 @@
             });
 
             let baseCats = [
-                { id: 'all', defaultMenuName: 'หน้าแรก', defaultName: 'หน้าแรก', defaultIcon: '🏠', defaultColor: '' },
                 { id: 'tier1', defaultMenuName: 'Tier 1', defaultName: 'Tier 1 Cubee', defaultIcon: '⭐', defaultColor: '' },
                 { id: 'tier2', defaultMenuName: 'Tier 2', defaultName: 'Tier 2 Cubee', defaultIcon: '🌟', defaultColor: '' },
                 { id: 'tier3', defaultMenuName: 'Tier 3', defaultName: 'Tier 3 Cubee', defaultIcon: '💎', defaultColor: '' },
@@ -982,6 +981,27 @@
                 });
             });
 
+            // 1. สร้างปุ่มหน้าแรกไว้ตัวแรกสุดเสมอ
+            let homeMeta = categoryMeta['all'] || { menuName: 'หน้าแรก', name: 'หน้าแรก', icon: '🏠', color: '' };
+            let homeWrapper = document.createElement('div');
+            homeWrapper.className = 'nav-item-wrapper active';
+            homeWrapper.id = 'nav-wrap-all';
+            let homeBtn = document.createElement('button');
+            homeBtn.className = 'nav-btn';
+            homeBtn.onclick = () => showPage('all', homeWrapper);
+            homeBtn.innerText = `${homeMeta.icon || '🏠'} ${homeMeta.menuName || 'หน้าแรก'}`;
+            homeWrapper.appendChild(homeBtn);
+            if (currentUser) {
+                let homeEditBtn = document.createElement('button');
+                homeEditBtn.className = 'nav-edit-inline-btn';
+                homeEditBtn.innerHTML = '✏️';
+                homeEditBtn.title = 'แก้ไขหน้าแรก';
+                homeEditBtn.onclick = (e) => { e.stopPropagation(); openEditPriceModal('all'); };
+                homeWrapper.appendChild(homeEditBtn);
+            }
+            navCenter.appendChild(homeWrapper);
+
+            // 2. สร้างปุ่มและ Section ของแต่ละหมวดหมู่
             allCatsToBuild.forEach(cat => {
                 let meta = categoryMeta[cat.id] || { 
                     menuName: cat.defaultMenuName, 
@@ -994,9 +1014,8 @@
                 let displayIcon = meta.icon || '';
                 let displayColor = meta.color || '';
 
-                // 1. สร้างปุ่ม Navbar
                 let wrapper = document.createElement('div');
-                wrapper.className = `nav-item-wrapper ${cat.id === 'all' ? 'active' : ''}`;
+                wrapper.className = 'nav-item-wrapper';
                 wrapper.id = `nav-wrap-${cat.id}`;
 
                 let btn = document.createElement('button');
@@ -1020,51 +1039,47 @@
 
                 navCenter.appendChild(wrapper);
 
-                // 2. สร้าง Section เนื้อหา
-                if (cat.id !== 'all') {
-                    let sec = document.createElement('div');
-                    sec.id = cat.id;
-                    sec.className = 'page-section';
-                    let noticeHtml = cat.id === 'special' ? 
-                        `<div class="in-game-notice">ได้รับผ่านการทำกิจกรรมในเซิร์ฟเวอร์เท่านั้น</div>` :
-                        (cat.id === 'sweet' || cat.id === 'huge' ? 
-                            `<a href="https://store.tinytails.fun/store" target="_blank" class="store-link-btn">🛒 ไปที่หน้าเว็บไซต์ TinyTails MC - Store</a>` :
-                            `<div class="in-game-notice">ซื้อได้ในเกมเท่านั้น <span>(SERVER IP : play.tinytails.fun - version 1.21.11)</span></div>`
-                        );
+                let sec = document.createElement('div');
+                sec.id = cat.id;
+                sec.className = 'page-section show'; // เปิดให้แสดงในหน้าแรกด้วย
+                let noticeHtml = cat.id === 'special' ? 
+                    `<div class="in-game-notice">ได้รับผ่านการทำกิจกรรมในเซิร์ฟเวอร์เท่านั้น</div>` :
+                    (cat.id === 'sweet' || cat.id === 'huge' ? 
+                        `<a href="https://store.tinytails.fun/store" target="_blank" class="store-link-btn">🛒 ไปที่หน้าเว็บไซต์ TinyTails MC - Store</a>` :
+                        `<div class="in-game-notice">ซื้อได้ในเกมเท่านั้น <span>(SERVER IP : play.tinytails.fun - version 1.21.11)</span></div>`
+                    );
 
-                    let colorStyle = displayColor ? `style="color: ${displayColor};"` : '';
-
-                    sec.innerHTML = `
-                        <div class="category-header">
-                            <div class="category-title">
-                                <div class="cat-icon-display" id="icon-disp-${cat.id}">
-                                    ${displayIcon.startsWith('http') || displayIcon.startsWith('data:image') ? `<img src="${displayIcon}" alt="icon">` : displayIcon}
-                                </div>
-                                <div>
-                                    <h2 style="margin-bottom: 2px; ${displayColor ? 'color: ' + displayColor + ';' : ''}" id="name-disp-${cat.id}">${displayHeaderName}</h2>
-                                    ${noticeHtml}
-                                </div>
+                sec.innerHTML = `
+                    <div class="category-header">
+                        <div class="category-title">
+                            <div class="cat-icon-display" id="icon-disp-${cat.id}">
+                                ${displayIcon.startsWith('http') || displayIcon.startsWith('data:image') ? `<img src="${displayIcon}" alt="icon">` : displayIcon}
                             </div>
-                            <div class="price-tags-group">
-                                <div class="price-tag-wrapper">
-                                    <span class="price-tag price-coin" id="price-coin-${cat.id}">ราคา: 0 Coin</span>
-                                </div>
-                                <div class="price-tag-wrapper" id="wrap-ruby-${cat.id}" style="display:none;">
-                                    <span class="price-tag price-ruby" id="price-ruby-${cat.id}">ราคา: 0 Ruby</span>
-                                </div>
-                                <div class="price-tag-wrapper" id="wrap-thb-${cat.id}" style="display:none;">
-                                    <span class="price-tag price-thb" id="price-thb-${cat.id}">ราคา: 0 บาท</span>
-                                </div>
-                                <button class="btn-edit-price" id="btn-edit-${cat.id}" onclick="openEditPriceModal('${cat.id}')" title="แก้ไขราคาและหมวดหมู่" style="${currentUser ? 'display:flex;' : 'display:none;'}">✏️</button>
+                            <div>
+                                <h2 style="margin-bottom: 2px; ${displayColor ? 'color: ' + displayColor + ';' : ''}" id="name-disp-${cat.id}">${displayHeaderName}</h2>
+                                ${noticeHtml}
                             </div>
                         </div>
-                        <button class="btn-add" onclick="openEditModal(null, '${cat.id}')" style="${currentUser ? 'display:block;' : 'display:none;'} ${displayColor ? 'background-color: ' + displayColor + '; color: #fff;' : ''}">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
-                        <div class="grid" id="grid-${cat.id}"></div>
-                    `;
-                    container.insertBefore(sec, rankingSec);
-                }
+                        <div class="price-tags-group">
+                            <div class="price-tag-wrapper">
+                                <span class="price-tag price-coin" id="price-coin-${cat.id}">ราคา: 0 Coin</span>
+                            </div>
+                            <div class="price-tag-wrapper" id="wrap-ruby-${cat.id}" style="display:none;">
+                                <span class="price-tag price-ruby" id="price-ruby-${cat.id}">ราคา: 0 Ruby</span>
+                            </div>
+                            <div class="price-tag-wrapper" id="wrap-thb-${cat.id}" style="display:none;">
+                                <span class="price-tag price-thb" id="price-thb-${cat.id}">ราคา: 0 บาท</span>
+                            </div>
+                            <button class="btn-edit-price" id="btn-edit-${cat.id}" onclick="openEditPriceModal('${cat.id}')" title="แก้ไขราคาและหมวดหมู่" style="${currentUser ? 'display:flex;' : 'display:none;'}">✏️</button>
+                        </div>
+                    </div>
+                    <button class="btn-add" onclick="openEditModal(null, '${cat.id}')" style="${currentUser ? 'display:block;' : 'display:none;'} ${displayColor ? 'background-color: ' + displayColor + '; color: #fff;' : ''}">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
+                    <div class="grid" id="grid-${cat.id}"></div>
+                `;
+                container.insertBefore(sec, rankingSec);
             });
 
+            // 3. ปุ่มจัดอันดับ
             let rankWrapper = document.createElement('div');
             rankWrapper.className = 'nav-item-wrapper';
             rankWrapper.id = 'nav-wrap-ranking';
