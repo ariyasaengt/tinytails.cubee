@@ -74,26 +74,56 @@
             letter-spacing: 0.5px;
         }
 
+        .nav-item-wrapper {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--nav-btn-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: 0.2s;
+        }
+        .nav-item-wrapper:hover {
+            border-color: var(--text-muted);
+        }
+
         .nav-btn { 
-            background-color: var(--nav-btn-bg); 
+            background: transparent; 
             color: var(--text-muted); 
-            border: 1px solid var(--border-color); 
-            padding: 10px 22px; 
-            border-radius: 16px; 
+            border: none; 
+            padding: 10px 18px; 
             font-size: 0.95rem; 
             font-weight: 800; 
             cursor: pointer; 
             transition: 0.2s; 
             font-family: inherit;
         }
-        .nav-btn:hover { background-color: var(--border-color); color: var(--text-main); }
-        .nav-btn.active { 
+        .nav-btn:hover { color: var(--text-main); }
+        .nav-item-wrapper.active { 
             background-color: var(--primary-yellow); 
-            color: #000; 
             border-color: var(--primary-yellow); 
             box-shadow: 0 4px 14px rgba(251,191,36,0.25); 
         }
-        body.light-mode .nav-btn.active { color: #fff; }
+        .nav-item-wrapper.active .nav-btn { 
+            color: #000; 
+        }
+        body.light-mode .nav-item-wrapper.active .nav-btn { color: #fff; }
+
+        .nav-edit-inline-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0 10px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            height: 100%;
+            transition: 0.2s;
+        }
+        .nav-edit-inline-btn:hover {
+            color: var(--primary-yellow);
+            background: rgba(255,255,255,0.05);
+        }
 
         .nav-btn-add-cat {
             display: none;
@@ -436,7 +466,8 @@
         }
 
         @media (max-width: 768px) {
-            .nav-btn { padding: 8px 14px; font-size: 0.8rem; border-radius: 12px; }
+            .nav-btn { padding: 8px 12px; font-size: 0.8rem; }
+            .nav-edit-inline-btn { padding: 0 6px; font-size: 0.75rem; }
             .icon-nav-btn { width: 36px; height: 36px; font-size: 0.95rem; border-radius: 12px; }
             .auth-nav-btn { padding: 8px 16px; font-size: 0.8rem; border-radius: 12px; }
             .search-container { padding: 0 10px; margin-top: 15px; }
@@ -489,15 +520,7 @@
         </div>
 
         <div class="nav-center" id="navCenterButtons">
-            <button class="nav-btn active" onclick="showPage('all', this)">หน้าแรก</button>
-            <button class="nav-btn" onclick="showPage('tier1', this)">Tier 1</button>
-            <button class="nav-btn" onclick="showPage('tier2', this)">Tier 2</button>
-            <button class="nav-btn" onclick="showPage('tier3', this)">Tier 3</button>
-            <button class="nav-btn" onclick="showPage('sweet', this)">SWEET</button>
-            <button class="nav-btn" onclick="showPage('huge', this)">HUGE</button>
-            <button class="nav-btn" onclick="showPage('special', this)">SPECIAL</button>
-            <button class="nav-btn" onclick="showPage('ranking', this)">🏆 จัดอันดับ</button>
-            <button class="nav-btn-add-cat" id="addCategoryNavBtn" onclick="openAddCategoryModal()">➕ เพิ่มหมวดหมู่ใหม่</button>
+            <!-- เมนูหลักจะถูกสร้างและอัปเดตชื่อ/ปุ่มแก้ไขอัตโนมัติผ่าน JavaScript -->
         </div>
 
         <div class="nav-right">
@@ -515,7 +538,7 @@
             <button class="close-btn" style="position:static;" onclick="toggleMobileMenu()">&times;</button>
         </div>
         <div class="mobile-links-container" id="mobileLinksContainer">
-            <!-- รายการเมนูจะถูกสร้างอัตโนมัติรวมถึงหมวดหมู่ใหม่ -->
+            <!-- รายการเมนูบนมือถือ -->
         </div>
         <div class="mobile-menu-footer">
             <button class="auth-nav-btn" id="authBtnMobile" onclick="openAuthModal(); toggleMobileMenu();">เข้าสู่ระบบ</button>
@@ -527,169 +550,7 @@
     </div>
 
     <div class="container" id="dynamicCategoriesContainer">
-        <!-- หมวดหมู่: Tier 1 -->
-        <div id="tier1" class="page-section show">
-            <div class="category-header">
-                <div class="category-title">
-                    <div class="cat-icon-display" id="icon-disp-tier1">⭐</div>
-                    <div>
-                        <h2 style="margin-bottom: 2px;" id="name-disp-tier1">Tier 1 Cubee</h2>
-                        <div class="in-game-notice">ซื้อได้ในเกมเท่านั้น <span>(SERVER IP : play.tinytails.fun - version 1.21.11)</span></div>
-                    </div>
-                </div>
-                <div class="price-tags-group">
-                    <div class="price-tag-wrapper">
-                        <span class="price-tag price-coin" id="price-coin-tier1">ราคา: 7,000 Coin</span>
-                    </div>
-                    <div class="price-tag-wrapper" id="wrap-ruby-tier1" style="display:none;">
-                        <span class="price-tag price-ruby" id="price-ruby-tier1">ราคา: 0 Ruby</span>
-                    </div>
-                    <div class="price-tag-wrapper" id="wrap-thb-tier1" style="display:none;">
-                        <span class="price-tag price-thb" id="price-thb-tier1">ราคา: 0 บาท (ซื้อผ่านเว็บไซต์ TinyTails MC - Store เท่านั้น)</span>
-                    </div>
-                    <button class="btn-edit-price" id="btn-edit-tier1" onclick="openEditPriceModal('tier1')" title="แก้ไขหมวดหมู่และราคา">✏️</button>
-                </div>
-            </div>
-            <button class="btn-add" onclick="openEditModal(null, 'tier1')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
-            <div class="grid" id="grid-tier1"></div>
-        </div>
-
-        <!-- หมวดหมู่: Tier 2 -->
-        <div id="tier2" class="page-section show">
-            <div class="category-header">
-                <div class="category-title">
-                    <div class="cat-icon-display" id="icon-disp-tier2">🌟</div>
-                    <div>
-                        <h2 style="margin-bottom: 2px;" id="name-disp-tier2">Tier 2 Cubee</h2>
-                        <div class="in-game-notice">ซื้อได้ในเกมเท่านั้น <span>(SERVER IP : play.tinytails.fun - version 1.21.11)</span></div>
-                    </div>
-                </div>
-                <div class="price-tags-group">
-                    <div class="price-tag-wrapper">
-                        <span class="price-tag price-coin" id="price-coin-tier2">ราคา: 15,000 Coin</span>
-                    </div>
-                    <div class="price-tag-wrapper" id="wrap-ruby-tier2" style="display:none;">
-                        <span class="price-tag price-ruby" id="price-ruby-tier2">ราคา: 0 Ruby</span>
-                    </div>
-                    <div class="price-tag-wrapper" id="wrap-thb-tier2" style="display:none;">
-                        <span class="price-tag price-thb" id="price-thb-tier2">ราคา: 0 บาท (ซื้อผ่านเว็บไซต์ TinyTails MC - Store เท่านั้น)</span>
-                    </div>
-                    <button class="btn-edit-price" id="btn-edit-tier2" onclick="openEditPriceModal('tier2')" title="แก้ไขหมวดหมู่และราคา">✏️</button>
-                </div>
-            </div>
-            <button class="btn-add" onclick="openEditModal(null, 'tier2')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
-            <div class="grid" id="grid-tier2"></div>
-        </div>
-
-        <!-- หมวดหมู่: Tier 3 -->
-        <div id="tier3" class="page-section show">
-            <div class="category-header">
-                <div class="category-title">
-                    <div class="cat-icon-display" id="icon-disp-tier3">💎</div>
-                    <div>
-                        <h2 style="margin-bottom: 2px;" id="name-disp-tier3">Tier 3 Cubee</h2>
-                        <div class="in-game-notice">ซื้อได้ในเกมเท่านั้น <span>(SERVER IP : play.tinytails.fun - version 1.21.11)</span></div>
-                    </div>
-                </div>
-                <div class="price-tags-group">
-                    <div class="price-tag-wrapper">
-                        <span class="price-tag price-coin" id="price-coin-tier3">ราคา: 30,000 Coin</span>
-                    </div>
-                    <div class="price-tag-wrapper" id="wrap-ruby-tier3" style="display:none;">
-                        <span class="price-tag price-ruby" id="price-ruby-tier3">ราคา: 0 Ruby</span>
-                    </div>
-                    <div class="price-tag-wrapper" id="wrap-thb-tier3" style="display:none;">
-                        <span class="price-tag price-thb" id="price-thb-tier3">ราคา: 0 บาท (ซื้อผ่านเว็บไซต์ TinyTails MC - Store เท่านั้น)</span>
-                    </div>
-                    <button class="btn-edit-price" id="btn-edit-tier3" onclick="openEditPriceModal('tier3')" title="แก้ไขหมวดหมู่และราคา">✏️</button>
-                </div>
-            </div>
-            <button class="btn-add" onclick="openEditModal(null, 'tier3')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
-            <div class="grid" id="grid-tier3"></div>
-        </div>
-
-        <!-- หมวดหมู่: SWEET -->
-        <div id="sweet" class="page-section show">
-            <div class="category-header">
-                <div class="category-title">
-                    <div class="cat-icon-display" id="icon-disp-sweet">🍬</div>
-                    <div>
-                        <h2 style="color: #db2777; margin-bottom: 3px;" id="name-disp-sweet">SWEET CUBEE Gacha</h2>
-                        <a href="https://store.tinytails.fun/store" target="_blank" class="store-link-btn">🛒 ไปที่หน้าเว็บไซต์ TinyTails MC - Store</a>
-                    </div>
-                </div>
-                <div class="price-tags-group">
-                    <div class="price-tag-wrapper">
-                        <span class="price-tag price-coin" id="price-coin-sweet">ราคา: 0 Coin</span>
-                    </div>
-                    <div class="price-tag-wrapper" id="wrap-ruby-sweet" style="display:none;">
-                        <span class="price-tag price-ruby" id="price-ruby-sweet">ราคา: 0 Ruby</span>
-                    </div>
-                    <div class="price-tag-wrapper" id="wrap-thb-sweet" style="display:none;">
-                        <span class="price-tag price-thb" id="price-thb-sweet">ราคา: 0 บาท (ซื้อผ่านเว็บไซต์ TinyTails MC - Store เท่านั้น)</span>
-                    </div>
-                    <button class="btn-edit-price" id="btn-edit-sweet" onclick="openEditPriceModal('sweet')" title="แก้ไขหมวดหมู่และราคา">✏️</button>
-                </div>
-            </div>
-            <button class="btn-add" onclick="openEditModal(null, 'sweet')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
-            <div class="grid" id="grid-sweet"></div>
-        </div>
-
-        <!-- หมวดหมู่: HUGE -->
-        <div id="huge" class="page-section show">
-            <div class="category-header">
-                <div class="category-title">
-                    <div class="cat-icon-display" id="icon-disp-huge">🔥</div>
-                    <div>
-                        <h2 style="color: #dc2626; margin-bottom: 3px;" id="name-disp-huge">HUGE CUBEE Gacha</h2>
-                        <a href="https://store.tinytails.fun/store" target="_blank" class="store-link-btn">🛒 ไปที่หน้าเว็บไซต์ TinyTails MC - Store</a>
-                    </div>
-                </div>
-                <div class="price-tags-group">
-                    <div class="price-tag-wrapper">
-                        <span class="price-tag price-coin" id="price-coin-huge">ราคา: 0 Coin</span>
-                    </div>
-                    <div class="price-tag-wrapper" id="wrap-ruby-huge" style="display:none;">
-                        <span class="price-tag price-ruby" id="price-ruby-huge">ราคา: 0 Ruby</span>
-                    </div>
-                    <div class="price-tag-wrapper" id="wrap-thb-huge" style="display:none;">
-                        <span class="price-tag price-thb" id="price-thb-huge">ราคา: 0 บาท (ซื้อผ่านเว็บไซต์ TinyTails MC - Store เท่านั้น)</span>
-                    </div>
-                    <button class="btn-edit-price" id="btn-edit-huge" onclick="openEditPriceModal('huge')" title="แก้ไขหมวดหมู่และราคา">✏️</button>
-                </div>
-            </div>
-            <button class="btn-add" onclick="openEditModal(null, 'huge')">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
-            <div class="grid" id="grid-huge"></div>
-        </div>
-
-        <!-- หมวดหมู่: SPECIAL -->
-        <div id="special" class="page-section show">
-            <div class="category-header">
-                <div class="category-title">
-                    <div class="cat-icon-display" id="icon-disp-special">✨</div>
-                    <div>
-                        <h2 style="color: var(--special-color); margin-bottom: 2px;" id="name-disp-special">SPECIAL CUBEE</h2>
-                        <div class="in-game-notice">ได้รับผ่านการทำกิจกรรมในเซิร์ฟเวอร์เท่านั้น</div>
-                    </div>
-                </div>
-                <div class="price-tags-group">
-                    <div class="price-tag-wrapper">
-                        <span class="price-tag price-coin" id="price-coin-special">ราคา: 0 Coin</span>
-                    </div>
-                    <div class="price-tag-wrapper" id="wrap-ruby-special" style="display:none;">
-                        <span class="price-tag price-ruby" id="price-ruby-special">ราคา: 0 Ruby</span>
-                    </div>
-                    <div class="price-tag-wrapper" id="wrap-thb-special" style="display:none;">
-                        <span class="price-tag price-thb" id="price-thb-special">ราคา: 0 บาท (ซื้อผ่านเว็บไซต์ TinyTails MC - Store เท่านั้น)</span>
-                    </div>
-                    <button class="btn-edit-price" id="btn-edit-special" onclick="openEditPriceModal('special')" title="แก้ไขหมวดหมู่และราคา">✏️</button>
-                </div>
-            </div>
-            <button class="btn-add" onclick="openEditModal(null, 'special')" style="background: var(--special-color);">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
-            <div class="grid" id="grid-special"></div>
-        </div>
-
-        <!-- หน้าจัดอันดับ -->
+        <!-- หน้าจัดอันดับ (ระบบหลัก) -->
         <div id="ranking" class="page-section">
             <div class="category-header">
                 <div class="category-title">
@@ -742,7 +603,7 @@
             <input type="hidden" id="edit-price-category">
             
             <div class="form-group" style="margin-top: 15px;" id="catMetaEditGroup">
-                <label>ชื่อหัวข้อหมวดหมู่</label>
+                <label>ชื่อหัวข้อหมวดหมู่บนเมนูและหัวข้อหน้าเว็บ</label>
                 <input type="text" id="edit-cat-name-input" placeholder="ชื่อหัวข้อ">
                 <label style="margin-top: 10px;">ไอคอน / อิโมจิ หรือลิงก์รูปภาพ (URL)</label>
                 <input type="text" id="edit-cat-icon-input" placeholder="อิโมจิ หรือ URL รูปภาพ">
@@ -936,9 +797,6 @@
             currentUser = user;
             let authBtn = document.getElementById('authBtn');
             let authBtnMobile = document.getElementById('authBtnMobile');
-            let addBtns = document.querySelectorAll('.btn-add');
-            let editPriceBtns = document.querySelectorAll('.btn-edit-price');
-            let addCatNavBtn = document.getElementById('addCategoryNavBtn');
             
             if (user) {
                 if(authBtn) {
@@ -954,9 +812,6 @@
                     authBtnMobile.style.color = '#fff';
                     authBtnMobile.onclick = logoutUser;
                 }
-                addBtns.forEach(btn => btn.style.display = 'block');
-                editPriceBtns.forEach(btn => btn.style.display = 'flex');
-                if(addCatNavBtn) addCatNavBtn.style.display = 'inline-block';
             } else {
                 if(authBtn) {
                     authBtn.innerText = 'เข้าสู่ระบบ';
@@ -971,12 +826,9 @@
                     authBtnMobile.style.color = (document.body.classList.contains('light-mode')) ? '#fff' : '#000';
                     authBtnMobile.onclick = () => { openAuthModal(); toggleMobileMenu(); };
                 }
-                addBtns.forEach(btn => btn.style.display = 'none');
-                editPriceBtns.forEach(btn => btn.style.display = 'none');
-                if(addCatNavBtn) addCatNavBtn.style.display = 'none';
             }
+            buildNavbarAndSections();
             renderUI();
-            rebuildMobileMenu();
         });
 
         function toggleMobileMenu() {
@@ -1060,8 +912,7 @@
             const data = snapshot.val();
             if (data) {
                 categoryMeta = data;
-                updateCategoryMetaUI();
-                rebuildMobileMenu();
+                buildNavbarAndSections();
             }
         });
 
@@ -1069,15 +920,27 @@
             const data = snapshot.val();
             if (data) {
                 customCategories = Object.values(data);
-                rebuildDynamicCategories();
             } else {
                 customCategories = [];
-                rebuildDynamicCategories();
             }
+            buildNavbarAndSections();
         });
 
-        function updateCategoryMetaUI() {
+        function buildNavbarAndSections() {
+            let navCenter = document.getElementById('navCenterButtons');
+            let container = document.getElementById('dynamicCategoriesContainer');
+            if(!navCenter || !container) return;
+
+            navCenter.innerHTML = '';
+            
+            // ลบเฉพาะ section หมวดหมู่เก่าออก เก็บหน้า ranking ไว้
+            let rankingSec = document.getElementById('ranking');
+            container.querySelectorAll('.page-section').forEach(sec => {
+                if(sec.id !== 'ranking') sec.remove();
+            });
+
             const defaultMeta = {
+                all: { name: "หน้าแรก", icon: "🏠" },
                 tier1: { name: "Tier 1 Cubee", icon: "⭐" },
                 tier2: { name: "Tier 2 Cubee", icon: "🌟" },
                 tier3: { name: "Tier 3 Cubee", icon: "💎" },
@@ -1086,27 +949,120 @@
                 special: { name: "SPECIAL CUBEE", icon: "✨" }
             };
 
-            let allCats = ['tier1', 'tier2', 'tier3', 'sweet', 'huge', 'special'];
-            customCategories.forEach(c => allCats.push(c.id));
+            let baseCats = [
+                { id: 'all', defaultName: 'หน้าแรก', defaultIcon: '🏠', isHome: true },
+                { id: 'tier1', defaultName: 'Tier 1 Cubee', defaultIcon: '⭐' },
+                { id: 'tier2', defaultName: 'Tier 2 Cubee', defaultIcon: '🌟' },
+                { id: 'tier3', defaultName: 'Tier 3 Cubee', defaultIcon: '💎' },
+                { id: 'sweet', defaultName: 'SWEET CUBEE Gacha', defaultIcon: '🍬' },
+                { id: 'huge', defaultName: 'HUGE CUBEE Gacha', defaultIcon: '🔥' },
+                { id: 'special', defaultName: 'SPECIAL CUBEE', defaultIcon: '✨' }
+            ];
 
-            allCats.forEach(cat => {
-                let meta = categoryMeta[cat] || defaultMeta[cat];
-                if (!meta) return;
+            let allCatsToBuild = [...baseCats];
+            customCategories.forEach(c => {
+                allCatsToBuild.push({ id: c.id, defaultName: c.name, defaultIcon: c.icon || '📁' });
+            });
 
-                let nameEl = document.getElementById(`name-disp-${cat}`);
-                let iconEl = document.getElementById(`icon-disp-${cat}`);
+            // สร้างปุ่มใน Navbar และ Section เนื้อหา
+            allCatsToBuild.forEach(cat => {
+                let meta = categoryMeta[cat.id] || { name: cat.defaultName, icon: cat.defaultIcon };
+                let displayName = meta.name;
+                let displayIcon = meta.icon || '';
 
-                if (nameEl && meta.name) {
-                    nameEl.innerText = meta.name;
+                // 1. สร้างปุ่ม Navbar
+                let wrapper = document.createElement('div');
+                wrapper.className = `nav-item-wrapper ${cat.id === 'all' ? 'active' : ''}`;
+                wrapper.id = `nav-wrap-${cat.id}`;
+
+                let btn = document.createElement('button');
+                btn.className = 'nav-btn';
+                btn.onclick = () => showPage(cat.id, wrapper);
+                let iconStr = (displayIcon && !displayIcon.startsWith('http')) ? `${displayIcon} ` : '';
+                btn.innerText = `${iconStr}${displayName}`;
+                wrapper.appendChild(btn);
+
+                if (currentUser) {
+                    let editBtn = document.createElement('button');
+                    editBtn.className = 'nav-edit-inline-btn';
+                    editBtn.innerHTML = '✏️';
+                    editBtn.title = 'แก้ไขหมวดหมู่';
+                    editBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        openEditPriceModal(cat.id);
+                    };
+                    wrapper.appendChild(editBtn);
                 }
-                if (iconEl && meta.icon) {
-                    if (meta.icon.startsWith('http') || meta.icon.startsWith('data:image')) {
-                        iconEl.innerHTML = `<img src="${meta.icon}" alt="icon">`;
-                    } else {
-                        iconEl.innerText = meta.icon;
-                    }
+
+                navCenter.appendChild(wrapper);
+
+                // 2. สร้าง Section เนื้อหา (ยกเว้นหน้า all ที่ใช้แสดงรวม)
+                if (cat.id !== 'all') {
+                    let sec = document.createElement('div');
+                    sec.id = cat.id;
+                    sec.className = 'page-section';
+                    let noticeHtml = cat.id === 'special' ? 
+                        `<div class="in-game-notice">ได้รับผ่านการทำกิจกรรมในเซิร์ฟเวอร์เท่านั้น</div>` :
+                        (cat.id === 'sweet' || cat.id === 'huge' ? 
+                            `<a href="https://store.tinytails.fun/store" target="_blank" class="store-link-btn">🛒 ไปที่หน้าเว็บไซต์ TinyTails MC - Store</a>` :
+                            `<div class="in-game-notice">ซื้อได้ในเกมเท่านั้น <span>(SERVER IP : play.tinytails.fun - version 1.21.11)</span></div>`
+                        );
+
+                    sec.innerHTML = `
+                        <div class="category-header">
+                            <div class="category-title">
+                                <div class="cat-icon-display" id="icon-disp-${cat.id}">
+                                    ${displayIcon.startsWith('http') || displayIcon.startsWith('data:image') ? `<img src="${displayIcon}" alt="icon">` : displayIcon}
+                                </div>
+                                <div>
+                                    <h2 style="margin-bottom: 2px;" id="name-disp-${cat.id}">${displayName}</h2>
+                                    ${noticeHtml}
+                                </div>
+                            </div>
+                            <div class="price-tags-group">
+                                <div class="price-tag-wrapper">
+                                    <span class="price-tag price-coin" id="price-coin-${cat.id}">ราคา: 0 Coin</span>
+                                </div>
+                                <div class="price-tag-wrapper" id="wrap-ruby-${cat.id}" style="display:none;">
+                                    <span class="price-tag price-ruby" id="price-ruby-${cat.id}">ราคา: 0 Ruby</span>
+                                </div>
+                                <div class="price-tag-wrapper" id="wrap-thb-${cat.id}" style="display:none;">
+                                    <span class="price-tag price-thb" id="price-thb-${cat.id}">ราคา: 0 บาท</span>
+                                </div>
+                                <button class="btn-edit-price" id="btn-edit-${cat.id}" onclick="openEditPriceModal('${cat.id}')" title="แก้ไขราคาและหมวดหมู่" style="${currentUser ? 'display:flex;' : 'display:none;'}">✏️</button>
+                            </div>
+                        </div>
+                        <button class="btn-add" onclick="openEditModal(null, '${cat.id}')" style="${currentUser ? 'display:block;' : 'display:none;'}">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
+                        <div class="grid" id="grid-${cat.id}"></div>
+                    `;
+                    container.insertBefore(sec, rankingSec);
                 }
             });
+
+            // เพิ่มปุ่มจัดอันดับและปุ่มสร้างหมวดหมู่ใหม่ใน Navbar
+            let rankWrapper = document.createElement('div');
+            rankWrapper.className = 'nav-item-wrapper';
+            rankWrapper.id = 'nav-wrap-ranking';
+            let rankBtn = document.createElement('button');
+            rankBtn.className = 'nav-btn';
+            rankBtn.onclick = () => showPage('ranking', rankWrapper);
+            rankBtn.innerText = '🏆 จัดอันดับ';
+            rankWrapper.appendChild(rankBtn);
+            navCenter.appendChild(rankWrapper);
+
+            if (currentUser) {
+                let addCatBtn = document.createElement('button');
+                addCatBtn.className = 'nav-btn-add-cat';
+                addCatBtn.id = 'addCategoryNavBtn';
+                addCatBtn.style.display = 'inline-block';
+                addCatBtn.innerText = '➕ เพิ่มหมวดหมู่ใหม่';
+                addCatBtn.onclick = openAddCategoryModal;
+                navCenter.appendChild(addCatBtn);
+            }
+
+            updateCategoryPricesUI();
+            rebuildMobileMenu();
+            renderUI();
         }
 
         function rebuildMobileMenu() {
@@ -1115,6 +1071,7 @@
             container.innerHTML = '';
 
             const defaultMeta = {
+                all: { name: "หน้าแรก", icon: "🏠" },
                 tier1: { name: "Tier 1 Cubee", icon: "⭐" },
                 tier2: { name: "Tier 2 Cubee", icon: "🌟" },
                 tier3: { name: "Tier 3 Cubee", icon: "💎" },
@@ -1124,7 +1081,7 @@
             };
 
             let menuList = [
-                { id: 'all', name: 'หน้าแรก', icon: '🏠' },
+                { id: 'all', name: categoryMeta['all']?.name || 'หน้าแรก', icon: categoryMeta['all']?.icon || '🏠' },
                 { id: 'tier1', name: categoryMeta['tier1']?.name || defaultMeta['tier1'].name, icon: categoryMeta['tier1']?.icon || defaultMeta['tier1'].icon },
                 { id: 'tier2', name: categoryMeta['tier2']?.name || defaultMeta['tier2'].name, icon: categoryMeta['tier2']?.icon || defaultMeta['tier2'].icon },
                 { id: 'tier3', name: categoryMeta['tier3']?.name || defaultMeta['tier3'].name, icon: categoryMeta['tier3']?.icon || defaultMeta['tier3'].icon },
@@ -1147,8 +1104,7 @@
                 let iconStr = (item.icon && !item.icon.startsWith('http')) ? `${item.icon} ` : '';
                 btn.innerText = `${iconStr}${item.name}`;
                 btn.onclick = () => {
-                    showPage(item.id, null);
-                    highlightMobileNav(item.id);
+                    showPage(item.id, document.getElementById(`nav-wrap-${item.id}`));
                     toggleMobileMenu();
                 };
                 container.appendChild(btn);
@@ -1172,63 +1128,6 @@
             document.querySelectorAll('.mobile-nav-btn').forEach(btn => btn.classList.remove('active'));
             let target = document.getElementById(`mob-btn-${activeId}`);
             if(target) target.classList.add('active');
-        }
-
-        function rebuildDynamicCategories() {
-            let navCenter = document.getElementById('navCenterButtons');
-            let container = document.getElementById('dynamicCategoriesContainer');
-            
-            let existingCustomBtns = navCenter.querySelectorAll('.custom-nav-btn');
-            existingCustomBtns.forEach(el => el.remove());
-
-            let existingCustomSections = container.querySelectorAll('.custom-page-section');
-            existingCustomSections.forEach(el => el.remove());
-
-            let addCatBtn = document.getElementById('addCategoryNavBtn');
-            let rankingSec = document.getElementById('ranking');
-
-            customCategories.forEach(cat => {
-                let btn = document.createElement('button');
-                btn.className = 'nav-btn custom-nav-btn';
-                btn.id = `nav-btn-${cat.id}`;
-                btn.setAttribute('onclick', `showPage('${cat.id}', this)`);
-                btn.innerText = cat.name;
-                navCenter.insertBefore(btn, addCatBtn);
-
-                let sec = document.createElement('div');
-                sec.id = cat.id;
-                sec.className = 'page-section custom-page-section show';
-                sec.innerHTML = `
-                    <div class="category-header">
-                        <div class="category-title">
-                            <div class="cat-icon-display" id="icon-disp-${cat.id}">${cat.icon || '📁'}</div>
-                            <div>
-                                <h2 style="margin-bottom: 2px;" id="name-disp-${cat.id}">${cat.name}</h2>
-                            </div>
-                        </div>
-                        <div class="price-tags-group">
-                            <div class="price-tag-wrapper">
-                                <span class="price-tag price-coin" id="price-coin-${cat.id}">ราคา: 0 Coin</span>
-                            </div>
-                            <div class="price-tag-wrapper" id="wrap-ruby-${cat.id}" style="display:none;">
-                                <span class="price-tag price-ruby" id="price-ruby-${cat.id}">ราคา: 0 Ruby</span>
-                            </div>
-                            <div class="price-tag-wrapper" id="wrap-thb-${cat.id}" style="display:none;">
-                                <span class="price-tag price-thb" id="price-thb-${cat.id}">ราคา: 0 บาท (ซื้อผ่านเว็บไซต์ TinyTails MC - Store เท่านั้น)</span>
-                            </div>
-                            <button class="btn-edit-price" id="btn-edit-${cat.id}" onclick="openEditPriceModal('${cat.id}')" title="แก้ไขหมวดหมู่และราคา" style="${currentUser ? 'display:flex;' : 'display:none;'}">✏️</button>
-                        </div>
-                    </div>
-                    <button class="btn-add" onclick="openEditModal(null, '${cat.id}')" style="${currentUser ? 'display:block;' : 'display:none;'}">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
-                    <div class="grid" id="grid-${cat.id}"></div>
-                `;
-                container.insertBefore(sec, rankingSec);
-            });
-
-            updateCategoryMetaUI();
-            updateCategoryPricesUI();
-            rebuildMobileMenu();
-            renderUI();
         }
 
         function openAddCategoryModal() {
@@ -1335,7 +1234,7 @@
                 if (thbEl && thbWrap) {
                     if (pData.thb && pData.thb.trim() !== "") {
                         let formattedThb = formatNumber(pData.thb);
-                        thbEl.innerText = `ราคา: ${formattedThb} บาท (ซื้อผ่านเว็บไซต์ TinyTails MC - Store เท่านั้น)`;
+                        thbEl.innerText = `ราคา: ${formattedThb} บาท`;
                         thbWrap.style.display = 'flex';
                     } else {
                         thbWrap.style.display = 'none';
@@ -1349,6 +1248,7 @@
             document.getElementById('edit-price-category').value = category;
             
             const defaultMeta = {
+                all: { name: "หน้าแรก", icon: "🏠" },
                 tier1: { name: "Tier 1 Cubee", icon: "⭐" },
                 tier2: { name: "Tier 2 Cubee", icon: "🌟" },
                 tier3: { name: "Tier 3 Cubee", icon: "💎" },
@@ -1373,7 +1273,7 @@
             document.getElementById('edit-thb-input').value = formatNumber(pData.thb || '');
 
             let deleteCatBtn = document.getElementById('btn-delete-category');
-            let defaultIds = ['tier1', 'tier2', 'tier3', 'sweet', 'huge', 'special'];
+            let defaultIds = ['all', 'tier1', 'tier2', 'tier3', 'sweet', 'huge', 'special'];
             if (defaultIds.includes(category)) {
                 deleteCatBtn.style.display = 'none';
             } else {
@@ -1418,7 +1318,7 @@
             if (!currentUser) return alert('โปรดเข้าสู่ระบบก่อนครับ 🔒');
             let cat = document.getElementById('edit-price-category').value;
 
-            let defaultIds = ['tier1', 'tier2', 'tier3', 'sweet', 'huge', 'special'];
+            let defaultIds = ['all', 'tier1', 'tier2', 'tier3', 'sweet', 'huge', 'special'];
             if (defaultIds.includes(cat)) {
                 alert('ไม่สามารถลบหมวดหมู่หลักของระบบได้');
                 return;
@@ -1439,7 +1339,7 @@
                 db.ref().update(updates).then(() => {
                     closeModal('priceModal');
                     showToast('ลบหมวดหมู่เรียบร้อยแล้ว 🗑️');
-                    showPage('all', document.querySelector('.nav-btn'));
+                    showPage('all', document.getElementById('nav-wrap-all'));
                 }).catch(err => {
                     alert('เกิดข้อผิดพลาด: ' + err.message);
                 });
@@ -1552,9 +1452,9 @@
             }
         }
 
-        function showPage(pageId, clickedBtn) {
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            if(clickedBtn) clickedBtn.classList.add('active');
+        function showPage(pageId, clickedWrapper) {
+            document.querySelectorAll('.nav-item-wrapper').forEach(wrap => wrap.classList.remove('active'));
+            if(clickedWrapper) clickedWrapper.classList.add('active');
             highlightMobileNav(pageId);
             
             let sections = document.querySelectorAll('.page-section');
