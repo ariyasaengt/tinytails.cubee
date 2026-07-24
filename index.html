@@ -592,6 +592,14 @@
             </div>
 
             <div class="form-group">
+                <label>สีข้อความหัวข้อ (เลือกสี หรือใส่โค้ดสี เช่น #fbbf24)</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="color" id="new-cat-color-picker" value="#f4f4f5" style="width: 50px; height: 44px; padding: 4px; cursor: pointer;" oninput="document.getElementById('new-cat-color').value = this.value">
+                    <input type="text" id="new-cat-color" placeholder="#f4f4f5 หรือปล่อยว่าง" style="flex: 1;">
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label>ไอคอน / อิโมจิ หรือลิงก์รูปภาพ (URL)</label>
                 <input type="text" id="new-cat-icon" placeholder="เช่น 🔮 หรือ https://...">
             </div>
@@ -613,6 +621,12 @@
 
                 <label style="margin-top: 10px;">ชื่อหัวข้อหลักหน้าเว็บ (แบบเต็ม เช่น Tier 1 Cubee)</label>
                 <input type="text" id="edit-cat-name-input" placeholder="ชื่อหัวข้อหน้าเว็บ">
+
+                <label style="margin-top: 10px;">สีข้อความหัวข้อ (เลือกสี หรือใส่โค้ดสี เช่น #db2777)</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="color" id="edit-cat-color-picker" value="#f4f4f5" style="width: 50px; height: 44px; padding: 4px; cursor: pointer;" oninput="document.getElementById('edit-cat-color-input').value = this.value">
+                    <input type="text" id="edit-cat-color-input" placeholder="#fbbf24 หรือปล่อยว่างตามค่าเริ่มต้น" style="flex: 1;">
+                </div>
 
                 <label style="margin-top: 10px;">ไอคอน / อิโมจิ หรือลิงก์รูปภาพ (URL)</label>
                 <input type="text" id="edit-cat-icon-input" placeholder="อิโมจิ หรือ URL รูปภาพ">
@@ -947,36 +961,38 @@
                 if(sec.id !== 'ranking') sec.remove();
             });
 
-            const defaultMeta = {
-                all: { menuName: "หน้าแรก", name: "หน้าแรก", icon: "🏠" },
-                tier1: { menuName: "Tier 1", name: "Tier 1 Cubee", icon: "⭐" },
-                tier2: { menuName: "Tier 2", name: "Tier 2 Cubee", icon: "🌟" },
-                tier3: { menuName: "Tier 3", name: "Tier 3 Cubee", icon: "💎" },
-                sweet: { menuName: "SWEET", name: "SWEET CUBEE Gacha", icon: "🍬" },
-                huge: { menuName: "HUGE", name: "HUGE CUBEE Gacha", icon: "🔥" },
-                special: { menuName: "SPECIAL", name: "SPECIAL CUBEE", icon: "✨" }
-            };
-
             let baseCats = [
-                { id: 'all', defaultMenuName: 'หน้าแรก', defaultName: 'หน้าแรก', defaultIcon: '🏠' },
-                { id: 'tier1', defaultMenuName: 'Tier 1', defaultName: 'Tier 1 Cubee', defaultIcon: '⭐' },
-                { id: 'tier2', defaultMenuName: 'Tier 2', defaultName: 'Tier 2 Cubee', defaultIcon: '🌟' },
-                { id: 'tier3', defaultMenuName: 'Tier 3', defaultName: 'Tier 3 Cubee', defaultIcon: '💎' },
-                { id: 'sweet', defaultMenuName: 'SWEET', defaultName: 'SWEET CUBEE Gacha', defaultIcon: '🍬' },
-                { id: 'huge', defaultMenuName: 'HUGE', defaultName: 'HUGE CUBEE Gacha', defaultIcon: '🔥' },
-                { id: 'special', defaultMenuName: 'SPECIAL', defaultName: 'SPECIAL CUBEE', defaultIcon: '✨' }
+                { id: 'all', defaultMenuName: 'หน้าแรก', defaultName: 'หน้าแรก', defaultIcon: '🏠', defaultColor: '' },
+                { id: 'tier1', defaultMenuName: 'Tier 1', defaultName: 'Tier 1 Cubee', defaultIcon: '⭐', defaultColor: '' },
+                { id: 'tier2', defaultMenuName: 'Tier 2', defaultName: 'Tier 2 Cubee', defaultIcon: '🌟', defaultColor: '' },
+                { id: 'tier3', defaultMenuName: 'Tier 3', defaultName: 'Tier 3 Cubee', defaultIcon: '💎', defaultColor: '' },
+                { id: 'sweet', defaultMenuName: 'SWEET', defaultName: 'SWEET CUBEE Gacha', defaultIcon: '🍬', defaultColor: '#db2777' },
+                { id: 'huge', defaultMenuName: 'HUGE', defaultName: 'HUGE CUBEE Gacha', defaultIcon: '🔥', defaultColor: '#dc2626' },
+                { id: 'special', defaultMenuName: 'SPECIAL', defaultName: 'SPECIAL CUBEE', defaultIcon: '✨', defaultColor: 'var(--special-color)' }
             ];
 
             let allCatsToBuild = [...baseCats];
             customCategories.forEach(c => {
-                allCatsToBuild.push({ id: c.id, defaultMenuName: c.menuName || c.name, defaultName: c.name, defaultIcon: c.icon || '📁' });
+                allCatsToBuild.push({ 
+                    id: c.id, 
+                    defaultMenuName: c.menuName || c.name, 
+                    defaultName: c.name, 
+                    defaultIcon: c.icon || '📁',
+                    defaultColor: c.color || ''
+                });
             });
 
             allCatsToBuild.forEach(cat => {
-                let meta = categoryMeta[cat.id] || { menuName: cat.defaultMenuName, name: cat.defaultName, icon: cat.defaultIcon };
+                let meta = categoryMeta[cat.id] || { 
+                    menuName: cat.defaultMenuName, 
+                    name: cat.defaultName, 
+                    icon: cat.defaultIcon,
+                    color: cat.defaultColor 
+                };
                 let displayMenuName = meta.menuName || meta.name || cat.defaultMenuName;
                 let displayHeaderName = meta.name || cat.defaultName;
                 let displayIcon = meta.icon || '';
+                let displayColor = meta.color || '';
 
                 // 1. สร้างปุ่ม Navbar
                 let wrapper = document.createElement('div');
@@ -1016,6 +1032,8 @@
                             `<div class="in-game-notice">ซื้อได้ในเกมเท่านั้น <span>(SERVER IP : play.tinytails.fun - version 1.21.11)</span></div>`
                         );
 
+                    let colorStyle = displayColor ? `style="color: ${displayColor};"` : '';
+
                     sec.innerHTML = `
                         <div class="category-header">
                             <div class="category-title">
@@ -1023,7 +1041,7 @@
                                     ${displayIcon.startsWith('http') || displayIcon.startsWith('data:image') ? `<img src="${displayIcon}" alt="icon">` : displayIcon}
                                 </div>
                                 <div>
-                                    <h2 style="margin-bottom: 2px;" id="name-disp-${cat.id}">${displayHeaderName}</h2>
+                                    <h2 style="margin-bottom: 2px; ${displayColor ? 'color: ' + displayColor + ';' : ''}" id="name-disp-${cat.id}">${displayHeaderName}</h2>
                                     ${noticeHtml}
                                 </div>
                             </div>
@@ -1040,7 +1058,7 @@
                                 <button class="btn-edit-price" id="btn-edit-${cat.id}" onclick="openEditPriceModal('${cat.id}')" title="แก้ไขราคาและหมวดหมู่" style="${currentUser ? 'display:flex;' : 'display:none;'}">✏️</button>
                             </div>
                         </div>
-                        <button class="btn-add" onclick="openEditModal(null, '${cat.id}')" style="${currentUser ? 'display:block;' : 'display:none;'}">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
+                        <button class="btn-add" onclick="openEditModal(null, '${cat.id}')" style="${currentUser ? 'display:block;' : 'display:none;'} ${displayColor ? 'background-color: ' + displayColor + '; color: #fff;' : ''}">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
                         <div class="grid" id="grid-${cat.id}"></div>
                     `;
                     container.insertBefore(sec, rankingSec);
@@ -1142,6 +1160,8 @@
             document.getElementById('new-cat-id').value = '';
             document.getElementById('new-menu-name').value = '';
             document.getElementById('new-cat-name').value = '';
+            document.getElementById('new-cat-color').value = '';
+            document.getElementById('new-cat-color-picker').value = '#f4f4f5';
             document.getElementById('new-cat-icon').value = '';
             document.getElementById('addCategoryModal').style.display = 'flex';
         }
@@ -1151,6 +1171,7 @@
             let id = document.getElementById('new-cat-id').value.trim().toLowerCase();
             let menuName = document.getElementById('new-menu-name').value.trim();
             let name = document.getElementById('new-cat-name').value.trim();
+            let color = document.getElementById('new-cat-color').value.trim();
             let icon = document.getElementById('new-cat-icon').value.trim() || '📁';
 
             if (!id || !name) {
@@ -1165,9 +1186,9 @@
                 return;
             }
 
-            let newCatData = { id: id, menuName: menuName, name: name, icon: icon };
+            let newCatData = { id: id, menuName: menuName, name: name, color: color, icon: icon };
             db.ref('custom_categories/' + id).set(newCatData).then(() => {
-                db.ref('category_meta/' + id).set({ menuName: menuName, name: name, icon: icon }).then(() => {
+                db.ref('category_meta/' + id).set({ menuName: menuName, name: name, color: color, icon: icon }).then(() => {
                     closeModal('addCategoryModal');
                     showToast('สร้างหมวดหมู่ใหม่สำเร็จ! ✨');
                 });
@@ -1258,23 +1279,32 @@
             document.getElementById('edit-price-category').value = category;
             
             const defaultMeta = {
-                all: { menuName: "หน้าแรก", name: "หน้าแรก", icon: "🏠" },
-                tier1: { menuName: "Tier 1", name: "Tier 1 Cubee", icon: "⭐" },
-                tier2: { menuName: "Tier 2", name: "Tier 2 Cubee", icon: "🌟" },
-                tier3: { menuName: "Tier 3", name: "Tier 3 Cubee", icon: "💎" },
-                sweet: { menuName: "SWEET", name: "SWEET CUBEE Gacha", icon: "🍬" },
-                huge: { menuName: "HUGE", name: "HUGE CUBEE Gacha", icon: "🔥" },
-                special: { menuName: "SPECIAL", name: "SPECIAL CUBEE", icon: "✨" }
+                all: { menuName: "หน้าแรก", name: "หน้าแรก", icon: "🏠", color: "" },
+                tier1: { menuName: "Tier 1", name: "Tier 1 Cubee", icon: "⭐", color: "" },
+                tier2: { menuName: "Tier 2", name: "Tier 2 Cubee", icon: "🌟", color: "" },
+                tier3: { menuName: "Tier 3", name: "Tier 3 Cubee", icon: "💎", color: "" },
+                sweet: { menuName: "SWEET", name: "SWEET CUBEE Gacha", icon: "🍬", color: "#db2777" },
+                huge: { menuName: "HUGE", name: "HUGE CUBEE Gacha", icon: "🔥", color: "#dc2626" },
+                special: { menuName: "SPECIAL", name: "SPECIAL CUBEE", icon: "✨", color: "var(--special-color)" }
             };
 
-            let currentMeta = categoryMeta[category] || defaultMeta[category] || { menuName: category, name: category, icon: "" };
+            let currentMeta = categoryMeta[category] || defaultMeta[category] || { menuName: category, name: category, icon: "", color: "" };
             let customCatObj = customCategories.find(c => c.id === category);
             if (customCatObj) {
-                currentMeta = { menuName: customCatObj.menuName || customCatObj.name, name: customCatObj.name, icon: customCatObj.icon };
+                currentMeta = { 
+                    menuName: customCatObj.menuName || customCatObj.name, 
+                    name: customCatObj.name, 
+                    icon: customCatObj.icon,
+                    color: customCatObj.color || '' 
+                };
             }
 
             document.getElementById('edit-menu-name-input').value = currentMeta.menuName || currentMeta.name || '';
             document.getElementById('edit-cat-name-input').value = currentMeta.name || '';
+            document.getElementById('edit-cat-color-input').value = currentMeta.color || '';
+            if(currentMeta.color && currentMeta.color.startsWith('#')) {
+                document.getElementById('edit-cat-color-picker').value = currentMeta.color;
+            }
             document.getElementById('edit-cat-icon-input').value = currentMeta.icon || '';
             document.getElementById('priceModalTitle').innerText = `🏷️ จัดการหมวดหมู่: ${currentMeta.name}`;
 
@@ -1299,6 +1329,7 @@
             let cat = document.getElementById('edit-price-category').value;
             let menuName = document.getElementById('edit-menu-name-input').value.trim();
             let newName = document.getElementById('edit-cat-name-input').value.trim();
+            let newColor = document.getElementById('edit-cat-color-input').value.trim();
             let newIcon = document.getElementById('edit-cat-icon-input').value.trim();
 
             if(!menuName) menuName = newName;
@@ -1308,7 +1339,7 @@
             let thbVal = document.getElementById('edit-thb-input').value.replace(/,/g, '');
 
             let priceObject = { coin: coinVal, ruby: rubyVal, thb: thbVal };
-            let metaObject = { menuName: menuName, name: newName, icon: newIcon };
+            let metaObject = { menuName: menuName, name: newName, color: newColor, icon: newIcon };
 
             let updates = {};
             updates['category_prices/' + cat] = priceObject;
@@ -1318,6 +1349,7 @@
             if (customCatObj) {
                 updates['custom_categories/' + cat + '/menuName'] = menuName;
                 updates['custom_categories/' + cat + '/name'] = newName;
+                updates['custom_categories/' + cat + '/color'] = newColor;
                 updates['custom_categories/' + cat + '/icon'] = newIcon;
             }
 
