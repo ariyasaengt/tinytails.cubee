@@ -308,6 +308,32 @@
             margin-left: 6px;
         }
 
+        .category-actions-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .sort-select {
+            background: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 10px 15px;
+            border-radius: 12px;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.9rem;
+            outline: none;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .sort-select:hover {
+            border-color: var(--primary-yellow);
+        }
+
         .price-tags-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .price-tag-wrapper { display: flex; align-items: center; gap: 8px; }
         .price-tag { font-size: 1.05rem; font-weight: 600; background: var(--card-bg); padding: 6px 16px; border-radius: 30px; border: 1px solid var(--border-color); display: inline-flex; align-items: center; gap: 6px; }
@@ -592,8 +618,8 @@
             </div>
 
             <div class="form-group">
-                <label>ลำดับการแสดงผล (ใส่ตัวเลข เช่น 1, 2, 3...)</label>
-                <input type="number" id="new-cat-order" placeholder="เช่น 10" value="10">
+                <label>ลำดับการแสดงผล (ตัวเลขน้อยจะอยู่หน้าสุด เช่น 0 หรือ -1)</label>
+                <input type="number" id="new-cat-order" placeholder="เช่น 0" value="-1">
             </div>
 
             <div class="form-group">
@@ -627,8 +653,8 @@
                 <label style="margin-top: 10px;">ชื่อหัวข้อหลักหน้าเว็บ (แบบเต็ม เช่น Tier 1 Cubee)</label>
                 <input type="text" id="edit-cat-name-input" placeholder="ชื่อหัวข้อหน้าเว็บ">
 
-                <label style="margin-top: 10px;">ลำดับการแสดงผล (ตัวเลขน้อยแสดงก่อน)</label>
-                <input type="number" id="edit-cat-order-input" placeholder="เช่น 1, 2, 3...">
+                <label style="margin-top: 10px;">ลำดับการแสดงผล (ตัวเลขน้อยกว่าจะอยู่อันดับแรกๆ)</label>
+                <input type="number" id="edit-cat-order-input" placeholder="เช่น -1, 0, 1, 2...">
 
                 <label style="margin-top: 10px;">สีข้อความหัวข้อ (เลือกสี หรือใส่โค้ดสี เช่น #db2777)</label>
                 <div style="display: flex; gap: 10px;">
@@ -821,6 +847,7 @@
         let categoryPrices = {}; 
         let categoryMeta = {};
         let customCategories = [];
+        let categorySortOptions = {};
         let searchText = ''; 
         let currentUser = null; 
 
@@ -986,18 +1013,17 @@
                     defaultName: c.name, 
                     defaultIcon: c.icon || '📁',
                     defaultColor: c.color || '',
-                    defaultOrder: c.order !== undefined ? parseInt(c.order) : 10
+                    defaultOrder: c.order !== undefined ? parseInt(c.order) : -1 
                 });
             });
 
-            // จัดเรียงตามค่า Order
             allCatsToBuild.sort((a, b) => {
                 let orderA = categoryMeta[a.id]?.order !== undefined ? parseInt(categoryMeta[a.id].order) : a.defaultOrder;
                 let orderB = categoryMeta[b.id]?.order !== undefined ? parseInt(categoryMeta[b.id].order) : b.defaultOrder;
                 return orderA - orderB;
             });
 
-            // 1. สร้างปุ่มหน้าแรกไว้ตัวแรกสุดเสมอ
+            // 1. ปุ่มหน้าแรก
             let homeMeta = categoryMeta['all'] || { menuName: 'หน้าแรก', name: 'หน้าแรก', icon: '🏠', color: '' };
             let homeWrapper = document.createElement('div');
             homeWrapper.className = 'nav-item-wrapper active';
@@ -1017,7 +1043,7 @@
             }
             navCenter.appendChild(homeWrapper);
 
-            // 2. สร้างปุ่มและ Section เรียงตาม Order
+            // 2. สร้างปุ่มและ Section หมวดหมู่
             allCatsToBuild.forEach(cat => {
                 let meta = categoryMeta[cat.id] || { 
                     menuName: cat.defaultMenuName, 
@@ -1030,6 +1056,7 @@
                 let displayHeaderName = meta.name || cat.defaultName;
                 let displayIcon = meta.icon || '';
                 let displayColor = meta.color || '';
+                let currentSort = categorySortOptions[cat.id] || 'default';
 
                 let wrapper = document.createElement('div');
                 wrapper.className = 'nav-item-wrapper';
@@ -1090,7 +1117,14 @@
                             <button class="btn-edit-price" id="btn-edit-${cat.id}" onclick="openEditPriceModal('${cat.id}')" title="แก้ไขราคาและหมวดหมู่" style="${currentUser ? 'display:flex;' : 'display:none;'}">✏️</button>
                         </div>
                     </div>
-                    <button class="btn-add" onclick="openEditModal(null, '${cat.id}')" style="${currentUser ? 'display:block;' : 'display:none;'} ${displayColor ? 'background-color: ' + displayColor + '; color: #fff;' : ''}">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
+                    <div class="category-actions-bar">
+                        <button class="btn-add" onclick="openEditModal(null, '${cat.id}')" style="${currentUser ? 'display:block;' : 'display:none;'} ${displayColor ? 'background-color: ' + displayColor + '; color: #fff;' : ''}">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
+                        <select class="sort-select" id="sort-${cat.id}" onchange="changeCategorySort('${cat.id}', this.value)">
+                            <option value="default" ${currentSort==='default'?'selected':''}>📌 เรียงตามค่าเริ่มต้น</option>
+                            <option value="high-to-low" ${currentSort==='high-to-low'?'selected':''}>💰 ราคา: แพง ➔ ถูก</option>
+                            <option value="low-to-high" ${currentSort==='low-to-high'?'selected':''}>🪙 ราคา: ถูก ➔ แพง</option>
+                        </select>
+                    </div>
                     <div class="grid" id="grid-${cat.id}"></div>
                 `;
                 container.insertBefore(sec, rankingSec);
@@ -1113,13 +1147,17 @@
                 addCatBtn.id = 'addCategoryNavBtn';
                 addCatBtn.style.display = 'inline-block';
                 addCatBtn.innerText = '➕ เพิ่มหมวดหมู่ใหม่';
-                addCatNavBtn = addCatBtn;
                 addCatBtn.onclick = openAddCategoryModal;
                 navCenter.appendChild(addCatBtn);
             }
 
             updateCategoryPricesUI();
             rebuildMobileMenu();
+            renderUI();
+        }
+
+        function changeCategorySort(catId, sortVal) {
+            categorySortOptions[catId] = sortVal;
             renderUI();
         }
 
@@ -1139,7 +1177,7 @@
             };
 
             let menuList = [
-                { id: 'all', name: categoryMeta['all']?.menuName || 'หน้าแรก', icon: categoryMeta['all']?.icon || '🏠', order: -1 }
+                { id: 'all', name: categoryMeta['all']?.menuName || 'หน้าแรก', icon: categoryMeta['all']?.icon || '🏠' }
             ];
 
             let baseCats = [
@@ -1156,7 +1194,7 @@
                 allMenuCats.push({
                     id: c.id,
                     defaultMenuName: c.menuName || c.name,
-                    order: c.order !== undefined ? parseInt(c.order) : 10
+                    order: c.order !== undefined ? parseInt(c.order) : -1
                 });
             });
 
@@ -1211,7 +1249,7 @@
             document.getElementById('new-cat-id').value = '';
             document.getElementById('new-menu-name').value = '';
             document.getElementById('new-cat-name').value = '';
-            document.getElementById('new-cat-order').value = '10';
+            document.getElementById('new-cat-order').value = '-1';
             document.getElementById('new-cat-color').value = '';
             document.getElementById('new-cat-color-picker').value = '#f4f4f5';
             document.getElementById('new-cat-icon').value = '';
@@ -1223,7 +1261,7 @@
             let id = document.getElementById('new-cat-id').value.trim().toLowerCase();
             let menuName = document.getElementById('new-menu-name').value.trim();
             let name = document.getElementById('new-cat-name').value.trim();
-            let order = parseInt(document.getElementById('new-cat-order').value) || 10;
+            let order = parseInt(document.getElementById('new-cat-order').value) || -1;
             let color = document.getElementById('new-cat-color').value.trim();
             let icon = document.getElementById('new-cat-icon').value.trim() || '📁';
 
@@ -1470,26 +1508,45 @@
                 return matchName || matchItem;
             });
 
-            filteredDb.forEach(item => {
-                let editBtnHtml = currentUser ? `<button class="btn-edit" onclick="openEditModal(${item.id})">✏️ แก้ไข</button>` : '';
+            allCats.forEach(cat => {
+                let catItems = filteredDb.filter(item => item.category === cat);
+                let sortOpt = categorySortOptions[cat] || 'default';
 
-                let html = `
-                    <div class="card">
-                        <div>
-                            <div class="img-box"><img src="${item.petImg}" alt="img"></div>
-                            <h3 class="card-title">${item.name}</h3>
-                            <p class="card-desc">${item.desc}</p>
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn-view" onclick="openViewModal(${item.id})">🔍 ข้อมูล</button>
-                            ${editBtnHtml}
-                        </div>
-                    </div>
-                `;
-                let gridEl = document.getElementById(`grid-${item.category}`);
-                if(gridEl) {
-                    gridEl.insertAdjacentHTML('beforeend', html);
+                if (sortOpt === 'high-to-low') {
+                    catItems.sort((a, b) => {
+                        let pA = parseFloat(String(a.price).replace(/[^\d.-]/g, '')) || 0;
+                        let pB = parseFloat(String(b.price).replace(/[^\d.-]/g, '')) || 0;
+                        return pB - pA;
+                    });
+                } else if (sortOpt === 'low-to-high') {
+                    catItems.sort((a, b) => {
+                        let pA = parseFloat(String(a.price).replace(/[^\d.-]/g, '')) || 0;
+                        let pB = parseFloat(String(b.price).replace(/[^\d.-]/g, '')) || 0;
+                        return pA - pB;
+                    });
                 }
+
+                let gridEl = document.getElementById(`grid-${cat}`);
+                if (!gridEl) return;
+
+                catItems.forEach(item => {
+                    let editBtnHtml = currentUser ? `<button class="btn-edit" onclick="openEditModal(${item.id})">✏️ แก้ไข</button>` : '';
+
+                    let html = `
+                        <div class="card">
+                            <div>
+                                <div class="img-box"><img src="${item.petImg}" alt="img"></div>
+                                <h3 class="card-title">${item.name}</h3>
+                                <p class="card-desc">${item.desc}</p>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn-view" onclick="openViewModal(${item.id})">🔍 ข้อมูล</button>
+                                ${editBtnHtml}
+                            </div>
+                        </div>
+                    `;
+                    gridEl.insertAdjacentHTML('beforeend', html);
+                });
             });
 
             renderRankingPage();
