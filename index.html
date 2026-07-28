@@ -635,8 +635,8 @@
             </div>
 
             <div class="form-group">
-                <label>ข้อความประกาศใต้ชื่อหัวข้อ (เช่น ซื้อได้ในเกมเท่านั้น)</label>
-                <input type="text" id="new-cat-notice" placeholder="เช่น ซื้อได้ในเกมเท่านั้น (SERVER IP : ...)">
+                <label>ข้อความประกาศใต้ชื่อหัวข้อ (หรือใส่ลิงก์สโตร์ เช่น https://store.tinytails.fun/store)</label>
+                <input type="text" id="new-cat-notice" placeholder="เช่น ซื้อได้ในเกมเท่านั้น หรือใส่ลิงก์เว็บ Store">
             </div>
 
             <div class="form-group">
@@ -670,8 +670,8 @@
                 <label style="margin-top: 10px;">ชื่อหัวข้อหลักหน้าเว็บ (แบบเต็ม เช่น Tier 1 Cubee)</label>
                 <input type="text" id="edit-cat-name-input" placeholder="ชื่อหัวข้อหน้าเว็บ">
 
-                <label style="margin-top: 10px;">ข้อความประกาศใต้ชื่อหัวข้อ (Notice / IP)</label>
-                <input type="text" id="edit-cat-notice-input" placeholder="เช่น ซื้อได้ในเกมเท่านั้น (SERVER IP : ...)">
+                <label style="margin-top: 10px;">ข้อความประกาศ หรือลิงก์เว็บสโตร์ (Store URL)</label>
+                <input type="text" id="edit-cat-notice-input" placeholder="เช่น ซื้อได้ในเกมเท่านั้น หรือ https://store...">
 
                 <label style="margin-top: 10px;">ลำดับการแสดงผล (ตัวเลขน้อยกว่าจะอยู่อันดับแรกๆ)</label>
                 <input type="number" id="edit-cat-order-input" placeholder="เช่น -1, 0, 1, 2...">
@@ -1020,8 +1020,8 @@
                 { id: 'tier1', defaultMenuName: 'Tier 1', defaultName: 'Tier 1 Cubee', defaultIcon: '⭐', defaultColor: '', defaultOrder: 1, defaultNotice: 'ซื้อได้ในเกมเท่านั้น (SERVER IP : play.tinytails.fun - version 1.21.11)' },
                 { id: 'tier2', defaultMenuName: 'Tier 2', defaultName: 'Tier 2 Cubee', defaultIcon: '🌟', defaultColor: '', defaultOrder: 2, defaultNotice: 'ซื้อได้ในเกมเท่านั้น (SERVER IP : play.tinytails.fun - version 1.21.11)' },
                 { id: 'tier3', defaultMenuName: 'Tier 3', defaultName: 'Tier 3 Cubee', defaultIcon: '💎', defaultColor: '', defaultOrder: 3, defaultNotice: 'ซื้อได้ในเกมเท่านั้น (SERVER IP : play.tinytails.fun - version 1.21.11)' },
-                { id: 'sweet', defaultMenuName: 'SWEET', defaultName: 'SWEET CUBEE Gacha', defaultIcon: '🍬', defaultColor: '#db2777', defaultOrder: 4, defaultNotice: 'ซื้อได้ในเว็บไซต์ Store' },
-                { id: 'huge', defaultMenuName: 'HUGE', defaultName: 'HUGE CUBEE Gacha', defaultIcon: '🔥', defaultColor: '#dc2626', defaultOrder: 5, defaultNotice: 'ซื้อได้ในเว็บไซต์ Store' },
+                { id: 'sweet', defaultMenuName: 'SWEET', defaultName: 'SWEET CUBEE Gacha', defaultIcon: '🍬', defaultColor: '#db2777', defaultOrder: 4, defaultNotice: 'https://store.tinytails.fun/store' },
+                { id: 'huge', defaultMenuName: 'HUGE', defaultName: 'HUGE CUBEE Gacha', defaultIcon: '🔥', defaultColor: '#dc2626', defaultOrder: 5, defaultNotice: 'https://store.tinytails.fun/store' },
                 { id: 'special', defaultMenuName: 'SPECIAL', defaultName: 'SPECIAL CUBEE', defaultIcon: '✨', defaultColor: 'var(--special-color)', defaultOrder: 6, defaultNotice: 'ได้รับผ่านการทำกิจกรรมในเซิร์ฟเวอร์เท่านั้น' }
             ];
 
@@ -1109,7 +1109,17 @@
                 let sec = document.createElement('div');
                 sec.id = cat.id;
                 sec.className = 'page-section show';
-                let noticeHtml = displayNotice ? `<div class="in-game-notice">${displayNotice}</div>` : '';
+                
+                let noticeHtml = '';
+                if (displayNotice) {
+                    if (displayNotice.startsWith('http://') || displayNotice.startsWith('https://')) {
+                        noticeHtml = `<a href="${displayNotice}" target="_blank" class="store-link-btn">🛒 ไปที่หน้าเว็บไซต์ TinyTails MC - Store</a>`;
+                    } else if (displayNotice.toLowerCase().includes('store')) {
+                        noticeHtml = `<a href="https://store.tinytails.fun/store" target="_blank" class="store-link-btn">🛒 ไปที่หน้าเว็บไซต์ TinyTails MC - Store</a>`;
+                    } else {
+                        noticeHtml = `<div class="in-game-notice">${displayNotice}</div>`;
+                    }
+                }
 
                 let dynamicBtnColorStyle = displayColor ? `background-color: ${displayColor}; color: #fff; border-color: ${displayColor};` : '';
                 let dynamicSelectColorStyle = displayColor ? `color: ${displayColor}; border-color: ${displayColor};` : '';
@@ -1397,8 +1407,8 @@
                 tier1: { menuName: "Tier 1", name: "Tier 1 Cubee", icon: "⭐", color: "", order: 1, notice: 'ซื้อได้ในเกมเท่านั้น (SERVER IP : play.tinytails.fun - version 1.21.11)' },
                 tier2: { menuName: "Tier 2", name: "Tier 2 Cubee", icon: "🌟", color: "", order: 2, notice: 'ซื้อได้ในเกมเท่านั้น (SERVER IP : play.tinytails.fun - version 1.21.11)' },
                 tier3: { menuName: "Tier 3", name: "Tier 3 Cubee", icon: "💎", color: "", order: 3, notice: 'ซื้อได้ในเกมเท่านั้น (SERVER IP : play.tinytails.fun - version 1.21.11)' },
-                sweet: { menuName: "SWEET", name: "SWEET CUBEE Gacha", icon: "🍬", color: "#db2777", order: 4, notice: 'ซื้อได้ในเว็บไซต์ Store' },
-                huge: { menuName: "HUGE", name: "HUGE CUBEE Gacha", icon: "🔥", color: "#dc2626", order: 5, notice: 'ซื้อได้ในเว็บไซต์ Store' },
+                sweet: { menuName: "SWEET", name: "SWEET CUBEE Gacha", icon: "🍬", color: "#db2777", order: 4, notice: 'https://store.tinytails.fun/store' },
+                huge: { menuName: "HUGE", name: "HUGE CUBEE Gacha", icon: "🔥", color: "#dc2626", order: 5, notice: 'https://store.tinytails.fun/store' },
                 special: { menuName: "SPECIAL", name: "SPECIAL CUBEE", icon: "✨", color: "var(--special-color)", order: 6, notice: 'ได้รับผ่านการทำกิจกรรมในเซิร์ฟเวอร์เท่านั้น' }
             };
 
