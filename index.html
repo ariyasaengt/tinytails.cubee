@@ -317,26 +317,32 @@
         }
 
         .sort-select {
-            background: var(--card-bg);
+            background-color: var(--card-bg);
             color: var(--text-main);
             border: 1px solid var(--border-color);
             padding: 0 18px;
-            border-radius: 12px;
+            border-radius: 14px;
             font-family: inherit;
-            font-weight: 800;
-            font-size: 1rem;
+            font-weight: 700;
+            font-size: 0.95rem;
             outline: none;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2);
             display: inline-flex;
             align-items: center;
             box-sizing: border-box;
             height: 48px;
-            line-height: normal;
         }
         .sort-select:hover {
             border-color: var(--text-muted);
+            transform: translateY(-1px);
+        }
+        .sort-select option {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            padding: 12px;
+            font-weight: 600;
         }
 
         .price-tags-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -371,7 +377,7 @@
         .btn-edit-price { display: none; background: var(--box-bg); color: var(--text-muted); border: 1px solid var(--border-color); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 0.9rem; align-items: center; justify-content: center; transition: 0.2s; }
         .btn-edit-price:hover { background: var(--primary-yellow); color: #000; border-color: var(--primary-yellow); }
 
-        .btn-add { display: none; background: var(--primary-yellow); color: #000; border: none; padding: 0 20px; border-radius: 12px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: 0.2s; font-family: inherit; height: 48px; box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; line-height: normal; }
+        .btn-add { display: none; background: var(--primary-yellow); color: #000; border: none; padding: 0 20px; border-radius: 14px; font-size: 0.95rem; font-weight: 800; cursor: pointer; transition: 0.2s; font-family: inherit; height: 48px; box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2); }
         body.light-mode .btn-add { color: #fff; }
         .btn-add:hover { opacity: 0.9; transform: translateY(-2px); }
 
@@ -1099,7 +1105,7 @@
                         `<div class="in-game-notice">ซื้อได้ในเกมเท่านั้น <span>(SERVER IP : play.tinytails.fun - version 1.21.11)</span></div>`
                     );
 
-                let dynamicBtnColorStyle = displayColor ? `background-color: ${displayColor}; color: #fff;` : '';
+                let dynamicBtnColorStyle = displayColor ? `background-color: ${displayColor}; color: #fff; border-color: ${displayColor};` : '';
                 let dynamicSelectColorStyle = displayColor ? `color: ${displayColor}; border-color: ${displayColor};` : '';
 
                 sec.innerHTML = `
