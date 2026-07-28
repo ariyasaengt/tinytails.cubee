@@ -592,6 +592,11 @@
             </div>
 
             <div class="form-group">
+                <label>ลำดับการแสดงผล (ใส่ตัวเลข เช่น 1, 2, 3...)</label>
+                <input type="number" id="new-cat-order" placeholder="เช่น 10" value="10">
+            </div>
+
+            <div class="form-group">
                 <label>สีข้อความหัวข้อ (เลือกสี หรือใส่โค้ดสี เช่น #fbbf24)</label>
                 <div style="display: flex; gap: 10px;">
                     <input type="color" id="new-cat-color-picker" value="#f4f4f5" style="width: 50px; height: 44px; padding: 4px; cursor: pointer;" oninput="document.getElementById('new-cat-color').value = this.value">
@@ -621,6 +626,9 @@
 
                 <label style="margin-top: 10px;">ชื่อหัวข้อหลักหน้าเว็บ (แบบเต็ม เช่น Tier 1 Cubee)</label>
                 <input type="text" id="edit-cat-name-input" placeholder="ชื่อหัวข้อหน้าเว็บ">
+
+                <label style="margin-top: 10px;">ลำดับการแสดงผล (ตัวเลขน้อยแสดงก่อน)</label>
+                <input type="number" id="edit-cat-order-input" placeholder="เช่น 1, 2, 3...">
 
                 <label style="margin-top: 10px;">สีข้อความหัวข้อ (เลือกสี หรือใส่โค้ดสี เช่น #db2777)</label>
                 <div style="display: flex; gap: 10px;">
@@ -962,12 +970,12 @@
             });
 
             let baseCats = [
-                { id: 'tier1', defaultMenuName: 'Tier 1', defaultName: 'Tier 1 Cubee', defaultIcon: '⭐', defaultColor: '' },
-                { id: 'tier2', defaultMenuName: 'Tier 2', defaultName: 'Tier 2 Cubee', defaultIcon: '🌟', defaultColor: '' },
-                { id: 'tier3', defaultMenuName: 'Tier 3', defaultName: 'Tier 3 Cubee', defaultIcon: '💎', defaultColor: '' },
-                { id: 'sweet', defaultMenuName: 'SWEET', defaultName: 'SWEET CUBEE Gacha', defaultIcon: '🍬', defaultColor: '#db2777' },
-                { id: 'huge', defaultMenuName: 'HUGE', defaultName: 'HUGE CUBEE Gacha', defaultIcon: '🔥', defaultColor: '#dc2626' },
-                { id: 'special', defaultMenuName: 'SPECIAL', defaultName: 'SPECIAL CUBEE', defaultIcon: '✨', defaultColor: 'var(--special-color)' }
+                { id: 'tier1', defaultMenuName: 'Tier 1', defaultName: 'Tier 1 Cubee', defaultIcon: '⭐', defaultColor: '', defaultOrder: 1 },
+                { id: 'tier2', defaultMenuName: 'Tier 2', defaultName: 'Tier 2 Cubee', defaultIcon: '🌟', defaultColor: '', defaultOrder: 2 },
+                { id: 'tier3', defaultMenuName: 'Tier 3', defaultName: 'Tier 3 Cubee', defaultIcon: '💎', defaultColor: '', defaultOrder: 3 },
+                { id: 'sweet', defaultMenuName: 'SWEET', defaultName: 'SWEET CUBEE Gacha', defaultIcon: '🍬', defaultColor: '#db2777', defaultOrder: 4 },
+                { id: 'huge', defaultMenuName: 'HUGE', defaultName: 'HUGE CUBEE Gacha', defaultIcon: '🔥', defaultColor: '#dc2626', defaultOrder: 5 },
+                { id: 'special', defaultMenuName: 'SPECIAL', defaultName: 'SPECIAL CUBEE', defaultIcon: '✨', defaultColor: 'var(--special-color)', defaultOrder: 6 }
             ];
 
             let allCatsToBuild = [...baseCats];
@@ -977,8 +985,16 @@
                     defaultMenuName: c.menuName || c.name, 
                     defaultName: c.name, 
                     defaultIcon: c.icon || '📁',
-                    defaultColor: c.color || ''
+                    defaultColor: c.color || '',
+                    defaultOrder: c.order !== undefined ? parseInt(c.order) : 10
                 });
+            });
+
+            // จัดเรียงตามค่า Order
+            allCatsToBuild.sort((a, b) => {
+                let orderA = categoryMeta[a.id]?.order !== undefined ? parseInt(categoryMeta[a.id].order) : a.defaultOrder;
+                let orderB = categoryMeta[b.id]?.order !== undefined ? parseInt(categoryMeta[b.id].order) : b.defaultOrder;
+                return orderA - orderB;
             });
 
             // 1. สร้างปุ่มหน้าแรกไว้ตัวแรกสุดเสมอ
@@ -1001,13 +1017,14 @@
             }
             navCenter.appendChild(homeWrapper);
 
-            // 2. สร้างปุ่มและ Section ของแต่ละหมวดหมู่
+            // 2. สร้างปุ่มและ Section เรียงตาม Order
             allCatsToBuild.forEach(cat => {
                 let meta = categoryMeta[cat.id] || { 
                     menuName: cat.defaultMenuName, 
                     name: cat.defaultName, 
                     icon: cat.defaultIcon,
-                    color: cat.defaultColor 
+                    color: cat.defaultColor,
+                    order: cat.defaultOrder 
                 };
                 let displayMenuName = meta.menuName || meta.name || cat.defaultMenuName;
                 let displayHeaderName = meta.name || cat.defaultName;
@@ -1041,7 +1058,7 @@
 
                 let sec = document.createElement('div');
                 sec.id = cat.id;
-                sec.className = 'page-section show'; // เปิดให้แสดงในหน้าแรกด้วย
+                sec.className = 'page-section show';
                 let noticeHtml = cat.id === 'special' ? 
                     `<div class="in-game-notice">ได้รับผ่านการทำกิจกรรมในเซิร์ฟเวอร์เท่านั้น</div>` :
                     (cat.id === 'sweet' || cat.id === 'huge' ? 
@@ -1096,6 +1113,7 @@
                 addCatBtn.id = 'addCategoryNavBtn';
                 addCatBtn.style.display = 'inline-block';
                 addCatBtn.innerText = '➕ เพิ่มหมวดหมู่ใหม่';
+                addCatNavBtn = addCatBtn;
                 addCatBtn.onclick = openAddCategoryModal;
                 navCenter.appendChild(addCatBtn);
             }
@@ -1121,18 +1139,36 @@
             };
 
             let menuList = [
-                { id: 'all', name: categoryMeta['all']?.menuName || 'หน้าแรก', icon: categoryMeta['all']?.icon || '🏠' },
-                { id: 'tier1', name: categoryMeta['tier1']?.menuName || defaultMeta['tier1'].menuName, icon: categoryMeta['tier1']?.icon || defaultMeta['tier1'].icon },
-                { id: 'tier2', name: categoryMeta['tier2']?.menuName || defaultMeta['tier2'].menuName, icon: categoryMeta['tier2']?.icon || defaultMeta['tier2'].icon },
-                { id: 'tier3', name: categoryMeta['tier3']?.menuName || defaultMeta['tier3'].menuName, icon: categoryMeta['tier3']?.icon || defaultMeta['tier3'].icon },
-                { id: 'sweet', name: categoryMeta['sweet']?.menuName || defaultMeta['sweet'].menuName, icon: categoryMeta['sweet']?.icon || defaultMeta['sweet'].icon },
-                { id: 'huge', name: categoryMeta['huge']?.menuName || defaultMeta['huge'].menuName, icon: categoryMeta['huge']?.icon || defaultMeta['huge'].icon },
-                { id: 'special', name: categoryMeta['special']?.menuName || defaultMeta['special'].menuName, icon: categoryMeta['special']?.icon || defaultMeta['special'].icon }
+                { id: 'all', name: categoryMeta['all']?.menuName || 'หน้าแรก', icon: categoryMeta['all']?.icon || '🏠', order: -1 }
             ];
 
+            let baseCats = [
+                { id: 'tier1', defaultMenuName: 'Tier 1', order: 1 },
+                { id: 'tier2', defaultMenuName: 'Tier 2', order: 2 },
+                { id: 'tier3', defaultMenuName: 'Tier 3', order: 3 },
+                { id: 'sweet', defaultMenuName: 'SWEET', order: 4 },
+                { id: 'huge', defaultMenuName: 'HUGE', order: 5 },
+                { id: 'special', defaultMenuName: 'SPECIAL', order: 6 }
+            ];
+
+            let allMenuCats = [...baseCats];
             customCategories.forEach(c => {
-                let meta = categoryMeta[c.id] || c;
-                menuList.push({ id: c.id, name: meta.menuName || meta.name, icon: meta.icon || '📁' });
+                allMenuCats.push({
+                    id: c.id,
+                    defaultMenuName: c.menuName || c.name,
+                    order: c.order !== undefined ? parseInt(c.order) : 10
+                });
+            });
+
+            allMenuCats.sort((a, b) => {
+                let orderA = categoryMeta[a.id]?.order !== undefined ? parseInt(categoryMeta[a.id].order) : a.order;
+                let orderB = categoryMeta[b.id]?.order !== undefined ? parseInt(categoryMeta[b.id].order) : b.order;
+                return orderA - orderB;
+            });
+
+            allMenuCats.forEach(cat => {
+                let meta = categoryMeta[cat.id] || defaultMeta[cat] || { menuName: cat.defaultMenuName, icon: '📁' };
+                menuList.push({ id: cat.id, name: meta.menuName || meta.name || cat.defaultMenuName, icon: meta.icon || '📁' });
             });
 
             menuList.push({ id: 'ranking', name: '🏆 จัดอันดับ', icon: '' });
@@ -1175,6 +1211,7 @@
             document.getElementById('new-cat-id').value = '';
             document.getElementById('new-menu-name').value = '';
             document.getElementById('new-cat-name').value = '';
+            document.getElementById('new-cat-order').value = '10';
             document.getElementById('new-cat-color').value = '';
             document.getElementById('new-cat-color-picker').value = '#f4f4f5';
             document.getElementById('new-cat-icon').value = '';
@@ -1186,6 +1223,7 @@
             let id = document.getElementById('new-cat-id').value.trim().toLowerCase();
             let menuName = document.getElementById('new-menu-name').value.trim();
             let name = document.getElementById('new-cat-name').value.trim();
+            let order = parseInt(document.getElementById('new-cat-order').value) || 10;
             let color = document.getElementById('new-cat-color').value.trim();
             let icon = document.getElementById('new-cat-icon').value.trim() || '📁';
 
@@ -1201,9 +1239,9 @@
                 return;
             }
 
-            let newCatData = { id: id, menuName: menuName, name: name, color: color, icon: icon };
+            let newCatData = { id: id, menuName: menuName, name: name, order: order, color: color, icon: icon };
             db.ref('custom_categories/' + id).set(newCatData).then(() => {
-                db.ref('category_meta/' + id).set({ menuName: menuName, name: name, color: color, icon: icon }).then(() => {
+                db.ref('category_meta/' + id).set({ menuName: menuName, name: name, order: order, color: color, icon: icon }).then(() => {
                     closeModal('addCategoryModal');
                     showToast('สร้างหมวดหมู่ใหม่สำเร็จ! ✨');
                 });
@@ -1294,28 +1332,30 @@
             document.getElementById('edit-price-category').value = category;
             
             const defaultMeta = {
-                all: { menuName: "หน้าแรก", name: "หน้าแรก", icon: "🏠", color: "" },
-                tier1: { menuName: "Tier 1", name: "Tier 1 Cubee", icon: "⭐", color: "" },
-                tier2: { menuName: "Tier 2", name: "Tier 2 Cubee", icon: "🌟", color: "" },
-                tier3: { menuName: "Tier 3", name: "Tier 3 Cubee", icon: "💎", color: "" },
-                sweet: { menuName: "SWEET", name: "SWEET CUBEE Gacha", icon: "🍬", color: "#db2777" },
-                huge: { menuName: "HUGE", name: "HUGE CUBEE Gacha", icon: "🔥", color: "#dc2626" },
-                special: { menuName: "SPECIAL", name: "SPECIAL CUBEE", icon: "✨", color: "var(--special-color)" }
+                all: { menuName: "หน้าแรก", name: "หน้าแรก", icon: "🏠", color: "", order: -1 },
+                tier1: { menuName: "Tier 1", name: "Tier 1 Cubee", icon: "⭐", color: "", order: 1 },
+                tier2: { menuName: "Tier 2", name: "Tier 2 Cubee", icon: "🌟", color: "", order: 2 },
+                tier3: { menuName: "Tier 3", name: "Tier 3 Cubee", icon: "💎", color: "", order: 3 },
+                sweet: { menuName: "SWEET", name: "SWEET CUBEE Gacha", icon: "🍬", color: "#db2777", order: 4 },
+                huge: { menuName: "HUGE", name: "HUGE CUBEE Gacha", icon: "🔥", color: "#dc2626", order: 5 },
+                special: { menuName: "SPECIAL", name: "SPECIAL CUBEE", icon: "✨", color: "var(--special-color)", order: 6 }
             };
 
-            let currentMeta = categoryMeta[category] || defaultMeta[category] || { menuName: category, name: category, icon: "", color: "" };
+            let currentMeta = categoryMeta[category] || defaultMeta[category] || { menuName: category, name: category, icon: "", color: "", order: 10 };
             let customCatObj = customCategories.find(c => c.id === category);
             if (customCatObj) {
                 currentMeta = { 
                     menuName: customCatObj.menuName || customCatObj.name, 
                     name: customCatObj.name, 
                     icon: customCatObj.icon,
-                    color: customCatObj.color || '' 
+                    color: customCatObj.color || '',
+                    order: customCatObj.order !== undefined ? customCatObj.order : 10 
                 };
             }
 
             document.getElementById('edit-menu-name-input').value = currentMeta.menuName || currentMeta.name || '';
             document.getElementById('edit-cat-name-input').value = currentMeta.name || '';
+            document.getElementById('edit-cat-order-input').value = currentMeta.order !== undefined ? currentMeta.order : 10;
             document.getElementById('edit-cat-color-input').value = currentMeta.color || '';
             if(currentMeta.color && currentMeta.color.startsWith('#')) {
                 document.getElementById('edit-cat-color-picker').value = currentMeta.color;
@@ -1344,6 +1384,7 @@
             let cat = document.getElementById('edit-price-category').value;
             let menuName = document.getElementById('edit-menu-name-input').value.trim();
             let newName = document.getElementById('edit-cat-name-input').value.trim();
+            let newOrder = parseInt(document.getElementById('edit-cat-order-input').value) || 0;
             let newColor = document.getElementById('edit-cat-color-input').value.trim();
             let newIcon = document.getElementById('edit-cat-icon-input').value.trim();
 
@@ -1354,7 +1395,7 @@
             let thbVal = document.getElementById('edit-thb-input').value.replace(/,/g, '');
 
             let priceObject = { coin: coinVal, ruby: rubyVal, thb: thbVal };
-            let metaObject = { menuName: menuName, name: newName, color: newColor, icon: newIcon };
+            let metaObject = { menuName: menuName, name: newName, order: newOrder, color: newColor, icon: newIcon };
 
             let updates = {};
             updates['category_prices/' + cat] = priceObject;
@@ -1364,6 +1405,7 @@
             if (customCatObj) {
                 updates['custom_categories/' + cat + '/menuName'] = menuName;
                 updates['custom_categories/' + cat + '/name'] = newName;
+                updates['custom_categories/' + cat + '/order'] = newOrder;
                 updates['custom_categories/' + cat + '/color'] = newColor;
                 updates['custom_categories/' + cat + '/icon'] = newIcon;
             }
