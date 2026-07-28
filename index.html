@@ -635,6 +635,11 @@
             </div>
 
             <div class="form-group">
+                <label>ข้อความประกาศใต้ชื่อหัวข้อ (เช่น ซื้อได้ในเกมเท่านั้น)</label>
+                <input type="text" id="new-cat-notice" placeholder="เช่น ซื้อได้ในเกมเท่านั้น (SERVER IP : ...)">
+            </div>
+
+            <div class="form-group">
                 <label>สีข้อความหัวข้อ (เลือกสี หรือใส่โค้ดสี เช่น #fbbf24)</label>
                 <div style="display: flex; gap: 10px;">
                     <input type="color" id="new-cat-color-picker" value="#f4f4f5" style="width: 50px; height: 44px; padding: 4px; cursor: pointer;" oninput="document.getElementById('new-cat-color').value = this.value">
@@ -664,6 +669,9 @@
 
                 <label style="margin-top: 10px;">ชื่อหัวข้อหลักหน้าเว็บ (แบบเต็ม เช่น Tier 1 Cubee)</label>
                 <input type="text" id="edit-cat-name-input" placeholder="ชื่อหัวข้อหน้าเว็บ">
+
+                <label style="margin-top: 10px;">ข้อความประกาศใต้ชื่อหัวข้อ (Notice / IP)</label>
+                <input type="text" id="edit-cat-notice-input" placeholder="เช่น ซื้อได้ในเกมเท่านั้น (SERVER IP : ...)">
 
                 <label style="margin-top: 10px;">ลำดับการแสดงผล (ตัวเลขน้อยกว่าจะอยู่อันดับแรกๆ)</label>
                 <input type="number" id="edit-cat-order-input" placeholder="เช่น -1, 0, 1, 2...">
@@ -1009,12 +1017,12 @@
             });
 
             let baseCats = [
-                { id: 'tier1', defaultMenuName: 'Tier 1', defaultName: 'Tier 1 Cubee', defaultIcon: '⭐', defaultColor: '', defaultOrder: 1 },
-                { id: 'tier2', defaultMenuName: 'Tier 2', defaultName: 'Tier 2 Cubee', defaultIcon: '🌟', defaultColor: '', defaultOrder: 2 },
-                { id: 'tier3', defaultMenuName: 'Tier 3', defaultName: 'Tier 3 Cubee', defaultIcon: '💎', defaultColor: '', defaultOrder: 3 },
-                { id: 'sweet', defaultMenuName: 'SWEET', defaultName: 'SWEET CUBEE Gacha', defaultIcon: '🍬', defaultColor: '#db2777', defaultOrder: 4 },
-                { id: 'huge', defaultMenuName: 'HUGE', defaultName: 'HUGE CUBEE Gacha', defaultIcon: '🔥', defaultColor: '#dc2626', defaultOrder: 5 },
-                { id: 'special', defaultMenuName: 'SPECIAL', defaultName: 'SPECIAL CUBEE', defaultIcon: '✨', defaultColor: 'var(--special-color)', defaultOrder: 6 }
+                { id: 'tier1', defaultMenuName: 'Tier 1', defaultName: 'Tier 1 Cubee', defaultIcon: '⭐', defaultColor: '', defaultOrder: 1, defaultNotice: 'ซื้อได้ในเกมเท่านั้น (SERVER IP : play.tinytails.fun - version 1.21.11)' },
+                { id: 'tier2', defaultMenuName: 'Tier 2', defaultName: 'Tier 2 Cubee', defaultIcon: '🌟', defaultColor: '', defaultOrder: 2, defaultNotice: 'ซื้อได้ในเกมเท่านั้น (SERVER IP : play.tinytails.fun - version 1.21.11)' },
+                { id: 'tier3', defaultMenuName: 'Tier 3', defaultName: 'Tier 3 Cubee', defaultIcon: '💎', defaultColor: '', defaultOrder: 3, defaultNotice: 'ซื้อได้ในเกมเท่านั้น (SERVER IP : play.tinytails.fun - version 1.21.11)' },
+                { id: 'sweet', defaultMenuName: 'SWEET', defaultName: 'SWEET CUBEE Gacha', defaultIcon: '🍬', defaultColor: '#db2777', defaultOrder: 4, defaultNotice: 'ซื้อได้ในเว็บไซต์ Store' },
+                { id: 'huge', defaultMenuName: 'HUGE', defaultName: 'HUGE CUBEE Gacha', defaultIcon: '🔥', defaultColor: '#dc2626', defaultOrder: 5, defaultNotice: 'ซื้อได้ในเว็บไซต์ Store' },
+                { id: 'special', defaultMenuName: 'SPECIAL', defaultName: 'SPECIAL CUBEE', defaultIcon: '✨', defaultColor: 'var(--special-color)', defaultOrder: 6, defaultNotice: 'ได้รับผ่านการทำกิจกรรมในเซิร์ฟเวอร์เท่านั้น' }
             ];
 
             let allCatsToBuild = [...baseCats];
@@ -1025,7 +1033,8 @@
                     defaultName: c.name, 
                     defaultIcon: c.icon || '📁',
                     defaultColor: c.color || '',
-                    defaultOrder: c.order !== undefined ? parseInt(c.order) : -1 
+                    defaultOrder: c.order !== undefined ? parseInt(c.order) : -1,
+                    defaultNotice: c.notice || 'ซื้อได้ในเกมเท่านั้น'
                 });
             });
 
@@ -1062,12 +1071,14 @@
                     name: cat.defaultName, 
                     icon: cat.defaultIcon,
                     color: cat.defaultColor,
-                    order: cat.defaultOrder 
+                    order: cat.defaultOrder,
+                    notice: cat.defaultNotice
                 };
                 let displayMenuName = meta.menuName || meta.name || cat.defaultMenuName;
                 let displayHeaderName = meta.name || cat.defaultName;
                 let displayIcon = meta.icon || '';
                 let displayColor = meta.color || '';
+                let displayNotice = meta.notice !== undefined ? meta.notice : cat.defaultNotice;
                 let currentSort = categorySortOptions[cat.id] || 'default';
 
                 let wrapper = document.createElement('div');
@@ -1098,12 +1109,7 @@
                 let sec = document.createElement('div');
                 sec.id = cat.id;
                 sec.className = 'page-section show';
-                let noticeHtml = cat.id === 'special' ? 
-                    `<div class="in-game-notice">ได้รับผ่านการทำกิจกรรมในเซิร์ฟเวอร์เท่านั้น</div>` :
-                    (cat.id === 'sweet' || cat.id === 'huge' ? 
-                        `<a href="https://store.tinytails.fun/store" target="_blank" class="store-link-btn">🛒 ไปที่หน้าเว็บไซต์ TinyTails MC - Store</a>` :
-                        `<div class="in-game-notice">ซื้อได้ในเกมเท่านั้น <span>(SERVER IP : play.tinytails.fun - version 1.21.11)</span></div>`
-                    );
+                let noticeHtml = displayNotice ? `<div class="in-game-notice">${displayNotice}</div>` : '';
 
                 let dynamicBtnColorStyle = displayColor ? `background-color: ${displayColor}; color: #fff; border-color: ${displayColor};` : '';
                 let dynamicSelectColorStyle = displayColor ? `color: ${displayColor}; border-color: ${displayColor};` : '';
@@ -1265,6 +1271,7 @@
             document.getElementById('new-menu-name').value = '';
             document.getElementById('new-cat-name').value = '';
             document.getElementById('new-cat-order').value = '-1';
+            document.getElementById('new-cat-notice').value = '';
             document.getElementById('new-cat-color').value = '';
             document.getElementById('new-cat-color-picker').value = '#f4f4f5';
             document.getElementById('new-cat-icon').value = '';
@@ -1277,6 +1284,7 @@
             let menuName = document.getElementById('new-menu-name').value.trim();
             let name = document.getElementById('new-cat-name').value.trim();
             let order = parseInt(document.getElementById('new-cat-order').value) || -1;
+            let notice = document.getElementById('new-cat-notice').value.trim();
             let color = document.getElementById('new-cat-color').value.trim();
             let icon = document.getElementById('new-cat-icon').value.trim() || '📁';
 
@@ -1292,9 +1300,9 @@
                 return;
             }
 
-            let newCatData = { id: id, menuName: menuName, name: name, order: order, color: color, icon: icon };
+            let newCatData = { id: id, menuName: menuName, name: name, order: order, notice: notice, color: color, icon: icon };
             db.ref('custom_categories/' + id).set(newCatData).then(() => {
-                db.ref('category_meta/' + id).set({ menuName: menuName, name: name, order: order, color: color, icon: icon }).then(() => {
+                db.ref('category_meta/' + id).set({ menuName: menuName, name: name, order: order, notice: notice, color: color, icon: icon }).then(() => {
                     closeModal('addCategoryModal');
                     showToast('สร้างหมวดหมู่ใหม่สำเร็จ! ✨');
                 });
@@ -1386,15 +1394,15 @@
             
             const defaultMeta = {
                 all: { menuName: "หน้าแรก", name: "หน้าแรก", icon: "🏠", color: "", order: -1 },
-                tier1: { menuName: "Tier 1", name: "Tier 1 Cubee", icon: "⭐", color: "", order: 1 },
-                tier2: { menuName: "Tier 2", name: "Tier 2 Cubee", icon: "🌟", color: "", order: 2 },
-                tier3: { menuName: "Tier 3", name: "Tier 3 Cubee", icon: "💎", color: "", order: 3 },
-                sweet: { menuName: "SWEET", name: "SWEET CUBEE Gacha", icon: "🍬", color: "#db2777", order: 4 },
-                huge: { menuName: "HUGE", name: "HUGE CUBEE Gacha", icon: "🔥", color: "#dc2626", order: 5 },
-                special: { menuName: "SPECIAL", name: "SPECIAL CUBEE", icon: "✨", color: "var(--special-color)", order: 6 }
+                tier1: { menuName: "Tier 1", name: "Tier 1 Cubee", icon: "⭐", color: "", order: 1, notice: 'ซื้อได้ในเกมเท่านั้น (SERVER IP : play.tinytails.fun - version 1.21.11)' },
+                tier2: { menuName: "Tier 2", name: "Tier 2 Cubee", icon: "🌟", color: "", order: 2, notice: 'ซื้อได้ในเกมเท่านั้น (SERVER IP : play.tinytails.fun - version 1.21.11)' },
+                tier3: { menuName: "Tier 3", name: "Tier 3 Cubee", icon: "💎", color: "", order: 3, notice: 'ซื้อได้ในเกมเท่านั้น (SERVER IP : play.tinytails.fun - version 1.21.11)' },
+                sweet: { menuName: "SWEET", name: "SWEET CUBEE Gacha", icon: "🍬", color: "#db2777", order: 4, notice: 'ซื้อได้ในเว็บไซต์ Store' },
+                huge: { menuName: "HUGE", name: "HUGE CUBEE Gacha", icon: "🔥", color: "#dc2626", order: 5, notice: 'ซื้อได้ในเว็บไซต์ Store' },
+                special: { menuName: "SPECIAL", name: "SPECIAL CUBEE", icon: "✨", color: "var(--special-color)", order: 6, notice: 'ได้รับผ่านการทำกิจกรรมในเซิร์ฟเวอร์เท่านั้น' }
             };
 
-            let currentMeta = categoryMeta[category] || defaultMeta[category] || { menuName: category, name: category, icon: "", color: "", order: 10 };
+            let currentMeta = categoryMeta[category] || defaultMeta[category] || { menuName: category, name: category, icon: "", color: "", order: 10, notice: '' };
             let customCatObj = customCategories.find(c => c.id === category);
             if (customCatObj) {
                 currentMeta = { 
@@ -1402,12 +1410,14 @@
                     name: customCatObj.name, 
                     icon: customCatObj.icon,
                     color: customCatObj.color || '',
-                    order: customCatObj.order !== undefined ? customCatObj.order : 10 
+                    order: customCatObj.order !== undefined ? customCatObj.order : 10,
+                    notice: customCatObj.notice || ''
                 };
             }
 
             document.getElementById('edit-menu-name-input').value = currentMeta.menuName || currentMeta.name || '';
             document.getElementById('edit-cat-name-input').value = currentMeta.name || '';
+            document.getElementById('edit-cat-notice-input').value = currentMeta.notice !== undefined ? currentMeta.notice : '';
             document.getElementById('edit-cat-order-input').value = currentMeta.order !== undefined ? currentMeta.order : 10;
             document.getElementById('edit-cat-color-input').value = currentMeta.color || '';
             if(currentMeta.color && currentMeta.color.startsWith('#')) {
@@ -1437,6 +1447,7 @@
             let cat = document.getElementById('edit-price-category').value;
             let menuName = document.getElementById('edit-menu-name-input').value.trim();
             let newName = document.getElementById('edit-cat-name-input').value.trim();
+            let newNotice = document.getElementById('edit-cat-notice-input').value.trim();
             let newOrder = parseInt(document.getElementById('edit-cat-order-input').value) || 0;
             let newColor = document.getElementById('edit-cat-color-input').value.trim();
             let newIcon = document.getElementById('edit-cat-icon-input').value.trim();
@@ -1448,7 +1459,7 @@
             let thbVal = document.getElementById('edit-thb-input').value.replace(/,/g, '');
 
             let priceObject = { coin: coinVal, ruby: rubyVal, thb: thbVal };
-            let metaObject = { menuName: menuName, name: newName, order: newOrder, color: newColor, icon: newIcon };
+            let metaObject = { menuName: menuName, name: newName, notice: newNotice, order: newOrder, color: newColor, icon: newIcon };
 
             let updates = {};
             updates['category_prices/' + cat] = priceObject;
@@ -1458,6 +1469,7 @@
             if (customCatObj) {
                 updates['custom_categories/' + cat + '/menuName'] = menuName;
                 updates['custom_categories/' + cat + '/name'] = newName;
+                updates['custom_categories/' + cat + '/notice'] = newNotice;
                 updates['custom_categories/' + cat + '/order'] = newOrder;
                 updates['custom_categories/' + cat + '/color'] = newColor;
                 updates['custom_categories/' + cat + '/icon'] = newIcon;
