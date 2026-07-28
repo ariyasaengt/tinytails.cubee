@@ -320,18 +320,22 @@
             background: var(--card-bg);
             color: var(--text-main);
             border: 1px solid var(--border-color);
-            padding: 10px 15px;
+            padding: 11px 18px;
             border-radius: 12px;
             font-family: inherit;
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 800;
+            font-size: 1rem;
             outline: none;
             cursor: pointer;
             transition: 0.2s;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            display: inline-flex;
+            align-items: center;
+            box-sizing: border-box;
+            height: 48px;
         }
         .sort-select:hover {
-            border-color: var(--primary-yellow);
+            border-color: var(--text-muted);
         }
 
         .price-tags-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -366,7 +370,7 @@
         .btn-edit-price { display: none; background: var(--box-bg); color: var(--text-muted); border: 1px solid var(--border-color); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 0.9rem; align-items: center; justify-content: center; transition: 0.2s; }
         .btn-edit-price:hover { background: var(--primary-yellow); color: #000; border-color: var(--primary-yellow); }
 
-        .btn-add { display: none; background: var(--primary-yellow); color: #000; border: none; padding: 10px 20px; border-radius: 12px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: 0.2s; margin-bottom: 20px; font-family: inherit; }
+        .btn-add { display: none; background: var(--primary-yellow); color: #000; border: none; padding: 11px 20px; border-radius: 12px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: 0.2s; font-family: inherit; height: 48px; box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; }
         body.light-mode .btn-add { color: #fff; }
         .btn-add:hover { opacity: 0.9; transform: translateY(-2px); }
 
@@ -501,7 +505,8 @@
             .category-header { flex-direction: column; align-items: flex-start; gap: 10px; margin-top: 20px; }
             .category-title h2 { font-size: 1.4rem; }
             .price-tag { font-size: 0.85rem; padding: 4px 12px; }
-            .btn-add { font-size: 0.9rem; padding: 10px; width: 100%; text-align: center; }
+            .btn-add { font-size: 0.9rem; padding: 10px; width: 100%; text-align: center; height: auto; }
+            .sort-select { height: auto; }
             .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; }
             .card { padding: 12px; border-radius: 16px; }
             .img-box { height: 85px; padding: 10px; margin-bottom: 10px; border-radius: 12px; }
@@ -1093,6 +1098,9 @@
                         `<div class="in-game-notice">ซื้อได้ในเกมเท่านั้น <span>(SERVER IP : play.tinytails.fun - version 1.21.11)</span></div>`
                     );
 
+                let dynamicBtnColorStyle = displayColor ? `background-color: ${displayColor}; color: #fff;` : '';
+                let dynamicSelectColorStyle = displayColor ? `color: ${displayColor}; border-color: ${displayColor};` : '';
+
                 sec.innerHTML = `
                     <div class="category-header">
                         <div class="category-title">
@@ -1118,8 +1126,8 @@
                         </div>
                     </div>
                     <div class="category-actions-bar">
-                        <button class="btn-add" onclick="openEditModal(null, '${cat.id}')" style="${currentUser ? 'display:block;' : 'display:none;'} ${displayColor ? 'background-color: ' + displayColor + '; color: #fff;' : ''}">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
-                        <select class="sort-select" id="sort-${cat.id}" onchange="changeCategorySort('${cat.id}', this.value)">
+                        <button class="btn-add" onclick="openEditModal(null, '${cat.id}')" style="${currentUser ? 'display:inline-flex;' : 'display:none;'} ${dynamicBtnColorStyle}">➕ เพิ่มข้อมูลใหม่ในหน้านี้</button>
+                        <select class="sort-select" id="sort-${cat.id}" onchange="changeCategorySort('${cat.id}', this.value)" style="${dynamicSelectColorStyle}">
                             <option value="default" ${currentSort==='default'?'selected':''}>📌 เรียงตามค่าเริ่มต้น</option>
                             <option value="high-to-low" ${currentSort==='high-to-low'?'selected':''}>💰 ราคา: แพง ➔ ถูก</option>
                             <option value="low-to-high" ${currentSort==='low-to-high'?'selected':''}>🪙 ราคา: ถูก ➔ แพง</option>
