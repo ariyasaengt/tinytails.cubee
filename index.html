@@ -334,51 +334,98 @@
             flex-wrap: wrap;
         }
 
-        .sort-select {
+        /* Custom Dropdown Styling */
+        .custom-dropdown {
+            position: relative;
+            display: inline-block;
+            user-select: none;
+        }
+        .custom-dropdown-btn {
             background-color: var(--card-bg);
             color: var(--text-main);
             border: 1px solid var(--border-color);
-            padding: 0 18px 0 42px;
+            padding: 0 18px;
             border-radius: 14px;
             font-family: inherit;
             font-weight: 700;
             font-size: 0.95rem;
-            outline: none;
             cursor: pointer;
             transition: 0.2s;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2);
             display: inline-flex;
             align-items: center;
+            gap: 10px;
             box-sizing: border-box;
             height: 48px;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%path d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 14px center;
         }
-        .sort-select-wrapper {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-        }
-        .sort-select-icon {
-            position: absolute;
-            left: 14px;
-            pointer-events: none;
-            display: flex;
-            align-items: center;
-            color: var(--thb-color);
-        }
-        .sort-select-icon svg { width: 18px; height: 18px; stroke: currentColor; }
-        .sort-select:hover {
+        .custom-dropdown-btn:hover {
             border-color: var(--text-muted);
             transform: translateY(-1px);
         }
-        .sort-select option {
+        .custom-dropdown-btn svg.pin-icon {
+            width: 18px;
+            height: 18px;
+            stroke: var(--thb-color);
+            flex-shrink: 0;
+        }
+        .custom-dropdown-btn svg.arrow-icon {
+            width: 16px;
+            height: 16px;
+            stroke: var(--text-muted);
+            margin-left: 5px;
+            transition: transform 0.2s;
+        }
+        .custom-dropdown.open .custom-dropdown-btn svg.arrow-icon {
+            transform: rotate(180deg);
+        }
+        .custom-dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            min-width: 100%;
             background-color: var(--card-bg);
-            color: var(--text-main);
-            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            z-index: 50;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        .custom-dropdown.open .custom-dropdown-menu {
+            display: block;
+            animation: fadeInMenu 0.2s ease;
+        }
+        @keyframes fadeInMenu {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .custom-dropdown-item {
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95Font;
             font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: 0.15s;
+            white-space: nowrap;
+        }
+        .custom-dropdown-item svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            flex-shrink: 0;
+        }
+        .custom-dropdown-item:hover {
+            background-color: var(--border-color);
+            color: var(--text-main);
+        }
+        .custom-dropdown-item.selected {
+            background-color: var(--border-color);
+            color: var(--text-main);
+            font-weight: 700;
         }
 
         .price-tags-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -561,7 +608,7 @@
             .category-title h2 { font-size: 1.4rem; }
             .price-tag { font-size: 0.85rem; padding: 4px 12px; }
             .btn-add { font-size: 0.9rem; padding: 10px; width: 100%; text-align: center; height: auto; }
-            .sort-select { height: auto; }
+            .custom-dropdown-btn { height: auto; }
             .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; }
             .card { padding: 12px; border-radius: 16px; }
             .img-box { height: 85px; padding: 10px; margin-bottom: 10px; border-radius: 12px; }
@@ -996,8 +1043,12 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
 
     <script>
-        const moonSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon-icon lucide-moon"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>`;
-        const sunSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun-icon lucide-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`;
+        const pinIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pin"><line x1="12" x2="12" y1="17" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"/></svg>`;
+        const coinBagSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-coins"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.83 2.83-.7-.71z"/></svg>`;
+        const arrowDownSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down arrow-icon"><path d="m6 9 6 6 6-6"/></svg>`;
+
+        const moonSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>`;
+        const sunSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`;
 
         if(localStorage.getItem('theme') === 'light') {
             document.body.classList.add('light-mode');
@@ -1294,6 +1345,12 @@
                     headerIconDisplay = `<img src="${displayIcon}" alt="icon">`;
                 }
 
+                let sortTexts = {
+                    'default': 'เรียงตามค่าเริ่มต้น',
+                    'high-to-low': 'ราคา: แพง ➔ ถูก',
+                    'low-to-high': 'ราคา: ถูก ➔ แพง'
+                };
+
                 sec.innerHTML = `
                     <div class="category-header">
                         <div class="category-title">
@@ -1334,15 +1391,25 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
                             เพิ่มข้อมูลใหม่ในหน้านี้
                         </button>
-                        <div class="sort-select-wrapper">
-                            <span class="sort-select-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pin"><line x1="12" x2="12" y1="17" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"/></svg>
-                            </span>
-                            <select class="sort-select" id="sort-${cat.id}" onchange="changeCategorySort('${cat.id}', this.value)" style="${dynamicSelectColorStyle}">
-                                <option value="default" ${currentSort==='default'?'selected':''}>เรียงตามค่าเริ่มต้น</option>
-                                <option value="high-to-low" ${currentSort==='high-to-low'?'selected':''}>ราคา: แพง ➔ ถูก</option>
-                                <option value="low-to-high" ${currentSort==='low-to-high'?'selected':''}>ราคา: ถูก ➔ แพง</option>
-                            </select>
+                        
+                        <!-- Custom Dropdown -->
+                        <div class="custom-dropdown" id="dropdown-${cat.id}">
+                            <button type="button" class="custom-dropdown-btn" onclick="toggleCustomDropdown('${cat.id}')" style="${dynamicSelectColorStyle}">
+                                ${pinIconSvg}
+                                <span id="dropdown-label-${cat.id}">${sortTexts[currentSort]}</span>
+                                ${arrowDownSvg}
+                            </button>
+                            <div class="custom-dropdown-menu">
+                                <div class="custom-dropdown-item ${currentSort==='default'?'selected':''}" onclick="selectCustomSort('${cat.id}', 'default', 'เรียงตามค่าเริ่มต้น')">
+                                    ${pinIconSvg} เรียงตามค่าเริ่มต้น
+                                </div>
+                                <div class="custom-dropdown-item ${currentSort==='high-to-low'?'selected':''}" onclick="selectCustomSort('${cat.id}', 'high-to-low', 'ราคา: แพง ➔ ถูก')">
+                                    ${coinBagSvg} ราคา: แพง ➔ ถูก
+                                </div>
+                                <div class="custom-dropdown-item ${currentSort==='low-to-high'?'selected':''}" onclick="selectCustomSort('${cat.id}', 'low-to-high', 'ราคา: ถูก ➔ แพง')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-coins"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.83 2.83-.7-.71z"/></svg> ราคา: ถูก ➔ แพง
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="grid" id="grid-${cat.id}"></div>
@@ -1376,10 +1443,35 @@
             renderUI();
         }
 
-        function changeCategorySort(catId, sortVal) {
+        function toggleCustomDropdown(catId) {
+            let dropdown = document.getElementById(`dropdown-${catId}`);
+            document.querySelectorAll('.custom-dropdown').forEach(d => {
+                if(d !== dropdown) d.classList.remove('open');
+            });
+            dropdown.classList.toggle('open');
+        }
+
+        function selectCustomSort(catId, sortVal, textLabel) {
             categorySortOptions[catId] = sortVal;
+            document.getElementById(`dropdown-label-${catId}`).innerText = textLabel;
+            let dropdown = document.getElementById(`dropdown-${catId}`);
+            dropdown.classList.remove('open');
+            
+            // อัปเดตสถานะ active ในเมนู
+            dropdown.querySelectorAll('.custom-dropdown-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
             renderUI();
         }
+
+        // ปิดดรอปดาวน์เมื่อคลิกพื้นที่อื่นนอกเหนือจากเมนู
+        window.addEventListener('click', function(e) {
+            if (!e.target.closest('.custom-dropdown')) {
+                document.querySelectorAll('.custom-dropdown').forEach(d => d.classList.remove('open'));
+            }
+        });
 
         function rebuildMobileMenu() {
             let container = document.getElementById('mobileLinksContainer');
