@@ -338,7 +338,7 @@
             background-color: var(--card-bg);
             color: var(--text-main);
             border: 1px solid var(--border-color);
-            padding: 0 18px;
+            padding: 0 18px 0 42px;
             border-radius: 14px;
             font-family: inherit;
             font-weight: 700;
@@ -351,7 +351,25 @@
             align-items: center;
             box-sizing: border-box;
             height: 48px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%path d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
         }
+        .sort-select-wrapper {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+        .sort-select-icon {
+            position: absolute;
+            left: 14px;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            color: var(--thb-color);
+        }
+        .sort-select-icon svg { width: 18px; height: 18px; stroke: currentColor; }
         .sort-select:hover {
             border-color: var(--text-muted);
             transform: translateY(-1px);
@@ -366,6 +384,7 @@
         .price-tags-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .price-tag-wrapper { display: flex; align-items: center; gap: 8px; }
         .price-tag { font-size: 1.05rem; font-weight: 600; background: var(--card-bg); padding: 6px 16px; border-radius: 30px; border: 1px solid var(--border-color); display: inline-flex; align-items: center; gap: 6px; }
+        .price-tag svg { width: 16px; height: 16px; stroke: currentColor; }
         .price-coin { border-left: 4px solid var(--coin-color); color: var(--coin-color); }
         .price-ruby { border-left: 4px solid var(--ruby-color); color: var(--ruby-color); }
         .price-thb { border-left: 4px solid var(--thb-color); color: var(--thb-color); }
@@ -446,7 +465,8 @@
         .refill-val { color: var(--text-main); }
 
         .form-group { margin-bottom: 15px; text-align: left; }
-        .form-group label { display: block; font-size: 0.9rem; font-weight: 600; color: var(--text-muted); margin-bottom: 5px; }
+        .form-group label { display: flex; align-items: center; gap: 6px; font-size: 0.9rem; font-weight: 600; color: var(--text-muted); margin-bottom: 5px; }
+        .form-group label svg { width: 16px; height: 16px; stroke: currentColor; flex-shrink: 0; }
         .form-group input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; font-family: inherit; box-sizing: border-box; outline: none; background: var(--box-bg); color: var(--text-main); }
         .form-group input:focus { border-color: var(--primary-yellow); }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -736,17 +756,26 @@
             </div>
 
             <div class="form-group">
-                <label>🪙 ราคา Coin (พิมพ์ตัวเลขระบบจะใส่คอมมาให้)</label>
+                <label>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--coin-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dollar-sign"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>
+                    ราคา Coin (พิมพ์ตัวเลขระบบจะใส่คอมมาให้)
+                </label>
                 <input type="text" id="edit-coin-input" placeholder="เช่น 7,000 (เว้นว่างถ้าไม่ใช้)" oninput="formatNumberInput(this)">
             </div>
 
             <div class="form-group">
-                <label>💎 ราคา Ruby (พิมพ์ตัวเลขระบบจะใส่คอมมาให้)</label>
+                <label>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ruby-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gem"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>
+                    ราคา Ruby (พิมพ์ตัวเลขระบบจะใส่คอมมาให้)
+                </label>
                 <input type="text" id="edit-ruby-input" placeholder="เช่น 50 (เว้นว่างถ้าไม่ใช้)" oninput="formatNumberInput(this)">
             </div>
 
             <div class="form-group">
-                <label>💵 ราคา บาท (ซื้อผ่านเว็บไซต์ TinyTails MC - Store เท่านั้น)</label>
+                <label>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--thb-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-banknote"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+                    ราคา บาท (ซื้อผ่านเว็บไซต์ TinyTails MC - Store เท่านั้น)
+                </label>
                 <input type="text" id="edit-thb-input" placeholder="เช่น 150 (เว้นว่างถ้าไม่ใช้)" oninput="formatNumberInput(this)">
             </div>
 
@@ -1278,13 +1307,22 @@
                         </div>
                         <div class="price-tags-group">
                             <div class="price-tag-wrapper">
-                                <span class="price-tag price-coin" id="price-coin-${cat.id}">ราคา: 0 Coin</span>
+                                <span class="price-tag price-coin" id="price-coin-${cat.id}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dollar-sign"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>
+                                    ราคา: 0 Coin
+                                </span>
                             </div>
                             <div class="price-tag-wrapper" id="wrap-ruby-${cat.id}" style="display:none;">
-                                <span class="price-tag price-ruby" id="price-ruby-${cat.id}">ราคา: 0 Ruby</span>
+                                <span class="price-tag price-ruby" id="price-ruby-${cat.id}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gem"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>
+                                    ราคา: 0 Ruby
+                                </span>
                             </div>
                             <div class="price-tag-wrapper" id="wrap-thb-${cat.id}" style="display:none;">
-                                <span class="price-tag price-thb" id="price-thb-${cat.id}">ราคา: 0 บาท</span>
+                                <span class="price-tag price-thb" id="price-thb-${cat.id}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-banknote"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+                                    ราคา: 0 บาท
+                                </span>
                             </div>
                             <button class="btn-edit-price" id="btn-edit-${cat.id}" onclick="openEditPriceModal('${cat.id}')" title="แก้ไขราคาและหมวดหมู่" style="${currentUser ? 'display:flex;' : 'display:none;'}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
@@ -1296,11 +1334,16 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
                             เพิ่มข้อมูลใหม่ในหน้านี้
                         </button>
-                        <select class="sort-select" id="sort-${cat.id}" onchange="changeCategorySort('${cat.id}', this.value)" style="${dynamicSelectColorStyle}">
-                            <option value="default" ${currentSort==='default'?'selected':''}>📌 เรียงตามค่าเริ่มต้น</option>
-                            <option value="high-to-low" ${currentSort==='high-to-low'?'selected':''}>💰 ราคา: แพง ➔ ถูก</option>
-                            <option value="low-to-high" ${currentSort==='low-to-high'?'selected':''}>🪙 ราคา: ถูก ➔ แพง</option>
-                        </select>
+                        <div class="sort-select-wrapper">
+                            <span class="sort-select-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pin"><line x1="12" x2="12" y1="17" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"/></svg>
+                            </span>
+                            <select class="sort-select" id="sort-${cat.id}" onchange="changeCategorySort('${cat.id}', this.value)" style="${dynamicSelectColorStyle}">
+                                <option value="default" ${currentSort==='default'?'selected':''}>เรียงตามค่าเริ่มต้น</option>
+                                <option value="high-to-low" ${currentSort==='high-to-low'?'selected':''}>ราคา: แพง ➔ ถูก</option>
+                                <option value="low-to-high" ${currentSort==='low-to-high'?'selected':''}>ราคา: ถูก ➔ แพง</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="grid" id="grid-${cat.id}"></div>
                 `;
@@ -1522,7 +1565,7 @@
                 if (coinEl) {
                     if (pData.coin && pData.coin.trim() !== "") {
                         let formattedCoin = formatNumber(pData.coin);
-                        coinEl.innerText = `ราคา: ${formattedCoin} Coin`;
+                        coinEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dollar-sign"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg> ราคา: ${formattedCoin} Coin`;
                         coinEl.parentElement.style.display = 'flex';
                     } else {
                         coinEl.parentElement.style.display = 'none';
@@ -1532,7 +1575,7 @@
                 if (rubyEl && rubyWrap) {
                     if (pData.ruby && pData.ruby.trim() !== "") {
                         let formattedRuby = formatNumber(pData.ruby);
-                        rubyEl.innerText = `ราคา: ${formattedRuby} Ruby`;
+                        rubyEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gem"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg> ราคา: ${formattedRuby} Ruby`;
                         rubyWrap.style.display = 'flex';
                     } else {
                         rubyWrap.style.display = 'none';
@@ -1542,7 +1585,7 @@
                 if (thbEl && thbWrap) {
                     if (pData.thb && pData.thb.trim() !== "") {
                         let formattedThb = formatNumber(pData.thb);
-                        thbEl.innerText = `ราคา: ${formattedThb} บาท`;
+                        thbEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-banknote"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg> ราคา: ${formattedThb} บาท`;
                         thbWrap.style.display = 'flex';
                     } else {
                         thbWrap.style.display = 'none';
