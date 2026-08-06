@@ -405,7 +405,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 0.95Font;
+            font-size: 0.95rem;
             font-weight: 600;
             color: var(--text-muted);
             cursor: pointer;
@@ -541,7 +541,8 @@
         .btn-delete svg { width: 18px; height: 18px; stroke: currentColor; }
         .btn-delete:hover { background: var(--thb-color); color: white; }
 
-        .toast { visibility: hidden; min-width: 250px; background-color: #18181b; color: #fff; text-align: center; border-radius: 10px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); font-weight: 600; border: 1px solid #27272a; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        .toast { visibility: hidden; min-width: 250px; background-color: #18181b; color: #fff; text-align: center; border-radius: 10px; padding: 16px 20px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); font-weight: 600; border: 1px solid #27272a; box-shadow: 0 4px 12px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .toast svg { width: 18px; height: 18px; stroke: var(--coin-color); flex-shrink: 0; }
         body.light-mode .toast { background-color: #ffffff; color: #1e293b; border-color: #e2e8f0; }
         .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
@@ -658,7 +659,7 @@
 
         <div class="nav-right">
             <button class="icon-nav-btn" id="themeToggle" onclick="toggleTheme()" title="เปลี่ยนโหมดมืด/สว่าง">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon-icon lucide-moon"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
             </button>
             <button class="auth-nav-btn" id="authBtn" onclick="openAuthModal()">เข้าสู่ระบบ</button>
             <button class="hamburger-btn" onclick="toggleMobileMenu()" title="เมนู">
@@ -776,7 +777,10 @@
             <button class="close-btn" onclick="closeModal('priceModal')">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
             </button>
-            <h3 class="modal-title" id="priceModalTitle">🏷️ จัดการหมวดหมู่และราคา</h3>
+            <h3 class="modal-title" id="priceModalTitle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tag"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42-3.42l-8.704-8.704z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+                จัดการหมวดหมู่และราคา
+            </h3>
             <input type="hidden" id="edit-price-category">
             
             <div class="form-group" style="margin-top: 15px;" id="catMetaEditGroup">
@@ -1035,7 +1039,10 @@
         </div>
     </div>
 
-    <div id="toast" class="toast">ข้อความแจ้งเตือน</div>
+    <div id="toast" class="toast">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z"/></svg>
+        <span id="toast-text">ข้อความแจ้งเตือน</span>
+    </div>
 
     <!-- Scripts -->
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
@@ -1126,7 +1133,7 @@
 
         function showToast(msg) {
             let toast = document.getElementById("toast");
-            toast.innerText = msg;
+            document.getElementById("toast-text").innerText = msg;
             toast.className = "toast show";
             setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
         }
@@ -1158,7 +1165,7 @@
             auth.signInWithEmailAndPassword(email, pass)
                 .then(() => {
                     closeModal('authModal');
-                    showToast('เข้าสู่ระบบแอดมินสำเร็จ! ปลดล็อคปุ่มจัดการแล้ว 🔓');
+                    showToast('เข้าสู่ระบบแอดมินสำเร็จ! ปลดล็อคปุ่มจัดการแล้ว');
                 })
                 .catch(err => {
                     alert('เข้าสู่ระบบไม่สำเร็จ: อีเมลหรือรหัสผ่านแอดมินไม่ถูกต้อง');
@@ -1168,7 +1175,7 @@
         function logoutUser() {
             if(confirm('ต้องการออกจากระบบใช่หรือไม่?')) {
                 auth.signOut().then(() => {
-                    showToast('ออกจากระบบเรียบร้อยแล้ว 🔒');
+                    showToast('ออกจากระบบเรียบร้อยแล้ว');
                     if(document.getElementById('mobileMenuDrawer').classList.contains('show')) {
                         toggleMobileMenu();
                     }
@@ -1457,7 +1464,6 @@
             let dropdown = document.getElementById(`dropdown-${catId}`);
             dropdown.classList.remove('open');
             
-            // อัปเดตสถานะ active ในเมนู
             dropdown.querySelectorAll('.custom-dropdown-item').forEach(item => {
                 item.classList.remove('selected');
             });
@@ -1466,7 +1472,6 @@
             renderUI();
         }
 
-        // ปิดดรอปดาวน์เมื่อคลิกพื้นที่อื่นนอกเหนือจากเมนู
         window.addEventListener('click', function(e) {
             if (!e.target.closest('.custom-dropdown')) {
                 document.querySelectorAll('.custom-dropdown').forEach(d => d.classList.remove('open'));
@@ -1602,7 +1607,7 @@
             db.ref('custom_categories/' + id).set(newCatData).then(() => {
                 db.ref('category_meta/' + id).set({ menuName: menuName, name: name, order: order, notice: notice, color: color, icon: icon }).then(() => {
                     closeModal('addCategoryModal');
-                    showToast('สร้างหมวดหมู่ใหม่สำเร็จ! ✨');
+                    showToast('สร้างหมวดหมู่ใหม่สำเร็จ!');
                 });
             }).catch(err => {
                 alert('เกิดข้อผิดพลาด: ' + err.message);
@@ -1722,7 +1727,7 @@
                 document.getElementById('edit-cat-color-picker').value = currentMeta.color;
             }
             document.getElementById('edit-cat-icon-input').value = currentMeta.icon && !currentMeta.icon.includes('<svg') ? currentMeta.icon : '';
-            document.getElementById('priceModalTitle').innerHTML = `🏷️ จัดการหมวดหมู่: ${currentMeta.name}`;
+            document.getElementById('priceModalTitle').innerHTML = `จัดการหมวดหมู่: ${currentMeta.name}`;
 
             let pData = categoryPrices[category] || { coin: '', ruby: '', thb: '' };
             document.getElementById('edit-coin-input').value = formatNumber(pData.coin || '');
@@ -1775,7 +1780,7 @@
 
             db.ref().update(updates).then(() => {
                 closeModal('priceModal');
-                showToast('อัปเดตข้อมูลหมวดหมู่เรียบร้อยแล้ว! ✨');
+                showToast('อัปเดตข้อมูลหมวดหมู่เรียบร้อยแล้ว!');
             }).catch(err => {
                 alert('เกิดข้อผิดพลาด: ' + err.message);
             });
@@ -1805,7 +1810,7 @@
 
                 db.ref().update(updates).then(() => {
                     closeModal('priceModal');
-                    showToast('ลบหมวดหมู่เรียบร้อยแล้ว 🗑️');
+                    showToast('ลบหมวดหมู่เรียบร้อยแล้ว');
                     showPage('all', document.getElementById('nav-wrap-all'));
                 }).catch(err => {
                     alert('เกิดข้อผิดพลาด: ' + err.message);
@@ -2167,7 +2172,7 @@
 
             db.ref('tinytails_db/' + finalId).set(newData).then(() => {
                 closeModal('editModal');
-                showToast('บันทึกข้อมูลเรียบร้อยแล้ว! ✨');
+                showToast('บันทึกข้อมูลเรียบร้อยแล้ว!');
             }).catch((error) => {
                 alert("เกิดข้อผิดพลาดในการบันทึก: " + error);
             });
@@ -2180,7 +2185,7 @@
                 let id = parseInt(document.getElementById('e-id').value);
                 db.ref('tinytails_db/' + id).remove().then(() => {
                     closeModal('editModal');
-                    showToast('ลบข้อมูลเรียบร้อยแล้ว 🗑️');
+                    showToast('ลบข้อมูลเรียบร้อยแล้ว');
                 }).catch((error) => {
                     alert("เกิดข้อผิดพลาดในการลบ: " + error);
                 });
