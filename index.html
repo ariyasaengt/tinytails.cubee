@@ -689,7 +689,7 @@
     </div>
 
     <div class="search-container">
-        <input type="text" id="searchInput" class="search-box" placeholder="🔍 ค้นหาชื่อ Cubee หรือผลผลิตที่ต้องการ..." oninput="handleSearch()" autocomplete="off" name="search-field">
+        <input type="text" id="searchInput" class="search-box" placeholder="ค้นหาชื่อ Cubee หรือผลผลิตที่ต้องการ..." oninput="handleSearch()" autocomplete="off" name="search-field">
     </div>
 
     <div class="container" id="dynamicCategoriesContainer">
@@ -995,7 +995,7 @@
                         <input type="file" id="file-pet" accept="image/*" style="display:none;">
                         <img id="preview-pet" src="">
                     </div>
-                    <input type="text" id="e-petImg" class="url-input" placeholder="🔗 หรือวางลิงก์รูป (URL) ที่นี่..." oninput="showPreviewImage('preview-pet', this.value)">
+                    <input type="text" id="e-petImg" class="url-input" placeholder="หรือวางลิงก์รูป (URL) ที่นี่..." oninput="showPreviewImage('preview-pet', this.value)">
                 </div>
                 <div>
                     <div class="paste-zone" id="zone-item">
@@ -1007,7 +1007,7 @@
                         <input type="file" id="file-item" accept="image/*" style="display:none;">
                         <img id="preview-item" src="">
                     </div>
-                    <input type="text" id="e-itemImg" class="url-input" placeholder="🔗 หรือวางลิงก์รูป (URL) ที่นี่..." oninput="showPreviewImage('preview-item', this.value)">
+                    <input type="text" id="e-itemImg" class="url-input" placeholder="หรือวางลิงก์รูป (URL) ที่นี่..." oninput="showPreviewImage('preview-item', this.value)">
                 </div>
             </div>
 
@@ -1154,7 +1154,7 @@
         }
 
         function processAdminAuth() {
-            let email = document.getElementById('authEmail').value;
+            let email = document.getElementById('authEmail').value.trim();
             let pass = document.getElementById('authPassword').value;
 
             if (!email || !pass) {
@@ -1162,10 +1162,16 @@
                 return;
             }
 
+            // 🔒 บล็อกอีเมลที่ไม่ใช่แอดมินตั้งแต่ต้นทาง
+            if (email !== "admin@tinytails.com") {
+                alert("บัญชีนี้ไม่มีสิทธิ์เป็นแอดมิน");
+                return;
+            }
+
             auth.signInWithEmailAndPassword(email, pass)
                 .then(() => {
                     closeModal('authModal');
-                    showToast('เข้าสู่ระบบแอดมินสำเร็จ! ปลดล็อคปุ่มจัดการแล้ว');
+                    showToast('เข้าสู่ระบบแอดมินสำเร็จ!');
                 })
                 .catch(err => {
                     alert('เข้าสู่ระบบไม่สำเร็จ: อีเมลหรือรหัสผ่านแอดมินไม่ถูกต้อง');
@@ -1917,17 +1923,17 @@
 
             let html = '<div class="stat-rank-list">';
             validItems.forEach((item, index) => {
-                let emoji = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}`;
+                let rankDisplay = index === 0 ? '1' : index === 1 ? '2' : index === 2 ? '3' : `${index + 1}`;
                 let cleanVal = String(item.price).replace(/[^\d]/g, '');
                 let formattedPrice = cleanVal ? formatNumber(cleanVal) : item.price;
 
                 html += `
                     <div class="stat-rank-item" onclick="openViewModal(${item.id})">
-                        <div class="stat-rank-number">${emoji}</div>
+                        <div class="stat-rank-number">${rankDisplay}</div>
                         <img class="stat-rank-img" src="${item.petImg || 'https://via.placeholder.com/40/cbd5e1/ffffff?text=Img'}">
                         <div class="stat-rank-info">
                             <div class="stat-rank-name">${item.name}</div>
-                            <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 3px;">📦 ผลผลิต: ${item.itemName}</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 3px;">ผลผลิต: ${item.itemName}</div>
                         </div>
                         <div class="stat-rank-val">${formattedPrice} Coin</div>
                     </div>
